@@ -1,0 +1,215 @@
+%% -*- coding: utf-8; -*-
+
+\documentclass[
+  msc
+]{ThesisPUC}
+
+
+%%%
+%%% Additional Packages
+%%%
+
+  %% \usepackage[brazilian]{babel}      %% in ThesisPUC.cls
+  %% \usepackage[utf8]{inputenc}        %% .
+  %% \usepackage[T1]{fontenc}           %% .
+  %% \usepackage{lmodern}               %% .
+  %% \usepackage[pdftex]{graphicx}	%% .
+
+  \usepackage{tabularx}
+  \usepackage{multirow}
+  \usepackage{multicol}
+  \usepackage{colortbl}
+  \usepackage[%
+    dvipsnames,
+    svgnames,
+    x11names,
+    fixpdftex
+  ]{xcolor}
+  \usepackage{numprint}
+  \usepackage{textcomp}
+  \usepackage{booktabs}
+  \usepackage{amsmath}
+  \usepackage{enumitem}
+  \usepackage{amssymb}
+  \usepackage{textcomp}
+  \usepackage{algorithm}
+  \usepackage{algorithmic}
+    
+% \usepackage{etoolbox}
+
+%% numprint 
+\npthousandsep{.}
+\npdecimalsign{,}
+
+%% ThesisPUC option
+%% \tablesmode{figtab} %% [nada, fig, tab ou figtab]
+
+
+%%%
+%%% Counters
+%%%
+
+%% uncomment and change for other depth values
+%% \setcounter{tocdepth}{3}
+%% \setcounter{lofdepth}{3}
+%% \setcounter{lotdepth}{3}
+%% \setcounter{secnumdepth}{3}
+
+
+%%%
+%%% New commands and other global definitions
+%%%
+
+\input{defs}
+
+
+%%%
+%%% Abreviation Title
+%%%
+
+%% \abreviationstitle{Lista de Abreviaturas}
+%% \abreviationstitleuk{List of Abreviations}
+
+
+%%%
+%%% Misc.
+%%%
+
+\usecolour{true}
+
+
+%%%
+%%% Titulos
+%%%
+
+\author{Daniel Lemes Gribel}
+\authorR{Lemes Gribel, Daniel}
+
+\adviser{Thibaut Vidal}{Dr.}
+\adviserR{Vidal, Thibaut}
+
+%\coadviser{Otávio da Fonseca Martins Gomes}{Dr.}
+%\coadviserR{da Fonseca Martins Gomes, Otávio}
+%\coadviserInst{Centro de Tecnologia Mineral}{CETEM/MCTI}
+
+\title{Meta-heuristics for data clustering}
+
+%\titleuk{Meta-heuristics for data clustering}
+
+%% \subtitulo{Aqui vai o subtitulo caso precise}
+
+\day{$1^{st}$}
+\month{March}
+\year{2017}
+
+\city{Rio de Janeiro}
+\CDD{620.11}
+\department{Informática}
+\program{Informática}
+\school{Centro Técnico Científico}
+\university{Pontifícia Universidade Católica do Rio de Janeiro}
+\uni{PUC-Rio}
+
+
+%%%
+%%% Jury
+%%%
+
+\jury{%
+  \jurymember{Paulo Roberto Gomes Brandão}{Prof.}
+    {Universidade Federal de Minas Gerais}{UFMG}
+  \jurymember{Leonardo Evangelista Lagoeiro}{Prof.}
+    {Universidade Federal de Ouro Preto}{UFOP}
+  \jurymember{Reiner Neumann}{Dr.}
+    {Centro de Tecnologia Mineral}{CETEM/MCTI}
+  \jurymember{Marcos Henrique de Pinho Maurício}{Dr.}
+    {Departamento de Engenharia de Materiais}{PUC-Rio}
+  \schoolhead{José Eugenio Leal}{Prof.}
+}
+
+
+%%%
+%%% Resume
+%%%
+
+\resume{%
+Obtained a bachelor’s degree in Information Systems
+from the Federal University of Rio de Janeiro State
+(Unirio, Rio de Janeiro, Brazil). He earned a
+scholarship from CNPq in his Masters at PUC-Rio.}
+
+
+%%%
+%%% Acknowledgment
+%%%
+
+\acknowledgment{%
+  \noindent Em primeiro lugar, gostaria de agradecer especialmente a meu
+  orientador ...
+  \bigskip
+
+  \noindent Em segundo lugar ...
+}
+
+
+%%%
+%%% Catalog prekeywords
+%%%
+
+\catalogprekeywords{%
+  \catalogprekey{Informática}%
+}
+
+
+%%%
+%%% Keywords
+%%%
+
+\keywordsuk{%
+  \key{Clustering;}
+  \key{Meta-heuristic;}
+  \key{Unsupervised learning;}
+  \key{Minimum sum-of-squares;}
+  \key{Data mining;}
+  \key{Combinatorial optimization.}
+}
+
+\keywords{%
+  \key{Clusterização;}
+  \key{Meta-heurística;}
+  \key{Aprendizado não-supervisionado;}
+  \key{Mínima soma dos quadrados;}
+  \key{Mineração de dados;}
+  \key{Otimização combinatória.}
+}
+
+
+%%%
+%%% Abstract
+%%%
+
+\abstractuk{%
+  Iron ore is a polycrystalline material created by complex natural
+  processes during geological periods, which give rise to ...
+}
+  
+\abstract{%
+  O minério de ferro é um material policristalino oriundo de processos
+  naturais complexos durante tempos geológicos, que dão origem ...
+}
+
+\begin{document}
+
+  %\input{abrevs}
+  \input{chapter-1}
+  \input{chapter-2}
+  \input{chapter-3}
+  \input{chapter-4}
+  \input{chapter-5}
+  \input{conclusions}
+  \arial
+  \bibliography{reference}
+  \normalfont
+  \input{appendix}
+
+\end{document}
