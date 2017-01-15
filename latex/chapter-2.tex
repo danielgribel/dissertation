@@ -9,22 +9,22 @@
 
 \section{Model-driven clustering}
 
-\section{The minimum sum-of-squares problem}
-Firstly, let's assume a given set $X$ of $N$ points in a $D$-dimensional space $\mathbb{R}^D$ \cite{Bagirov2006}:
+\section{The MSSC problem}
+In the Minimum sum-of-squares clustering (MSSC) problem we aim to minimize the total sum of the distances of each data point to the mean point in its cluster. It considers as an assumption a given set $X$ of $n$ data points in a $d$-dimensional space $\mathbb{R}^d$ \cite{Bagirov2006}:
 
 \begin{center}%
-$X = \{x_1, x_2, ..., x_N\}$, where $x_i \in \mathbb{R}^D, \quad i = 1, ..., N.$
+$X = \{x_1, x_2, ..., x_n\}$, where $x_i \in \mathbb{R}^d, \quad i = 1, ..., n.$
 \end{center}
 
-Then, if we consider $S$ as the set of all possible subsets obtained from elements in $X$, the clustering procedure must generate a partition $\bar{S}$ of $S$ with $M$ subsets $S_k \in S (S_k \neq \emptyset)$, where $M$ is the number of desired clusters and $k = \{1,...,\left | S \right |\}$. In other words, a clustering algorithm aims to generate a partition that groups data consistently, with most similar objects belonging to the same group and dissimilar objects belonging to different groups.
+Then, if we consider $S$ as the set of all possible subsets obtained from elements in $X$, the clustering procedure must generate a partition $\bar{S}$ of $S$ with $m$ subsets $S_k \in S (S_k \neq \emptyset)$, where $m$ is the number of desired clusters and $k = \{1,...,\left | S \right |\}$. In other words, a clustering algorithm aims to generate a partition that groups data consistently, with most similar objects belonging to the same group and dissimilar objects belonging to different groups.
 
-In order to define the similarity between two objects, a function $d$ assigns to each pair $(x_i, x_j)$ a distance or similarity metric $d_{ij} \in \mathbb{R}$, where $d_{ij} \geq 0, d_{ii} = 0, d_{ij} = d_{ji}$, for $i, j = 1, ... ,N$. The set of objects $x_i \in X$ can be described as a matrix $x_{iq}$, with $q = \{1,...,D\}$, where $x_{iq}$ is the value of the $q$-th feature for the $i$-th data object and $D$ is the number of features. The assignment is done in such a way that the greater is the similarity (proximity) within a cluster and the greater is the difference between clusters, the better is the clustering. There is a variety of distance measures to characterize how similar are two objects or patterns. A simple one is the Euclidean distance, that can often be used to reflect the similarity between two patterns when considering multiple dimensions (features) \cite{Jain1999}:
+In order to define the similarity between two objects, a function $d$ assigns to each pair $(x_i, x_j)$ a distance or similarity metric $d_{ij} \in \mathbb{R}$, where $d_{ij} \geq 0, d_{ii} = 0, d_{ij} = d_{ji}$, for $i, j = 1, ... ,n$. The set of objects $x_i \in X$ can be described as a matrix $x_{iq}$, with $q = \{1,...,d\}$, where $x_{iq}$ is the value of the $q$-th feature for the $i$-th data object and $d$ is the number of features. The assignment is done in such a way that the greater is the similarity (proximity) within a cluster and the greater is the difference between clusters, the better is the clustering. There is a variety of distance measures to characterize how similar are two objects or patterns. A popular one in the domain of data mining is the Euclidean distance, that can often be used to reflect the similarity between two patterns when considering multiple dimensions (features) \cite{Jain1999}:
 
 \begin{equation}
-d_{ij} = \sqrt{\sum_{q=1}^{D}(x_{iq} - x_{jq})^2} = \left \| x_i - x_j \right \|
+d_{ij} = \sqrt{\sum_{q=1}^{d}(x_{iq} - x_{jq})^2} = \left \| x_i - x_j \right \|
 \end{equation}
 
-Thus, given a distance matrix $d_{ij}$, the clustering problem can be modelled as the following set partitioning problem:
+Thus, given a distance matrix $d_{ij}$, the MSSC problem can be formulated as the following set partitioning problem:
 
 \begin{equation} \label{eq:of}
 \textrm{Minimize} \sum_{k=1}^{\left | S \right |}c_ky_k
@@ -39,7 +39,7 @@ Thus, given a distance matrix $d_{ij}$, the clustering problem can be modelled a
 \end{equation}
 
 \begin{equation}
-\sum_{k=1}^{\left | S \right |}y_k = M
+\sum_{k=1}^{\left | S \right |}y_k = m
 \end{equation}
 
 \begin{equation}
@@ -50,13 +50,15 @@ a_{ik} \in \{0,1\}, \quad \forall i,k
 y_k \in \{0,1\}, \quad \forall k
 \end{equation}
 
-Where $\left | S \right |$ is the size of the set $S$; $a_{ik} = 1$ if $x_i \in S_k$ and $a_{ik} = 0$ otherwise; $y_k$ are the decision variables, with $y_k = 1$ if the subset $S_k$ is chosen ($S_k \in \bar{S}$) and $y_k = 0$ otherwise; and $c_k$ is the cost function on subset $S_k$, i.e., the cost within the $k$-th subset. In MSSC problem, the centroid is the mean point $\mu_k$ of cluster $S_k$. Thus, the contribution $c_k$ of each subset to the objective function is:
+\noindent where $\left | S \right |$ is the size of the set $S$; $a_{ik} = 1$ if $x_i \in S_k$ and $a_{ik} = 0$ otherwise; $y_k$ are the decision variables, with $y_k = 1$ if the subset $S_k$ is chosen ($S_k \in \bar{S}$) and $y_k = 0$ otherwise; and $c_k$ is the cost function on subset $S_k$, i.e., the cost within the $k$-th subset. In MSSC problem, the centroid is the mean point $\mu_k$ of cluster $S_k$. Thus, the contribution $c_k$ of each subset to the objective function is:
 	\begin{equation}
 	c_k = \sum_{x_i \in S_k}\left \| \mu_k - x_i \right \|
 	\end{equation}
 	\begin{center}
-	where $\mu_k = $ \Large $\frac{\sum_{i = 1}^{N}a_{ik}x_i}{\sum_{i = 1}^{N}a_{ik}}$	
+	where $\mu_k = $ \Large $\frac{\sum_{i = 1}^{n}a_{ik}x_i}{\sum_{i = 1}^{n}a_{ik}}$	
 	\end{center}
+	
+\subsection{Computational complexity}
 
 \section{Solution techniques}
 
