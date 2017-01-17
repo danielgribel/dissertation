@@ -1,16 +1,30 @@
 % -*- coding: utf-8; -*-
 \chapter{Problem Statement and Literature Review}
 
+Most algorithms proposed for data clustering are based on heuristics with intuitive procedures \cite{Fraley2002}. These algorithms are also referred as ad-hoc methods, once they are solutions designed for specific clustering criteria, being non-generalizable and not adaptive. As these ad-hoc methods are based on greedy constructions or local improvements, they have some limitation regarding solution quality and local optimum convergence.
+
+There is little systematic guidance in such algorithms for solving important questions in cluster analysis \cite{Fraley2002}. K-means is an example of a very popular ad-hoc algorithm for clustering, based on iterative updates of cluster centers until convergence. Although k-means is easy to implement and usually demand low computational time, it has not any optimality guarantee and is highly dependent on initial conditions to deliver good outcomes.
+
+However, in the recent years there has been a considerable growth of clustering methods designed in a model-oriented way. This approach is based on formal models that usually produce more accurate solutions than ad-hoc methods as they clearly state an objective to be achieved.
+
 \section{Ad-hoc methods}
+The ad-hoc methods proposed for data clustering usually belong to two large classes if we analyse them in terms of their structure: hierarchical and partitional algorithms.
 
-\subsection{Hierarchical clustering}
+%\subsubsection{Hierarchical clustering}
+The hierarchical clustering works by successively agglomerating or separating clusters at each stage according to some distance measure. Basically, it is subdivided into agglomerative and divisive methods. In an agglomerative approach, each data point starts at its own cluster and at each stage of the algorithm it joins the two most similar clusters, until a single cluster containing all objects is reached. The divisive method is the opposite. The method proceeds by separating $n$ objects successively into finer groups. 
 
-\subsection{Partitional clustering}
+Several algorithms for data clustering are based on hierarchical constructions, once they do not require the number of clusters a priori and are independent from initial conditions, as strategic starting points. However, hierarchical methods are computationally expensive -- usually O($n^2$ log $n$) for computational complexity -- and all decisions about joining/separating sets of points are definitive, i.e., it is impossible to revert any merge or split operation. BIRCH (Balanced Iterative Reducing and Clustering Using Hierarchies) \cite{Zhang96} and CURE (Clustering Using Representatives) \cite{Guha1998} are examples of popular hierarchical clustering algorithms.
+ 
+%\subsubsection{Partitional clustering}
+The methods belonging to partitional clustering directly divides data objects into some pre-specified number of clusters without any hierarchical structure \cite{Xu2005}. It is composed by methods based on iterative relocation of data points between clusters that, at each iteration, reduce the value of some criteria function until convergence \cite{Karkkainen2006}. The minimum sum-of-squares function is one of the most widely used criteria, which aims to minimize the sum of each data point to the center of its cluster. K-means and PAM (Partitioning Around Medoids) are quite widespread partitioning clustering methods. Although partitional clustering algorithms are suitable for large data sets due to efficiency in computational time, they require the number of clusters in advance and are heavily dependent on the initial conditions, which can lead algorithms like k-means to a premature convergence \cite{Das2009}.
 
 \section{Model-driven clustering}
+The above classes of ad-hoc methods are not guided by a model, but by iterative constructions or re-assignments according to some underlying criteria. For instance, on k-means algorithm, the criteria is to assign data points to the closest center after the calculation of centers position. On hierarchical methods, the criteria to merge/split a solution is based on a distance metric between pairs of clusters.
+
+Due to these characteristics, it is difficult to assess if erratic results come from inappropriate methods, or from a data that does not intuitively leads to the result that we desire. In order to detect this kind of behaviour, some solutions were designed to face data clustering from a model-oriented perspective, which means giving a formal definition of the clustering problem as an optimization problem, where clear objective functions are set. Therefore, one can apply a method that minimizes/maximizes an objective function to solve the model.
 
 \section{The MSSC problem}
-In the Minimum sum-of-squares clustering (MSSC) problem we aim to minimize the total sum of the distances of each data point to the mean point in its cluster. It considers as an assumption a given set $X$ of $n$ data points in a $d$-dimensional space $\mathbb{R}^d$ \cite{Bagirov2006}:
+The Minimum sum-of-squares clustering (MSSC) model has been extensively studied in the literature for data clustering, possibly because this is the natural model which is addressed by the k-means algorithm. In the MSSC problem we aim to minimize the total sum of the distances of each data point to the mean point in its cluster. It considers as an assumption a given set $X$ of $n$ data points in a $d$-dimensional space $\mathbb{R}^d$ \cite{Bagirov2006}:
 
 \begin{center}%
 $X = \{x_1, x_2, ..., x_n\}$, where $x_i \in \mathbb{R}^d, \quad i = 1, ..., n.$
@@ -60,10 +74,10 @@ y_k \in \{0,1\}, \quad \forall k
 	
 \subsection{Computational complexity}
 
-\section{Solution techniques}
+\subsection{Solution techniques}
 
-\subsection{Construction and local search}
+%\subsection{Construction and local search}
 
-\subsection{Meta-heuristics}
+%\subsection{Meta-heuristics}
 
-\subsection{Mathematical programming methods}
+%\subsection{Mathematical programming methods}

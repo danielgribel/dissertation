@@ -10,7 +10,22 @@ In addition to the genetic operators mentioned above, two mechanisms -- one to s
 \section{Solution representation}
 A solution (clustering partition) is represented by a direct encoding of the object-cluster assignment. The idea is to use a genetic encoding that allocates directly $n$ objects to $k$ clusters, such that each candidate solution consists of a $n$-vector ($n$ genes) with integer values in the interval [1, $k$]. Thus, for $n$ = 4 and $k$ = 3, the encoding (1,1,3,2) allocates the first and the second objects to cluster 1; the third object to cluster 3 and the fourth object to cluster 2, generating the partition (\{1,2\}, \{3\}, \{4\}).
 
-An encoding based on the centroids description is also considered in order to make the proposed crossover and mutation operations practicable. A centroids encoding defines a solution through the feature vectors existing in each centroid, being a matrix $C$ of size $k \times d$, where $k$ is the number of centroids (clusters) and $d$ is the number of features. Thus, an entry $c_{ij}$ of $C$ corresponds to the value of the $j$-th feature of the $i$-th centroid ($i$ = 1 ... $k$; $j$ = 1 ... $d$).
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{images/assignment-encoding}
+    \caption{An example of the assignment encoding for $n$ = 4}\label{fig:assignment-encoding}
+  \end{center}
+\end{figure}
+
+An encoding based on the centroids description is also considered in order to make the proposed crossover and mutation operations practicable. A centroids encoding defines a solution through the feature vectors existing in each centroid, being a matrix $C$ of size $k \times d$, where $k$ is the number of centroids (clusters) and $d$ is the number of features (see figure \ref{fig:centroids-encoding}). Thus, an entry $c_{ij}$ of $C$ corresponds to the value of the $j$-th feature of the $i$-th centroid ($i$ = 1 ... $k$; $j$ = 1 ... $d$).
+
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{images/centroids-encoding}
+    \caption{The encoding based on centroids features}\label{fig:centroids-encoding}
+  \end{center}
+\end{figure}
 
 %An encoding based on the centroids description is also considered in order to treat the redundancy that may arise from the object-cluster representation. For instance, the solutions (1,1,3,2) and (3,3,1,2) may be considered different solutions according to the object-cluster assignment, even though they are exactly the same solution. Thus, a centroids encoding is used to represent solutions whenever this redundancy must be detected, for example, when performing the crossover.
 
@@ -114,3 +129,5 @@ The \textit{Diversification} mechanism aims to ensure the diversity of the popul
 
 \section{Parameters}
 In preliminary experiments, we determined that the values $\mu$ = 20, $maxPop$ = 500, $itDiv$ = 400 and $itNoImprovement$ = 2000 produced good and stable results, where $\mu$ is the population size, $maxPop$ is the maximum size of population, $itDiv$ is the number of iterations without improvement that triggers diversification and $itNoImprovement$ is the number of iterations without improvement that causes the algorithm stop.
+
+\section{Computational complexity}
