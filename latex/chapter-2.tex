@@ -21,10 +21,12 @@ The methods belonging to partitional clustering directly divides data objects in
 \section{Model-driven clustering}
 The above classes of ad-hoc methods are not guided by a model, but by iterative constructions or re-assignments according to some underlying criteria. For instance, on k-means algorithm, the criteria is to assign data points to the closest center after the calculation of centers position. On hierarchical methods, the criteria to merge/split a solution is based on a distance metric between pairs of clusters.
 
-Due to these characteristics, it is difficult to assess if erratic results come from inappropriate methods, or from a data that does not intuitively leads to the result that we desire. In order to detect this kind of behaviour, some solutions were designed to face data clustering from a model-oriented perspective, which means giving a formal definition of the clustering problem as an optimization problem, where clear objective functions are set. Therefore, one can apply a method that minimizes/maximizes an objective function to solve the model.
+Due to these characteristics, it is difficult to assess if erratic results come from inappropriate methods, or from a data that does not intuitively leads to the result that we desire. In order to detect this kind of behaviour, some solutions have been designed to face data clustering from a model-oriented perspective, which means giving a formal definition of the clustering problem as an optimization problem, where clear objective functions and restrictions are set. Therefore, one can apply a method that minimizes/maximizes an objective function to solve the model.
+
+In this work, we aim to treat the clustering task as an optimization problem, where we can achieve near optimality regarding a specific objective. Thus, we consider a particular formulation for data clustering, the Minimum sum-of-squares clustering (MSSC). However, many formulations can be done to express a clustering task. Besides that, some optimization problems are more suitable for specific clustering tasks, or a specific data sets.
 
 \section{The MSSC problem}
-The Minimum sum-of-squares clustering (MSSC) model has been extensively studied in the literature for data clustering, possibly because this is the natural model which is addressed by the k-means algorithm. In the MSSC problem we aim to minimize the total sum of the distances of each data point to the mean point in its cluster. It considers as an assumption a given set $X$ of $n$ data points in a $d$-dimensional space $\mathbb{R}^d$ \cite{Bagirov2006}:
+The MSSC problem has been extensively studied in the literature for data clustering, possibly because this is the natural model which is addressed by the k-means algorithm. In the MSSC problem we aim to minimize the total sum of the distances of each data point to the mean point in its cluster. It considers as an assumption a given set $X$ of $n$ data points in a $d$-dimensional space $\mathbb{R}^d$ \cite{Bagirov2006}:
 
 \begin{center}%
 $X = \{x_1, x_2, ..., x_n\}$, where $x_i \in \mathbb{R}^d, \quad i = 1, ..., n.$
@@ -64,7 +66,7 @@ a_{ik} \in \{0,1\}, \quad \forall i,k
 y_k \in \{0,1\}, \quad \forall k
 \end{equation}
 
-\noindent where $\left | S \right |$ is the size of the set $S$; $a_{ik} = 1$ if $x_i \in S_k$ and $a_{ik} = 0$ otherwise; $y_k$ are the decision variables, with $y_k = 1$ if the subset $S_k$ is chosen ($S_k \in \bar{S}$) and $y_k = 0$ otherwise; and $c_k$ is the cost function on subset $S_k$, i.e., the cost within the $k$-th subset. In MSSC problem, the centroid is the mean point $\mu_k$ of cluster $S_k$. Thus, the contribution $c_k$ of each subset to the objective function is:
+\noindent where $\left | S \right |$ is the size of the set $S$; $a_{ik} = 1$ if $x_i \in S_k$ and $a_{ik} = 0$ otherwise; $y_k$ are the decision variables, with $y_k = 1$ if the subset $S_k$ is chosen ($S_k \in \bar{S}$) and $y_k = 0$ otherwise; and $c_k$ is the cost function on subset $S_k$, i.e., the cost within the $k$-th subset. In the MSSC problem, the centroid is the mean point $\mu_k$ of cluster $S_k$. Thus, the contribution $c_k$ of each subset to the objective function is:
 	\begin{equation}
 	c_k = \sum_{x_i \in S_k}\left \| \mu_k - x_i \right \|
 	\end{equation}
