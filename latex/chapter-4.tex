@@ -1,59 +1,42 @@
 \chapter{Computational Experiments and Analysis}
+In this chapter, we discuss the computational experiments and the analysis that emerge from them. The results of the proposed algorithm are presented in terms of objective function value and time, and are also compared to current state-of-the-art results in the MSSC literature.
+
+The experiments were conducted on an Intel Core i5 2.6 GHz processor machine with 8 GB of RAM memory. The source codes were written in C++, using the UNIX g++ compiler on a Linux Ubuntu 14.04 LTS 64-bit operating system.
 
 \section{Instances}
-The selection of instances was done in order to cover different types of data, considering both the instance size and the number of features. Table \ref{instances} summarizes the characteristics of these instances, which are important benchmarks in recent clustering literature, as reported in \cite{Ordin2014} and \cite{Bagirov2016}.
+The selection of instances was done in order to cover different types of data, considering both the instance size and the number of features as important indicators to describe the nature of data. Table \ref{instances} summarizes the characteristics of the adopted instances, which correspond to XX important benchmarks in recent clustering literature, as reported in \cite{Ordin2014} and \cite{Bagirov2016}. For all considered instances, every feature value is a real or integer number and there is no missing values. The number of data points (instances size) ranges from 59 (smallest) to 434,874 (largest); and the number of features ranges from 2 (smallest) to 128 (largest). Thus, in order to elucidate the coming analysis, we propose the discrimination of these instances according to their sizes -- having small, medium and large sets. % and the number of features (small and large sets)
 
-\begin{table}[]
-\centering
-\begin{tabular}{@{}lcc@{}}
-\toprule
-Instance                        & Number of data points & Number of features \\ \midrule
-German towns                    & 59                    & 2                  \\
-Bavaria postal 1                & 89                    & 3                  \\
-Bavaria postal 2                & 89                    & 4                  \\
-Fisher’s Iris Plant             & 150                   & 4                  \\
-Heart Disease                   & 297                   & 13                 \\
-Liver Disorders                 & 345                   & 6                  \\
-Ionosphere                      & 351                   & 34                 \\
-Congressional Voting Records    & 435                   & 16                 \\
-Breast Cancer                   & 683                   & 9                  \\
-Pima Indians Diabetes           & 768                   & 8                  \\
-TSPLIB1060                      & 1060                  & 2                  \\
-Image Segmentation              & 2310                  & 19                 \\
-TSPLIB3038                      & 3038                  & 2                  \\
-Page Blocks                     & 5473                  & 10                 \\
-Pendigit                        & 10992                 & 16                 \\
-Gas sensor                      & 13910                 & 128                \\
-EEG eye state                   & 14980                 & 14                 \\
-D15112                          & 15112                 & 2                  \\
-Letters                         & 20000                 & 16                 \\
-KEGG metabolic relation network & 53413                 & 20                 \\
-Shuttle control                 & 58000                 & 9                  \\
-Pla85900                        & 85900                 & 2                  \\
-Skin Segmentation               & 245057                & 3                  \\
-3D road network                 & 434874                & 3                  \\ \bottomrule
-\end{tabular}
-\caption{Instances description}
-\label{instances}
-\end{table}
+\input{tables/instances}
 
 \section{Parameters calibration}
-As in most meta-heuristics, the values chosen for parameters directly affect the quality of the results. In this work, we consider five main parameters: $\mu$ (the population size), $\eta$ (the maximum size of population), $\beta$ (the number of new individuals created in the diversification), $I$ (the number of iterations without improvement that triggers diversification) and $itNoImprovement$ (the number of iterations without improvement that causes the algorithm stop).
+As in most meta-heuristics, the values chosen for parameters directly affect the results. In this work, we consider five main parameters: $\mu$ (the population size), $\eta$ (the maximum size of population), $\beta$ (the number of new individuals created in the diversification), $I$ (the number of iterations without improvement that triggers diversification) and $itNoImprovement$ (the number of iterations without improvement that causes the algorithm stop).
 
 In preliminary experiments, we started with the following configuration, as they produced good and stable results: $\mu$ = 30, $\eta$ = 400, $\beta$ = 5, $I$ = 400 and $itNoImprovement$ = 2000. From this baseline, we expanded the range of these value. Table \ref{calibration} presents the tested values for each parameter and the final values achieved after running each combination in XX instances.
 
-\begin{table}[H]
-\centering
-\begin{tabular}{@{}llcc@{}}
-\toprule
-\multicolumn{2}{l}{Parameter}                                                                                                    & Tested values   & Final value \\ \midrule
-$\mu$         & Population size                                                                                                  & \{20, 30, 50\}    & 30               \\
-$\beta$       & Number of new individuals in \textit{Diversification}                                                                     & \{5, 10, 20\}     & 5                \\
-$\eta$ & Maximum size of population                                                                                       & \{200, 400, 800\} & 400              \\
-$I$         & \begin{tabular}[c]{@{}l@{}}Number of iterations without improvement\\ that triggers \textit{Diversification}\end{tabular} & \{200, 400, 800\} & 400              \\ \bottomrule
-\end{tabular}
-\caption{Parameters calibration}
-\label{calibration}
-\end{table}
+\input{tables/calibration}
 
 \section{Results}
+Results of numerical experiments for small, medium and large instances are given in tables XX, XX and XX respectively. Due to the stochastic nature of the proposed meta-heuristic, 10 runs were conducted for each configuration. The following notation is used in these tables:
+
+\begin{itemize}
+
+	\item $m$ is the number of clusters;
+
+	\item $f_{best}$ is the best known value for the MSSC objective found so far;
+
+	\item $E$ is the error, calculated as:
+
+		\begin{center}
+		\Large
+			$E = \frac{f - f_{best}}{f_{best}}$
+		\end{center}
+		
+	where $f$ is the value of the MSSC objective found by an algorithm;
+	
+	\item $t$ is the CPU time in seconds;
+
+	\item Bold values corresponds to cases where the proposed meta-heuristic found the new best solution.
+
+\end{itemize}
+
+For comparison purposes, we also considered the results of global k-means (GKM), the modified global k-means (MGKM), the multi-start modified global k-means (MS-MGKM) and the difference of convex clustering (DCC) algorithms, that are recent works in MSSC literature, corresponding in many cases to the state-of-the-art in this problem.

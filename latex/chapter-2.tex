@@ -19,9 +19,29 @@ Several algorithms for data clustering are based on hierarchical constructions, 
 The methods belonging to partitional clustering directly divides data objects into some pre-specified number of clusters without any hierarchical structure \cite{Xu2005}. It is composed by methods based on iterative relocation of data points between clusters that, at each iteration, reduce the value of some criteria function until convergence \cite{Karkkainen2006}. The minimum sum-of-squares function is one of the most widely used criteria, which aims to minimize the sum of each data point to the center of its cluster. K-means and PAM (Partitioning Around Medoids) are quite widespread partitioning clustering methods. Although partitional clustering algorithms are suitable for large data sets due to efficiency in computational time, they require the number of clusters in advance and are heavily dependent on the initial conditions, which can lead algorithms like k-means to a premature convergence \cite{Das2009}.
 
 \section{Model-driven clustering}
-The above classes of ad-hoc methods are not guided by a model, but by iterative constructions or re-assignments according to some underlying criteria. For instance, on k-means algorithm, the criteria is to assign data points to the closest center after the calculation of centers position. On hierarchical methods, the criteria to merge/split a solution is based on a distance metric between pairs of clusters.
+The above classes of ad-hoc methods are not guided by a model, but by iterative constructions or re-assignments according to some underlying criteria. For instance, on k-means algorithm, the criteria is to assign data points to the closest center after the calculation of centers position. On hierarchical methods, the criteria to merge/split a solution is based on a distance metric between pairs of clusters. Due to these characteristics, it is difficult to assess if erratic results come from inappropriate methods, or from a data that does not intuitively leads to the result that we desire.
 
-Due to these characteristics, it is difficult to assess if erratic results come from inappropriate methods, or from a data that does not intuitively leads to the result that we desire. In order to detect this kind of behaviour, some solutions have been designed to face data clustering from a model-oriented perspective, which means giving a formal definition of the clustering problem as an optimization problem, where clear objective functions and restrictions are set. Therefore, one can apply a method that minimizes/maximizes an objective function to solve the model.
+In order to detect this kind of behaviour, some solutions have been designed to face data clustering from a model-oriented perspective, which means giving a formal definition of the clustering problem as an optimization problem, where clear objective functions and restrictions are set. Therefore, one can apply a method that minimizes/maximizes an objective function to solve the model.
+
+The work of Hansen and Jaumard \cite{Hansen1997} states that most of clustering tasks are composed by the following elements:
+
+\begin{itemize}
+
+	\item \textit{Data}. Observation of $d$ characteristics in $n$ entities (patterns). This yields a $n \times d$ data matrix.
+
+	\item \textit{Similarities}. Computation of the similarities between entities, i.e., the derived measures from features that indicates how similar (dissimilar) are each pair of entities.
+
+	\item \textit{Constraints}. Specification of existing constraints in the clustering task. For instance: number of clusters, maximum cardinality per cluster, number of clusters an entity can be assigned to, etc.
+
+	\item \textit{Criterion}. Selection of the criterion to express homogeneity or separability of the clusters.
+
+	\item \textit{Algorithm}. Design of the algorithm to solve the clustering problem.
+
+	\item \textit{Interpretation}. Analysis on how meaningful are the generated clusters. For instance: use of descriptive statistics and data mining indicators.
+
+\end{itemize}
+
+Except for \textit{Interpretation}, the above steps that characterize a general clustering task are profitably addressed by the mathematical programming perspective, as it is capable of explicitly define and delimit the problem.
 
 In this work, we aim to treat the clustering task as an optimization problem, where we can achieve near optimality regarding a specific objective. Thus, we consider a particular formulation for data clustering, the Minimum sum-of-squares clustering (MSSC). However, many formulations can be done to express a clustering task. Besides that, some optimization problems are more suitable for specific clustering tasks, or specific data sets.
 
