@@ -11,11 +11,18 @@ The selection of instances was done in order to cover different types of data, c
 \section{Parameters calibration}
 As in most meta-heuristics, the values chosen for parameters directly affect the results. In this work, we consider five main parameters: $\mu$ (the population size), $\eta$ (the maximum size of population), $\beta$ (the number of new individuals created in the diversification), $I$ (the number of iterations without improvement that triggers diversification) and $itNoImprovement$ (the number of iterations without improvement that causes the algorithm stop).
 
-In preliminary experiments, we started with the following configuration, as they produced good and stable results: $\mu$ = 30, $\eta$ = 400, $\beta$ = 5, $I$ = 400 and $itNoImprovement$ = 2000. From this baseline, we expanded the range of these value. Table \ref{calibration} presents the tested values for each parameter and the final values achieved after running each combination in XX instances.
+In preliminary experiments, we started with the following configuration, as they produced good and stable results: $\mu$ = 30, $\eta$ = 200, $\beta$ = 10, $I$ = 400 and $itNoImprovement$ = 3000. From this baseline, we expanded the range of these value. Table \ref{calibration} presents the tested values for each parameter and the final values achieved after running each combination in XX instances.
 
 \input{tables/calibration}
 
 \section{Results}
+
+-- Objective function + time for all instances (all components)
+
+-- Objective function + time (- mutation)
+
+-- Objective function + time (- diversification)
+
 Results of numerical experiments for small, medium and large instances are given in tables XX, XX and XX respectively. Due to the stochastic nature of the proposed meta-heuristic, 10 runs were conducted for each configuration. The following notation is used in these tables:
 
 \begin{itemize}
@@ -39,4 +46,4 @@ Results of numerical experiments for small, medium and large instances are given
 
 \end{itemize}
 
-For comparison purposes, we also considered the results of global k-means (GKM), the modified global k-means (MGKM), the multi-start modified global k-means (MS-MGKM) and the difference of convex clustering (DCC) algorithms, that are recent works in MSSC literature, corresponding in many cases to the state-of-the-art in this problem.
+For comparison purposes, we analyse our results considering the best known solutions found so far and the results of global k-means (GKM), the modified global k-means (MGKM), the multi-start modified global k-means (MS-MGKM) and the difference of convex clustering (DCC) algorithms, that are recent works in MSSC literature, corresponding in many cases to the state-of-the-art in this problem.

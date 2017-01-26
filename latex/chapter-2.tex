@@ -92,6 +92,14 @@ y_k \in \{0,1\}, \quad \forall k
 	
 \subsection{Computational complexity}
 
+- for $m$ >= 2 and one dimensional data, MSSC can be solved in $O(n^3)$ time (Spath, 1980)
+
+- for $m$ >= 2 and general dimension, MSSC is NP-hard (Aloise, Deshpande, Hansen and Popat, 2009) -- Euclidean space too
+
+- If both $m$ and dimension $d$ are fixed, the problem can be solved in $O(n^{md+1})$ time (Inaba, Katoh and Imai, 1994), which may be very time-consuming.
+
+- The hardness of MSSC is not directly measured by the number of entities, number of dimensions, number of clusters, etc. It also depends on the distribution of points (Hansen, Aloise, 2009).
+
 \subsection{Solution techniques}
 Many solution techniques were developed in recent years to solve the MSSC problem. These techniques can be separated into different categories, based on their exact or heuristic nature, whether they are deterministic or probabilistic, whether they process complete solutions or construct solutions during the search, and finally whether they maintain a single candidate solution or have a population of solutions \cite{Das2009}. This range of methods includes construction methods and local searches, which aims to repeatedly seek for better solutions according to some fitness; meta-heuristic algorithms; and mathematical programming techniques. In this section, we review some techniques and previous works that have been designed for the resolution of the MSSC problem.
 

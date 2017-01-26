@@ -22,7 +22,7 @@ An encoding based on the centroids description is also considered in order to ma
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=0.3\textwidth]{img/centroids-encoding}
+    \includegraphics[width=0.4\textwidth]{img/centroids-encoding}
     \caption{Encoding based on centroids features}\label{fig:centroids-encoding}
   \end{center}
 \end{figure}
@@ -146,3 +146,19 @@ This characteristic of eliminating clones and poor solutions reveals two aspects
 The \textit{Diversification} mechanism aims to ensure the genetic diversity in a population. It is actually a complementary procedure to diversify the population of solutions, once the mutation carries the most important role regarding this matter. \textit{Diversification} is called after the survivors selection whenever $I$ iterations happen without improving the best solution. It is performed by creating $\beta$ new individuals as in the initialization phase, i.e., individuals are randomly generated and then submitted to local search. As this process introduces a significant amount of new genetic material, it allows the exploration of unvisited regions of the search space.
 
 \section{Computational complexity}
+
+- initial population: $O(100 * (nmd + md^2))$
+
+- main GA loop: $O(maxIt)$ (constant)
+
+- selection: $O(w)$ (constant)
+
+- crossover: $O(nmd)$
+
+- mutation: $O(nmd)$
+
+- local search: $O(nmd + md^2)$
+
+- survivors selection: $O(n\eta)$
+
+- diversification: $O(\beta (nmd + md^2))$ ($\beta$ = 5, constant)
