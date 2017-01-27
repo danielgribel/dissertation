@@ -40,7 +40,7 @@ An encoding based on the centroids description is also considered in order to ma
 \STATE Generate an individual $\theta'$ by mutating $\theta$ (mutation)
 \STATE Apply local search on $\theta'$
 \STATE Add $\theta$ and $\theta'$ to the population
-\IF{population size is equal to the maximum size $\eta$ of population}
+\IF{population size is equal to the maximum size $\Pi$ of population}
 \STATE Select survivors
 \IF{best solution not improved for $I$ iterations}
 \STATE Diversify population
@@ -54,7 +54,7 @@ An encoding based on the centroids description is also considered in order to ma
 \section{Initial population}
 The first step in a GA is the generation of an initial population. It has been recognized that if the initial population of the GA is good, then the algorithm has a better possibility of finding a good solution \cite{Burke2004, Zitzler2000}. Some factors can influence the initial population or should be taken into account when an initial population is generated randomly: the search space, the fitness function, the diversity, and the number of individuals \cite{DiazGomez2007}.
 
-In this work, the initial population is randomly generated, by assigning each object to a cluster according to a discrete uniform distribution, i.e., where each outcome is equally likely to happen. To compose the initial population, $\mu$ individuals are created. Then, each initial individual is submitted to the local search.
+In this work, the initial population is randomly generated, by assigning each object to a cluster according to a discrete uniform distribution, i.e., where each outcome is equally likely to happen. To compose the initial population, 100 individuals are created. Then, each initial individual is submitted to the local search.
 
 \section{Individuals management}
 In order to increase the population and start the competitive process of evolution we need to keep introducing new individuals. The generation of a new individual (offspring) begins with the random selection of two parents, $p_1$ and $p_2$, which are submitted to a crossover procedure that generates a child individual $\theta$. Then, $\theta$ is added to the population. As highly fit solutions have more chances to be selected for reproduction, the offspring -- which combines characteristics from each parent -- is likely to have a good fitness. Thus, we also consider the mutation operator, which generates a new individual $\theta'$ that is similar to $\theta$ and tends to be good regarding the fitness.
@@ -76,8 +76,6 @@ Once parent solutions $p_1$ and $p_2$ were selected, they should be submitted to
 \end{enumerate}
 
 \subsection{Mutation}
-[Add image]
-
 The mutation of a solution is done by a biased relocation of a centroid. This strategy proved effective as it introduces some drastic movement in one centroid position, allowing the overall solution to have considerable changes that are not achieved by the local improvement. The following items describe how the mutation works:
 
 \begin{enumerate}
@@ -93,6 +91,13 @@ The mutation of a solution is done by a biased relocation of a centroid. This st
 \end{enumerate}
 
 The mutation, in addition to generating a solution that is similar to the offspring -- which is typically a good solution due to elitism in parental selection -- also contributes significantly to the population diversity through the biased relocation of one centroid.
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{img/mutation}
+    \caption{Mutation based on centroid relocation}\label{fig:mutation}
+  \end{center}
+\end{figure}
 
 \subsection{Local improvement}
 After the generation process done by crossover and mutation, $\theta$ is improved through a local search procedure. The local search aims to find a local optimum by applying local changes to the current solution. Here, the adopted local search is one run of the k-means algorithm. The k-means starts with the initial solution $\theta'$ with $m$ centroids $c_1$, $c_2$, ..., $c_m$, and proceeds by alternating between two steps:
@@ -123,7 +128,7 @@ One of the main challenges in population-based algorithms is avoiding premature 
 We call these mechanisms to complement the selection, crossover and local improvement operators \textit{Survivors selection} and \textit{Diversification} management.
 
 \subsection{Survivors selection}
-The \textit{Survivors selection} aims to select the best individuals to propagate when the maximum population size $\eta$ is achieved. This procedure determines the $\mu$ individuals that will go on to the next generation, by discarding $\lambda$ individuals ($\lambda = \eta - \mu$) that are either clones or bad regarding the fitness, according to algorithm \ref{survivors}.
+The \textit{Survivors selection} aims to select the best individuals to propagate when the maximum population size $\Pi$ is achieved. This procedure determines the $\mu$ individuals that will go on to the next generation, by discarding $\lambda$ individuals ($\lambda = \Pi - \mu$) that are either clones or bad regarding the fitness, according to algorithm \ref{survivors}.
 
 This characteristic of eliminating clones and poor solutions reveals two aspects of the \textit{Survivors selection} mechanism. The first one is that population diversity is somehow maintained, as we favour the removal of clones first. The second is related to elitism, as the individuals with good fitness are preserved. Other aspects related to diversity can be observed in mutation and diversification operators.
 
@@ -159,6 +164,6 @@ The \textit{Diversification} mechanism aims to ensure the genetic diversity in a
 
 - local search: $O(nmd + md^2)$
 
-- survivors selection: $O(n\eta)$
+- survivors selection: $O(n\Pi)$
 
 - diversification: $O(\beta (nmd + md^2))$ ($\beta$ = 5, constant)
