@@ -1,6 +1,17 @@
 \chapter{Proposed Methodology}
 \label{chap:methodology}
-This chapter describes the proposed method to solve the MSSC problem, the most treated objective in data clustering. The designed method is based on a genetic algorithm (GA) with local improvements combined with mechanisms that allow the diversification (local minima escape) and the propagation of good solutions. In this method, the local improvement is done through the running of the k-means algorithm, which takes one candidate solution in the GA population as a starting point. In other words, the method may be defined as a multi-start k-means inside a GA framework, which in turn is guided by the MSSC objective.
+This chapter describes the proposed meta-heuristic to solve the MSSC problem, the most treated objective in data clustering. The designed method is based on a genetic algorithm (GA) with local improvements combined with mechanisms that allow the diversification (local minima escape) and the propagation of good solutions. In this method, the local improvement is done through the running of the k-means algorithm, which takes one candidate solution in the GA population as a starting point. In other words, the method may be defined as a multi-start k-means inside a GA framework, which in turn is guided by the MSSC objective. A GA works through the following simple cycle of stages \cite{Filho1994}:
+
+\begin{enumerate}
+	\item Creation of a population of individuals (candidate solutions);
+
+	\item Evaluation of each individual;
+
+	\item Selection of best individuals;
+
+	\item Genetic manipulation to create new population of individuals.
+\end{enumerate}
+
 
 \section{General structure}
 The general scheme of the meta-heuristic here addressed is described by algorithm \ref{genetic-algo}. Initially, the method generates a random population of individuals. A population is a set of solutions, where each individual represents a point in a search space of the optimization problem. Then, it applies successively a number of operators to evolve this population. Firstly, it selects two parent individuals from the population and combines them by a crossover procedure, yielding to a new individual (offspring) that is added to the population. Secondly, the offspring is mutated and enhanced by a local search, generating a new individual solution that is also added to the population. These two steps -- crossover and mutation with enhancement -- are performed many times until a termination criteria is reached.
@@ -151,19 +162,24 @@ This characteristic of eliminating clones and poor solutions reveals two aspects
 The \textit{Diversification} mechanism aims to ensure the genetic diversity in a population. It is actually a complementary procedure to diversify the population of solutions, once the mutation carries the most important role regarding this matter. \textit{Diversification} is called after the survivors selection whenever $I$ iterations happen without improving the best solution. It is performed by creating $\beta$ new individuals as in the initialization phase, i.e., individuals are randomly generated and then submitted to local search. As this process introduces a significant amount of new genetic material, it allows the exploration of unvisited regions of the search space.
 
 \section{Computational complexity}
+As stated in previous sections, after the initialization of the population, the proposed meta-heuristic operates in an external loop that calls some internal operators. Among these operators, the main bottleneck is the local improvement phase, where the k-means is performed to improve the newly created solutions. As the computational complexity of k-means is $O(nmd + md^2)$ \cite{Hamerly2010}, the overall complexity of the proposed algorithm is $O(2 maxIt (nmd + md^2))$, as the local improvement is applied for the two new individuals -- created on crossover and mutation -- in each iteration (the maximum number of iterations in the external loop is $maxIt$). Thus, although the proposed meta-heuristic is of the same asymptotic complexity of k-means, it is in practice slower than k-means due to the constant $maxIt$ set in the external loop and to other internal operators, like crossover, mutation, survivors selection and diversification. In the following, the computational complexity of each internal operator:
 
-- initial population: $O(100 * (nmd + md^2))$
+%- initial population: $O(100 * (nmd + md^2))$
 
-- main GA loop: $O(maxIt)$ (constant)
+%- main GA loop: $O(maxIt)$ (constant)
 
-- selection: $O(w)$ (constant)
+\begin{itemize}
 
-- crossover: $O(nmd)$
+	\item Selection: $O(w)$ ($w$ constant)
 
-- mutation: $O(nmd)$
+	\item Crossover: $O(nmd)$
 
-- local search: $O(nmd + md^2)$
+	\item Mutation: $O(nmd)$
 
-- survivors selection: $O(n\Pi)$
+	\item Local search (k-means): $O(nmd + md^2)$
 
-- diversification: $O(\beta (nmd + md^2))$ ($\beta$ = 5, constant)
+	\item Survivors selection: $O(n\Pi)$
+
+	\item Diversification: $O(\beta (nmd + md^2))$ ($\beta$ constant)
+
+\end{itemize}

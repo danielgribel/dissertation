@@ -11,23 +11,45 @@ The selection of instances was done in order to cover different types of data, c
 \section{Parameters calibration}
 As in most meta-heuristics, the values chosen for parameters directly affect the results. In this work, we consider five main parameters: $\mu$ (the population size), $\Pi$ (the maximum size of population), $\beta$ (the number of new individuals created in the diversification), $I_D$ (the number of iterations without improvement that triggers diversification) and $I_S$ (the number of iterations without improvement that causes the algorithm stop). For the parameters related to the management of individuals in the population ($\mu$, $\Pi$ and $\beta$) we performed a calibration to choose the best configuration for the experiments. For the remaining parameters $I_D$ and $I_S$, we directly set their values to 400 and 3000, respectively.
 
-In preliminary experiments, we started with the following configuration for the free variables, as they produced good and stable results: $\mu$ = 30, $\Pi$ = 200 and $\beta$ = 10. From this baseline, we expanded the range of these value. Table \ref{calibration} presents the tested values for each parameter and the final values achieved after running each combination in a subset of 5 instances.
+In preliminary experiments, we started with the following configuration for the free variables, as they produced good and stable results: $\mu$ = 30, $\Pi$ = 200 and $\beta$ = 10. From this baseline, we expanded the range of these values. Table \ref{calibration} presents the tested values for each parameter and the final values achieved after running each combination in a subset of 5 instances.
 
-The 5 instances for calibration were chosen based on their sizes and number of features. Small instances were not considered because in almost all of them the different configurations for calibration achieved the best known result, so they are not so informative. As we consider 3 parameters and a range of 3 possible values for each, the combination of parameters resulted in 27 possible configurations ($3^3$). For this reason, large instances were not considered also. It would take too much time to calibrate, as we run 10 times each instance. So we chose medium-sized instances and tested 4 different number of clusters (20, 30, 40, 50) for each instance. After measuring the offset between the average error and the execution time for each configuration, we took the best one among the 27 options.
+The 5 instances for calibration were chosen based on their sizes and number of features. Small instances were not considered because in almost all of them the different configurations for calibration achieved the best known result, so they are not so informative. As we consider 3 parameters and a range of 3 possible values for each, the combination of parameters resulted in 27 possible configurations ($3^3$). For this reason, large instances were not considered also. It would take too much time to calibrate, as we run 10 times each experiment. So we chose medium-sized instances and tested 4 different number of clusters (20, 30, 40, 50) for each instance. After measuring the offset between the average error and the execution time for each configuration, we took the best one among the 27 options.
 
 \input{tables/calibration}
 
 \section{Results}
 
--- Objective function + time for all instances (all components)
+-- results table for group B of instances (all components)
 
--- Objective function + time (- mutation)
+-- results table for group C of instances (all components) -- need to get the exact times for the DCClust and MS-DCA algorithms
 
--- Objective function + time (- diversification)
+-- analysis of the results -- our algorithm beat the benchmarks in many cases
 
--- Analysis time vs number of clusters (compare to recent literature)
+-- analysis of time vs number of features -- our algorithm seems to be fast when m is small
 
--- Analysis time vs number of features (compare to recent literature): more difficult because we need to compare different instances with almost the same number of points, which could not be so informative due to different nature of data
+-- results table for group A of instances (- mutation)
+
+-- results table for group B of instances (- mutation)
+
+-- results table for group C of instances (- mutation)
+
+-- results table for group A of instances (- diversification)
+
+-- results table for group B of instances (- diversification)
+
+-- results table for group C of instances (- diversification)
+
+\begin{figure}
+	\begin{center}
+		\begin{subfigure}{}
+		\includegraphics[width=0.45\textwidth]{img/time-liver}\hfill
+		\includegraphics[width=0.45\textwidth]{img/time-ionosphere}\hfill
+		\includegraphics[width=0.45\textwidth]{img/time-tsplib3038}\hfill
+		\includegraphics[width=0.45\textwidth]{img/time-image}\hfill
+		\caption{Time x Number of clusters}
+		\end{subfigure}\par\medskip
+	\end{center}
+\end{figure}
 
 Results of numerical experiments for small, medium and large instances are given in tables XX, XX and XX respectively. Due to the stochastic nature of the proposed meta-heuristic, 10 runs were conducted for each configuration. The following notation is used in these tables:
 
@@ -53,3 +75,5 @@ Results of numerical experiments for small, medium and large instances are given
 \end{itemize}
 
 For comparison purposes, we analyse our results considering the best known solutions found so far and the results of global k-means (GKM), the modified global k-means (MGKM), the multi-start modified global k-means (MS-MGKM) and the difference of convex clustering (DCC) algorithms, that are recent works in MSSC literature, corresponding in many cases to the state-of-the-art in this problem.
+
+\input{tables/results-all-1}
