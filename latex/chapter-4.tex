@@ -3,8 +3,10 @@ In this chapter, we discuss the computational experiments and the analysis that 
 
 The experiments were conducted on an Intel Core i5 2.6 GHz processor machine with 8 GB of RAM memory. The source codes were written in C++, using the UNIX g++ compiler on a Linux Ubuntu 14.04 LTS 64-bit operating system.
 
+Three different analysis are presented in this chapter. The first one reports the general performance of GA-KM algorithm, where we compare it with current state-of-the-art methods in terms of objective function value and computational time. The second one analyses the performance of the proposed meta-heuristic for instances with different number of features, where the objective is to conclude if the GA-KM algorithm is affected by the dimensionality of data. The third analysis focus on the performance of the proposed meta-heuristic in terms of number of clusters, where the objective is to conclude if the GA-KM algorithm is affected by the number of groups.
+
 \section{Instances}
-The selection of instances was done in order to cover different types of data, considering both the instance size and the number of features as important indicators to describe the nature of data. Table \ref{instances} summarizes the characteristics of the adopted instances, which correspond to XX important benchmarks in recent clustering literature, as reported in \cite{Ordin2014} and \cite{Bagirov2016}. For all considered instances, every feature value is a real or integer number and there is no missing values. The number of data points (instances size) ranges from 59 (smallest) to 434,874 (largest); and the number of features ranges from 2 (smallest) to 128 (largest). Thus, in order to elucidate the coming analysis, we propose the discrimination of these instances according to their sizes -- having small, medium and large sets. % and the number of features (small and large sets)
+The selection of instances was done in order to cover different types of real data, considering both the instance size and the number of features as important indicators to describe the nature of data. Table \ref{instances} summarizes the characteristics of the adopted instances, which correspond to XX important benchmarks in recent clustering literature, as reported in \cite{Ordin2014} and \cite{Bagirov2016}. For all considered instances, every feature value is a real or integer number and there is no missing values. The number of data points (instances size) ranges from 59 (smallest) to 434,874 (largest); and the number of features ranges from 2 (smallest) to 128 (largest). Thus, in order to elucidate the coming analysis, we propose the discrimination of these instances according to their sizes -- having small, medium and large sets. % and the number of features (small and large sets)
 
 \input{tables/instances}
 
@@ -18,40 +20,7 @@ The 5 instances for calibration were chosen based on their sizes and number of f
 \input{tables/calibration}
 
 \section{Results}
-
--- results table for group B of instances (all components)
-
--- results table for group C of instances (all components) -- need to get the exact times for the DCClust and MS-DCA algorithms
-
--- analysis of the results -- our algorithm beat the benchmarks in many cases
-
--- analysis of time vs number of features -- our algorithm seems to be fast when m is small
-
--- results table for group A of instances (- mutation)
-
--- results table for group B of instances (- mutation)
-
--- results table for group C of instances (- mutation)
-
--- results table for group A of instances (- diversification)
-
--- results table for group B of instances (- diversification)
-
--- results table for group C of instances (- diversification)
-
-\begin{figure}
-	\begin{center}
-		\begin{subfigure}{}
-		\includegraphics[width=0.45\textwidth]{img/time-liver}\hfill
-		\includegraphics[width=0.45\textwidth]{img/time-ionosphere}\hfill
-		\includegraphics[width=0.45\textwidth]{img/time-tsplib3038}\hfill
-		\includegraphics[width=0.45\textwidth]{img/time-image}\hfill
-		\caption{Time x Number of clusters}
-		\end{subfigure}\par\medskip
-	\end{center}
-\end{figure}
-
-Results of numerical experiments for small, medium and large instances are given in tables XX, XX and XX respectively. Due to the stochastic nature of the proposed meta-heuristic, 10 runs were conducted for each configuration. The following notation is used in these tables:
+Results of numerical experiments for small, medium and large instances are given in tables \ref{results-all-A}, \ref{results-all-B} and \ref{results-all-C} respectively. Due to the stochastic nature of the proposed meta-heuristic, the results of GA-KM correspond to the average of 10 runs, where a run is the execution of an instance with a specific number of clusters $m$. The following notation is used in these tables:
 
 \begin{itemize}
 
@@ -59,21 +28,62 @@ Results of numerical experiments for small, medium and large instances are given
 
 	\item $f_{best}$ is the best known value for the MSSC objective found so far;
 
-	\item $E$ is the error, calculated as:
+	\item $E$ is the error from the best known solution, calculated as:
 
 		\begin{center}
-		\Large
-			$E = \frac{f - f_{best}}{f_{best}}$
+		\large
+			$E = \frac{f - f_{best}}{f_{best}} \times 100$
 		\end{center}
 		
 	where $f$ is the value of the MSSC objective found by an algorithm;
 	
 	\item $t$ is the CPU time in seconds;
 
-	\item Bold values corresponds to cases where the proposed meta-heuristic found the new best solution.
+	%\item Bold values corresponds to cases where the proposed meta-heuristic found the new best solution.
 
 \end{itemize}
 
-For comparison purposes, we analyse our results considering the best known solutions found so far and the results of global k-means (GKM), the modified global k-means (MGKM), the multi-start modified global k-means (MS-MGKM) and the difference of convex clustering (DCC) algorithms, that are recent works in MSSC literature, corresponding in many cases to the state-of-the-art in this problem.
+For comparison purposes, we analyse the results considering the best known solutions found so far and the results of global k-means (GKM), the modified global k-means (MGKM), the multi-start modified global k-means (MS-MGKM) and the difference of convex clustering (DCC) algorithms, that are recent works in MSSC literature, corresponding in many cases to the state-of-the-art for this problem.
 
-\input{tables/results-all-1}
+\input{tables/results-all-A}
+
+\input{tables/results-all-B}
+
+\input{tables/results-all-C}
+
+Table \ref{results-all-A} presents the results for instances with less than 1,000 data points. As we can see, GA-KM found the new best solution or achieved the current best one in all instances for most of $m$ values. In some cases, as in \textit{Ionosphere} instance, GA-KM results reach more than 4\% of the error, being a significant improvement. On the other hand, the proposed algorithm requires significantly more computational time than MS-MGKM, MGKM and GKM algorithms for these small instances. It is also important to note that in some instances like \textit{Bavaria postal 2}, \textit{Liver disorders}, \textit{Ionosphere} and \textit{Pima Indians diabetes} GA-KM results increase the gap from the best known solutions for large $m$, which means that for harder clustering tasks GA-KM produces significantly better solutions than the other algorithms.
+
+Table \ref{results-all-B} presents the results for instances where the number of data points ranges from  1,060 to 20,000. As in results for small instances, GA-KM found the new best solution or achieved the current best one in all instances for most of $m$ values.
+
+Table \ref{results-all-C} presents the results for instances where the number of data points ranges from  13,910 to 434,874. As in the previous results, GA-KM found the new best solution or achieved the current best one in all instances for most of $m$ values.
+
+%The GA-KM algorithm is slower than all compared algorithms when $m$ is large. However, when $m$ is small, GA-KM is faster than MS-MGKM and GKM -- for example, in instance TSPLIB3038 where $m = 2$.
+
+\begin{figure}[h!]
+\centering
+\subfigure[\textit{TSPLIB3038} instance ($d = 2$).]{\label{fig:a}\includegraphics[width=0.45\textwidth]{img/time-tsplib3038}}
+\subfigure[\textit{Liver} instance ($d = 6$).]{\label{fig:a}\includegraphics[width=0.45\textwidth]{img/time-liver}}
+\subfigure[\textit{Image segmentation} instance ($d = 19$).]{\label{fig:b}\includegraphics[width=0.45\textwidth]{img/time-image}}
+\subfigure[\textit{Ionosphere} instance ($d = 34$).]{\label{fig:b}\includegraphics[width=0.45\textwidth]{img/time-ionosphere}}
+\caption{The CPU time of algorithms vs the number of clusters when considering instances with different number of features ($d$)}
+\end{figure}
+
+\noindent [TO-DO] results table for group C of instances (all components) -- need to get the exact times for the DCClust and MS-DCA algorithms
+
+\noindent [TO-DO] analysis of the results -- our algorithm beats the benchmarks in many cases
+
+\noindent [TO-DO] analysis on number of features -- our algorithm seems to be fast when $d$ is small in small/medium instances (tsplib for example) but also when $d$ is large in large instances (gas sensor for example)
+
+\noindent [TO-DO] analysis on number of clusters -- how the algorithm is affected if we increase the number of clusters
+
+\noindent [TO-DO] results table for group A of instances (- mutation)
+
+\noindent [TO-DO] results table for group B of instances (- mutation)
+
+\noindent [TO-DO] results table for group C of instances (- mutation)
+
+\noindent [TO-DO] results table for group A of instances (- diversification)
+
+\noindent [TO-DO] results table for group B of instances (- diversification)
+
+\noindent [TO-DO] results table for group C of instances (- diversification)

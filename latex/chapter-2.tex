@@ -46,7 +46,7 @@ Except for \textit{Interpretation}, the above steps that characterize a general 
 In this work, we aim to treat the clustering task as an optimization problem, where we can achieve near optimality regarding a specific objective. Thus, we consider a particular formulation for data clustering, the Minimum sum-of-squares clustering (MSSC). However, many formulations can be done to express a clustering task. Besides that, some optimization problems are more suitable for specific clustering tasks, or specific data sets.
 
 \section{The MSSC problem}
-The MSSC problem -- also referred as the \textit{discrete clustering problem} or the \textit{hard clustering problem} -- has been extensively studied in the literature for data clustering, possibly because this is the natural model which is addressed by the k-means algorithm. It was first formulated mathematically by Vinod \cite{Vinod1969}, where the MSSC is defined as a problem that assumes integer variables that can take values 0 or 1 only, recognizing it as an Integer programming problem.
+The MSSC problem -- also referred as the \textit{discrete clustering} problem or the \textit{hard clustering} problem -- has been extensively studied in the literature for data clustering, possibly because this is the natural model which is addressed by the k-means algorithm. It was first formulated mathematically by Vinod \cite{Vinod1969}, where the MSSC is defined as a problem that assumes integer variables that can take values 0 or 1 only, recognizing it as an Integer programming problem.
 
 In the MSSC problem we aim to minimize the total sum of the distances of each data point to the mean point in its cluster. It considers as an assumption a given set $X$ of $n$ data points in a $d$-dimensional space $\mathbb{R}^d$ \cite{Bagirov2006}:
 
@@ -94,6 +94,8 @@ y_k \in \{0,1\}, \quad \forall k
 	
 \subsection{Computational complexity}
 Regarding computational complexity, the MSSC can be solved in $O(n^3)$ time for $m \geq 2$ and one dimensional data \cite{Spath1980}. For $m \geq 2$ and general dimension, the MSSC is NP-hard \cite{Aloise2009}. If both $m$ and $d$ are fixed, the problem can be solved in $O(n^{md+1})$ time \cite{Inaba1994}, which may be very time-consuming. However, the hardness of MSSC is not measured only by the number of points (samples), dimensions and clusters, it also depends on the distribution of points \cite{Aloise2009Branch}.
+
+\noindent [TO-DO] complete with the explanation why complexity depends on points distribution
 
 \subsection{Solution techniques}
 Many solution techniques were developed in recent years to solve the MSSC problem. These techniques can be separated into different categories, based on their exact or heuristic nature, whether they are deterministic or probabilistic, whether they process complete solutions or construct solutions during the search, and finally whether they maintain a single candidate solution or have a population of solutions \cite{Das2009}. This range of methods includes construction methods and local searches, which aims to repeatedly seek for better solutions according to some fitness; meta-heuristic algorithms; and mathematical programming techniques. In this section, we review some techniques and previous works that have been designed for the resolution of the MSSC problem.

@@ -1,6 +1,6 @@
 \chapter{Proposed Methodology}
 \label{chap:methodology}
-This chapter describes the proposed meta-heuristic to solve the MSSC problem, the most treated objective in data clustering. The designed method is based on a genetic algorithm (GA) with local improvements combined with mechanisms that allow the diversification (local minima escape) and the propagation of good solutions. In this method, the local improvement is done through the running of the k-means algorithm, which takes one candidate solution in the GA population as a starting point. In other words, the method may be defined as a multi-start k-means inside a GA framework, which in turn is guided by the MSSC objective. A GA works through the following simple cycle of stages \cite{Filho1994}:
+This chapter describes the proposed meta-heuristic to solve the MSSC problem, the most treated objective in data clustering. The designed method is based on a genetic algorithm (GA) with local improvements combined with mechanisms that allow the diversification of the population (local minima escape) and the propagation of good solutions. In this method, the local improvement procedure is performed via the running of the k-means algorithm, which takes one candidate solution in the GA population as a starting point. In other words, the method may be defined as a multi-start k-means inside a GA framework, which in turn is guided by the MSSC objective. A GA works through the following simple cycle of stages \cite{Filho1994}:
 
 \begin{enumerate}
 	\item Creation of a population of individuals (candidate solutions);
@@ -19,7 +19,7 @@ The general scheme of the meta-heuristic here addressed is described by algorith
 In addition to the genetic operators mentioned above, two mechanisms -- one to select survivor individuals and the other to diversify the population -- are applied when pre-defined criteria are reached. These mechanisms allow the method to keep and propagate the best individuals and to introduce some diversification, respectively. The following sub-sections describes how these operators and mechanisms to evolve and manage the population of solutions work.
 
 \section{Solution representation}
-A solution (clustering partition) is represented by a direct encoding of the object-cluster assignment. The idea is to use a genetic encoding that allocates directly $n$ objects to $m$ clusters, such that each candidate solution consists of a $n$-vector ($n$ genes) with integer values in the interval [1, $m$]. Thus, for $n$ = 4 and $m$ = 3, the encoding (1,1,3,2) allocates the first and the second objects to cluster 1; the third object to cluster 3 and the fourth object to cluster 2, generating the partition (\{1,2\}, \{3\}, \{4\}).
+A solution (clustering partition) is represented by two direct encodings: i) the object-cluster assignment and ii) the centroids description. The idea of the object-cluster assignment is to use a genetic encoding that allocates directly $n$ objects to $m$ clusters, such that each candidate solution consists of a $n$-vector ($n$ genes) with integer values in the interval [1, $m$]. Thus, for $n$ = 4 and $m$ = 3, the encoding (1,1,3,2) allocates the first and the second objects to cluster 1; the third object to cluster 3 and the fourth object to cluster 2, generating the partition (\{1,2\}, \{3\}, \{4\}).
 
 \begin{figure}[h]
   \begin{center}
@@ -28,8 +28,7 @@ A solution (clustering partition) is represented by a direct encoding of the obj
   \end{center}
 \end{figure}
 
-An encoding based on the centroids description is also considered in order to make the proposed crossover and mutation operations practicable. A centroids encoding defines a solution through the feature vectors existing in each centroid, being a matrix $C$ of size $m \times d$, where $m$ is the number of centroids (clusters) and $d$ is the number of features (see figure \ref{fig:centroids-encoding}). Thus, an entry $c_{ij}$ of $C$ corresponds to the value of the $j$-th feature of the $i$-th centroid ($i$ = 1 ... $m$; $j$ = 1 ... $d$).
-
+The encoding based on the centroids description defines a solution through the feature vectors existing in each centroid. A solution is represented by a matrix $C$ of size $m \times d$, where $m$ is the number of centroids (clusters), $d$ is the number of features and an entry $c_{ij}$ of $C$ is the value of the $j$-th feature of the $i$-th centroid ($i$ = 1 ... $m$; $j$ = 1 ... $d$) (see figure \ref{fig:centroids-encoding}).
 
 \begin{figure}[h]
   \begin{center}
@@ -71,11 +70,9 @@ In this work, the initial population is randomly generated, by assigning each ob
 In order to increase the population and start the competitive process of evolution we need to keep introducing new individuals. The generation of a new individual (offspring) begins with the random selection of two parents, $p_1$ and $p_2$, which are submitted to a crossover procedure that generates a child individual $\theta$. Then, $\theta$ is added to the population. As highly fit solutions have more chances to be selected for reproduction, the offspring -- which combines characteristics from each parent -- is likely to have a good fitness. Thus, we also consider the mutation operator, which generates a new individual $\theta'$ that is similar to $\theta$ and tends to be good regarding the fitness.
 
 \subsection{Selection}
-The selection is the stage where individuals from the population are chosen to mate and generate a new individual. Due to the evolutionary behaviour of GA, the most likely individuals to be chosen for selection are the ones with good fitness. That way, the good genes can be propagated to generate good children solutions. In the proposed method, the parent selection is done through a binary tournament, which randomly selects $w$ individuals (with uniform probability) from the population and keeps the one with the best fitness among the $w$ individuals to set the first parent. The fitness here considered is the value of the objective function (cost) of a solution. Then, the same selection scheme is performed to set the second parent.
+The selection is the stage where individuals from the population are chosen to mate and generate a new individual. Due to the evolutionary behaviour of GA, the most likely individuals to be chosen for selection are the ones with good fitness. That way, the good fragments of solutions can be propagated to generate good children solutions. In the proposed method, the parent selection is done through a \textit{w}-tournament, which randomly selects $w$ individuals (with uniform probability) from the population and keeps the one with the best fitness among the $w$ individuals to set the first parent. The fitness here considered is the value of the objective function (cost) of a solution. Then, the same selection scheme is performed to set the second parent.
 
 \subsection{Crossover}
-[Add image]
-
 Once parent solutions $p_1$ and $p_2$ were selected, they should be submitted to a crossover procedure in order to produce a offspring (child) solution from them:
 
 \begin{enumerate}
@@ -85,6 +82,21 @@ Once parent solutions $p_1$ and $p_2$ were selected, they should be submitted to
 
 	\item Finally, data points are assigned to the closest offspring centroid.
 \end{enumerate}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=1.0\textwidth]{img/crossover}
+    \caption{Crossover based on centroids matching}\label{fig:crossover}
+  \end{center}
+\end{figure}
+
+%Given a graph $G = (V_1 \union V_2, E)$, where $V_1$ is the set of centroids (nodes) of parent $p_1$, $V_2$ is the set of centroids of parent $p_2$, and an edge $e_{ij} \in E$ is the euclidean distance between a centroid $c_i \in V_1$ and a centroid $c_j \in V_2$; the minimum matching in this case is the one-to-one assignment of centroids $c_i \in V_1$ to centroids $c_j \in V_2$, in such a way that the sum of the weights of $e'_{ij}$ in the assignment is minimum. 
+
+%A Bipartite Graph G = (V, E) is a graph in which the vertex set V is divided into two disjoint subsets V_1 and V_2, such that every edge e \in E has one end point in V_1 and the other end point in V_2. Here, V_1 contains all centroids of p_1 and V_2 contains all centroids of p_2. Thus, |V_1| = |V_2|. That is it, among the |V|^2 candidate edges to be chosen, we have to select |V| edges such that every node is connected and every edge e \in E has one end point in V_1 and the other end point in V_2.
+
+%In other words, we aim to connect the most similar nodes that are in different sets.
+
+Given a graph $G = (V_1, V_2, E)$, where $V_1$ is the set of centroids (nodes) of parent $p_1$, $V_2$ is the set of centroids of parent $p_2$, and $c_{ij} \in E$ is the euclidean distance for every $i \in V_1$ and $j \in V_2$. The goal is to find a one-to-one matching $M$ such that the sum of the values of the edges in $M$ is minimum. In other words, the goal is to produce the one-to-one assignment of centroids from different sets (parents), in such a way that the sum of all distances considered in the assignment is minimized.
 
 \subsection{Mutation}
 The mutation of a solution is done by a biased relocation of a centroid. This strategy proved effective as it introduces some drastic movement in one centroid position, allowing the overall solution to have considerable changes that are not achieved by the local improvement. The following items describe how the mutation works:
@@ -105,13 +117,13 @@ The mutation, in addition to generating a solution that is similar to the offspr
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[width=0.6\textwidth]{img/mutation}
+    \includegraphics[width=1.0\textwidth]{img/mutation2}
     \caption{Mutation based on centroid relocation}\label{fig:mutation}
   \end{center}
 \end{figure}
 
 \subsection{Local improvement}
-After the generation process done by crossover and mutation, $\theta$ is improved through a local search procedure. The local search aims to find a local optimum by applying local changes to the current solution. Here, the adopted local search is one run of the k-means algorithm. The k-means starts with the initial solution $\theta'$ with $m$ centroids $c_1$, $c_2$, ..., $c_m$, and proceeds by alternating between two steps:
+After the generation process done by crossover and mutation, $\theta$ is improved by means of a local search procedure. The local search aims to find a local optimum by applying local changes to the current solution. Here, the adopted local search is one run of the k-means algorithm. The k-means starts with the initial solution $\theta'$ with $m$ centroids $c_1$, $c_2$, ..., $c_m$, and proceeds by alternating between two steps:
 
 \begin{enumerate}
 
@@ -131,17 +143,17 @@ After the generation process done by crossover and mutation, $\theta$ is improve
 
 Then the algorithm keeps repeating these two steps until the assignments no longer change, converging to a local optimum.
 
-In our experiments, we use the k-means implementation of Greg Hamerly \cite{Hamerly2010}, who proposed an acceleration that gives the same answer of the standard Lloyd's k-means \cite{Lloyd1982} but is much faster in practice. This implementation avoids distance computations by using the triangle inequality and lower bounds on distances. The time per k-means iteration of the algorithm is O($nmd$+$md^2$), where $n$ is the number of data points, $m$ is the number of clusters and $d$ is the number of data dimensions (features). However, the calculated lower bounds allow to eliminate the innermost k-means loop in around 80\% of the time, which in practise is much faster than the standard k-means.
+In our experiments, we use the k-means implementation of Hamerly \cite{Hamerly2010}, who proposed an acceleration that gives the same answer of the standard Lloyd's k-means \cite{Lloyd1982} but is much faster in practice. This implementation avoids distance computations by using the triangle inequality and lower bounds on distances. The time per k-means iteration of the algorithm is O($nmd$+$md^2$), where $n$ is the number of data points, $m$ is the number of clusters and $d$ is the number of data dimensions (features). However, the calculated lower bounds allow to eliminate the innermost k-means loop in around 80\% of the time, which in practise is much faster than the standard k-means.
 
 \section{Population management and termination}
-One of the main challenges in population-based algorithms is avoiding premature convergence of the population. The selection of parents based on elitism tends to favour good individuals to mate, reducing the diversity of the genetic material in the coming generations of the population. In order to overcome this issue, we propose two mechanisms that preserve the good solutions and ensure the diversity. Thus, the search procedure can be lead to unexplored regions of the search space without losing promising individuals.
+One of the main challenges in population-based algorithms is avoiding premature convergence of the population. The selection of parents based on elitism tends to favour good individuals to mate, reducing the diversity of the genetic material in the coming generations of the population. In order to overcome this issue, we propose two mechanisms that preserve the good solutions while ensuring diversity. Thus, the search procedure can be lead to unexplored regions of the search space without losing promising individuals.
 
-We call these mechanisms to complement the selection, crossover and local improvement operators \textit{Survivors selection} and \textit{Diversification} management.
+We call \textit{Survivors selection} and \textit{Diversification} management as these mechanisms to complement the selection, crossover and local improvement operators.
 
 \subsection{Survivors selection}
-The \textit{Survivors selection} aims to select the best individuals to propagate when the maximum population size $\Pi$ is achieved. This procedure determines the $\mu$ individuals that will go on to the next generation, by discarding $\lambda$ individuals ($\lambda = \Pi - \mu$) that are either clones or bad regarding the fitness, according to algorithm \ref{survivors}.
+The \textit{Survivors selection} aims to select the best individuals to propagate when the maximum population size $\Pi$ is achieved. This procedure determines the $\mu$ individuals that will go on to the next generation, by discarding $\lambda$ individuals ($\lambda = \Pi - \mu$) that are either clones (identical to other solution) or bad regarding the fitness, according to algorithm \ref{survivors}.
 
-This characteristic of eliminating clones and poor solutions reveals two aspects of the \textit{Survivors selection} mechanism. The first one is that population diversity is somehow maintained, as we favour the removal of clones first. The second is related to elitism, as the individuals with good fitness are preserved. Other aspects related to diversity can be observed in mutation and diversification operators.
+This characteristic of eliminating clones and poor solutions reveals two aspects of the \textit{Survivors selection} mechanism. The first one is that population diversity is maintained, as we favour the removal of clones first. The second is related to elitism, as the individuals with good fitness are preserved. Other aspects related to diversity can be observed in mutation and diversification operators.
 
 \begin{algorithm}[H]
 \caption{Survivors selection}
@@ -150,16 +162,16 @@ This characteristic of eliminating clones and poor solutions reveals two aspects
 \FOR{$i = 1 ... \lambda$}
 \STATE $X \leftarrow $ all individuals having a clone
 \IF{$X \neq \emptyset$}
-\STATE Remove $p \in X$ with maximum fitness
+\STATE Remove $p \in X$ with minimum fitness
 \ELSE
-\STATE Remove $p$ in the population with maximum fitness
+\STATE Remove $p$ in the population with minimum fitness
 \ENDIF
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
 
 \subsection{Diversification management}
-The \textit{Diversification} mechanism aims to ensure the genetic diversity in a population. It is actually a complementary procedure to diversify the population of solutions, once the mutation carries the most important role regarding this matter. \textit{Diversification} is called after the survivors selection whenever $I$ iterations happen without improving the best solution. It is performed by creating $\beta$ new individuals as in the initialization phase, i.e., individuals are randomly generated and then submitted to local search. As this process introduces a significant amount of new genetic material, it allows the exploration of unvisited regions of the search space.
+The \textit{Diversification} mechanism aims to ensure the genetic diversity in a population. It is actually a complementary procedure to diversify the population of solutions, once the mutation carries the most important role regarding this matter. \textit{Diversification} is called after the survivors selection whenever $I_D$ iterations happen without improving the best solution. It is performed by creating $\beta$ new individuals as in the initialization phase, i.e., individuals are randomly generated and then submitted to local search. As this process introduces a significant amount of new genetic material, it allows the exploration of unvisited regions of the search space.
 
 \section{Computational complexity}
 As stated in previous sections, after the initialization of the population, the proposed meta-heuristic operates in an external loop that calls some internal operators. Among these operators, the main bottleneck is the local improvement phase, where the k-means is performed to improve the newly created solutions. As the computational complexity of k-means is $O(nmd + md^2)$ \cite{Hamerly2010}, the overall complexity of the proposed algorithm is $O(2 maxIt (nmd + md^2))$, as the local improvement is applied for the two new individuals -- created on crossover and mutation -- in each iteration (the maximum number of iterations in the external loop is $maxIt$). Thus, although the proposed meta-heuristic is of the same asymptotic complexity of k-means, it is in practice slower than k-means due to the constant $maxIt$ set in the external loop and to other internal operators, like crossover, mutation, survivors selection and diversification. In the following, the computational complexity of each internal operator:
@@ -172,7 +184,7 @@ As stated in previous sections, after the initialization of the population, the 
 
 	\item Selection: $O(w)$ ($w$ constant)
 
-	\item Crossover: $O(nmd)$
+	\item Crossover: $O(nmd)^{*}$
 
 	\item Mutation: $O(nmd)$
 
@@ -183,3 +195,5 @@ As stated in previous sections, after the initialization of the population, the 
 	\item Diversification: $O(\beta (nmd + md^2))$ ($\beta$ constant)
 
 \end{itemize}
+
+$^{*}$ $O(nmd)$ because $n$ is typically much greater than $m$, but for $n < m$ the crossover complexity becomes $O(m^{3})$ due to the Hungarian algorithm for finding the matching between centroids.
