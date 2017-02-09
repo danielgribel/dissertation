@@ -1,24 +1,53 @@
 \chapter{Proposed Methodology}
 \label{chap:methodology}
-This chapter describes the proposed meta-heuristic to solve the MSSC problem, the most treated objective in data clustering. The designed method is based on a genetic algorithm (GA) with local improvements combined with mechanisms that allow the diversification of the population (local minima escape) and the propagation of good solutions. In this method, the local improvement procedure is performed via the running of the k-means algorithm, which takes one candidate solution in the GA population as a starting point. In other words, the method may be defined as a multi-start k-means inside a GA framework, which in turn is guided by the MSSC objective. A GA works through the following simple cycle of stages \cite{Filho1994}:
-
-\begin{enumerate}
-	\item Creation of a population of individuals (candidate solutions);
-
-	\item Evaluation of each individual;
-
-	\item Selection of best individuals;
-
-	\item Genetic manipulation to create new population of individuals.
-\end{enumerate}
-
+This chapter describes the proposed meta-heuristic to solve the MSSC problem. The designed method is based on a genetic algorithm (GA) with local improvements combined with mechanisms that allow the diversification of the population (local minima escape) and the propagation of good solutions. In this method, the local improvement procedure is performed via the running of the k-means algorithm, which takes one candidate solution in the GA population as a starting point. In other words, the method may be defined as a multi-start k-means inside a GA framework, which in turn is guided by the MSSC objective. 
 
 \section{General structure}
-The general scheme of the meta-heuristic here addressed is described by algorithm \ref{genetic-algo}. Initially, the method generates a random population of individuals. A population is a set of solutions, where each individual represents a point in a search space of the optimization problem. Then, it applies successively a number of operators to evolve this population. Firstly, it selects two parent individuals from the population and combines them by a crossover procedure, yielding to a new individual (offspring) that is added to the population. Secondly, the offspring is mutated and enhanced by a local search, generating a new individual solution that is also added to the population. These two steps -- crossover and mutation with enhancement -- are performed many times until a termination criteria is reached.
+\label{sec:general-structure}
+The GA here proposed works through the following simple cycle of stages:
 
-In addition to the genetic operators mentioned above, two mechanisms -- one to select survivor individuals and the other to diversify the population -- are applied when pre-defined criteria are reached. These mechanisms allow the method to keep and propagate the best individuals and to introduce some diversification, respectively. The following sub-sections describes how these operators and mechanisms to evolve and manage the population of solutions work.
+\begin{enumerate}
+	\item Creation of an initial population of individuals (candidate solutions);
+
+	\item Selection of parents individuals;
+
+	\item Genetic manipulation to create new individuals (crossover and mutation);
+	
+	\item Enhancement of the produced individual (local improvement);
+	
+	\item Selection of survivors individuals for propagation;
+	
+	\item Diversification of the population;	
+\end{enumerate}
+
+This general scheme of the meta-heuristic is described in more details by algorithm \ref{genetic-algo}. Initially, the method generates a random population of individuals (see \ref{sec:initial-population}). A population is a set of solutions, where each individual represents a point in a search space of the optimization problem. Then, it applies successively a number of operators to evolve this population. Firstly, it selects two parent individuals (see \ref{subsec:selection}) from the population and combines them by a crossover procedure (see \ref{subsec:crossover}), yielding to a new individual (offspring) that is added to the population. Secondly, the offspring is mutated (see \ref{subsec:mutation}) and enhanced by a local improvement (see \ref{subsec:local-improvement}), generating a new individual solution that is also added to the population. These two steps -- crossover and mutation with enhancement -- are performed many times until a termination criteria is reached.
+
+In addition to the genetic operators mentioned above, two mechanisms -- one to select survivor individuals and the other to diversify the population -- are applied when pre-defined criteria are reached (see \ref{sec:population-management}). These mechanisms allow the method to keep and propagate the best individuals and to introduce some diversification, respectively. The following sub-sections describes how these operators and mechanisms to evolve and manage the population of solutions work.
+
+\begin{algorithm}[!h]
+\caption{Genetic algorithm framework}
+\label{genetic-algo}
+\begin{algorithmic}[1]
+\STATE Initialize population
+\WHILE{number of iterations without improvement $< itNoImprovement$}
+\STATE Select parents $p_1$ and $p_2$
+\STATE Generate an offspring $\theta$ from $p_1$ and $p_2$ (crossover)
+\STATE Generate an individual $\theta'$ by mutating $\theta$ (mutation)
+\STATE Apply local improvement on $\theta'$
+\STATE Add $\theta$ and $\theta'$ to the population
+\IF{population size is equal to the maximum size $\Pi$ of population}
+\STATE Select survivors
+\IF{best solution not improved for $I_D$ iterations}
+\STATE Diversify population
+\ENDIF
+\ENDIF
+\ENDWHILE
+\STATE Return best solution
+\end{algorithmic}
+\end{algorithm}
 
 \section{Solution representation}
+\label{sec:solution-representation}
 A solution (clustering partition) is represented by two direct encodings: i) the object-cluster assignment and ii) the centroids description. The idea of the object-cluster assignment is to use a genetic encoding that allocates directly $n$ objects to $m$ clusters, such that each candidate solution consists of a $n$-vector ($n$ genes) with integer values in the interval [1, $m$]. Thus, for $n$ = 4 and $m$ = 3, the encoding (1,1,3,2) allocates the first and the second objects to cluster 1; the third object to cluster 3 and the fourth object to cluster 2, generating the partition (\{1,2\}, \{3\}, \{4\}).
 
 \begin{figure}[h]
@@ -37,42 +66,20 @@ The encoding based on the centroids description defines a solution through the f
   \end{center}
 \end{figure}
 
-%An encoding based on the centroids description is also considered in order to treat the redundancy that may arise from the object-cluster representation. For instance, the solutions (1,1,3,2) and (3,3,1,2) may be considered different solutions according to the object-cluster assignment, even though they are exactly the same solution. Thus, a centroids encoding is used to represent solutions whenever this redundancy must be detected, for example, when performing the crossover.
-
-\begin{algorithm}[H]
-\caption{Genetic algorithm framework}
-\label{genetic-algo}
-\begin{algorithmic}[1]
-\STATE Initialize population
-\WHILE{number of iterations without improvement $< itNoImprovement$}
-\STATE Select parents $p_1$ and $p_2$
-\STATE Generate an offspring $\theta$ from $p_1$ and $p_2$ (crossover)
-\STATE Generate an individual $\theta'$ by mutating $\theta$ (mutation)
-\STATE Apply local search on $\theta'$
-\STATE Add $\theta$ and $\theta'$ to the population
-\IF{population size is equal to the maximum size $\Pi$ of population}
-\STATE Select survivors
-\IF{best solution not improved for $I$ iterations}
-\STATE Diversify population
-\ENDIF
-\ENDIF
-\ENDWHILE
-\STATE Return best solution
-\end{algorithmic}
-\end{algorithm}
-
 \section{Initial population}
-The first step in a GA is the generation of an initial population. It has been recognized that if the initial population of the GA is good, then the algorithm has a better possibility of finding a good solution \cite{Burke2004, Zitzler2000}. Some factors can influence the initial population or should be taken into account when an initial population is generated randomly: the search space, the fitness function, the diversity, and the number of individuals \cite{DiazGomez2007}.
-
-In this work, the initial population is randomly generated, by assigning each object to a cluster according to a discrete uniform distribution, i.e., where each outcome is equally likely to happen. To compose the initial population, 100 individuals are created. Then, each initial individual is submitted to the local search.
+\label{sec:initial-population}
+The first step in a GA is the generation of an initial population. It has been recognized that if the initial population of the GA is good, then the algorithm has a better possibility of finding a good solution \cite{Burke2004, Zitzler2000}. In this work, the initial population is randomly generated, by assigning each object to a cluster according to a discrete uniform distribution, i.e., where each outcome is equally likely to happen. To compose the initial population, 100 individuals are created. Then, each initial individual is submitted to the local improvement. Some factors can influence the initial population or should be taken into account when an initial population is generated randomly: the search space, the fitness function, the diversity, and the number of individuals \cite{DiazGomez2007}.
 
 \section{Individuals management}
+\label{individuals-management}
 In order to increase the population and start the competitive process of evolution we need to keep introducing new individuals. The generation of a new individual (offspring) begins with the random selection of two parents, $p_1$ and $p_2$, which are submitted to a crossover procedure that generates a child individual $\theta$. Then, $\theta$ is added to the population. As highly fit solutions have more chances to be selected for reproduction, the offspring -- which combines characteristics from each parent -- is likely to have a good fitness. Thus, we also consider the mutation operator, which generates a new individual $\theta'$ that is similar to $\theta$ and tends to be good regarding the fitness.
 
 \subsection{Selection}
+\label{subsec:selection}
 The selection is the stage where individuals from the population are chosen to mate and generate a new individual. Due to the evolutionary behaviour of GA, the most likely individuals to be chosen for selection are the ones with good fitness. That way, the good fragments of solutions can be propagated to generate good children solutions. In the proposed method, the parent selection is done through a \textit{w}-tournament, which randomly selects $w$ individuals (with uniform probability) from the population and keeps the one with the best fitness among the $w$ individuals to set the first parent. The fitness here considered is the value of the objective function (cost) of a solution. Then, the same selection scheme is performed to set the second parent.
 
 \subsection{Crossover}
+\label{subsec:crossover}
 Once parent solutions $p_1$ and $p_2$ were selected, they should be submitted to a crossover procedure in order to produce a offspring (child) solution from them:
 
 \begin{enumerate}
@@ -99,6 +106,7 @@ Once parent solutions $p_1$ and $p_2$ were selected, they should be submitted to
 Given a graph $G = (V_1, V_2, E)$, where $V_1$ is the set of centroids (nodes) of parent $p_1$, $V_2$ is the set of centroids of parent $p_2$, and $c_{ij} \in E$ is the euclidean distance for every $i \in V_1$ and $j \in V_2$. The goal is to find a one-to-one matching $M$ such that the sum of the values of the edges in $M$ is minimum. In other words, the goal is to produce the one-to-one assignment of centroids from different sets (parents), in such a way that the sum of all distances considered in the assignment is minimized.
 
 \subsection{Mutation}
+\label{subsec:mutation}
 The mutation of a solution is done by a biased relocation of a centroid. This strategy proved effective as it introduces some drastic movement in one centroid position, allowing the overall solution to have considerable changes that are not achieved by the local improvement. The following items describe how the mutation works:
 
 \begin{enumerate}
@@ -123,7 +131,8 @@ The mutation, in addition to generating a solution that is similar to the offspr
 \end{figure}
 
 \subsection{Local improvement}
-After the generation process done by crossover and mutation, $\theta$ is improved by means of a local search procedure. The local search aims to find a local optimum by applying local changes to the current solution. Here, the adopted local search is one run of the k-means algorithm. The k-means starts with the initial solution $\theta'$ with $m$ centroids $c_1$, $c_2$, ..., $c_m$, and proceeds by alternating between two steps:
+\label{subsec:local-improvement}
+After the generation process done by crossover and mutation, $\theta$ is enhanced by means of a local improvement procedure. The local improvement aims to find a local optimum by applying local changes to the current solution. Here, the adopted local improvement is one run of the k-means algorithm. The k-means starts with the initial solution $\theta'$ with $m$ centroids $c_1$, $c_2$, ..., $c_m$, and proceeds by alternating between two steps:
 
 \begin{enumerate}
 
@@ -146,11 +155,13 @@ Then the algorithm keeps repeating these two steps until the assignments no long
 In our experiments, we use the k-means implementation of Hamerly \cite{Hamerly2010}, who proposed an acceleration that gives the same answer of the standard Lloyd's k-means \cite{Lloyd1982} but is much faster in practice. This implementation avoids distance computations by using the triangle inequality and lower bounds on distances. The time per k-means iteration of the algorithm is O($nmd$+$md^2$), where $n$ is the number of data points, $m$ is the number of clusters and $d$ is the number of data dimensions (features). However, the calculated lower bounds allow to eliminate the innermost k-means loop in around 80\% of the time, which in practise is much faster than the standard k-means.
 
 \section{Population management and termination}
+\label{sec:population-management}
 One of the main challenges in population-based algorithms is avoiding premature convergence of the population. The selection of parents based on elitism tends to favour good individuals to mate, reducing the diversity of the genetic material in the coming generations of the population. In order to overcome this issue, we propose two mechanisms that preserve the good solutions while ensuring diversity. Thus, the search procedure can be lead to unexplored regions of the search space without losing promising individuals.
 
 We call \textit{Survivors selection} and \textit{Diversification} management as these mechanisms to complement the selection, crossover and local improvement operators.
 
 \subsection{Survivors selection}
+\label{subsec:survivors}
 The \textit{Survivors selection} aims to select the best individuals to propagate when the maximum population size $\Pi$ is achieved. This procedure determines the $\mu$ individuals that will go on to the next generation, by discarding $\lambda$ individuals ($\lambda = \Pi - \mu$) that are either clones (identical to other solution) or bad regarding the fitness, according to algorithm \ref{survivors}.
 
 This characteristic of eliminating clones and poor solutions reveals two aspects of the \textit{Survivors selection} mechanism. The first one is that population diversity is maintained, as we favour the removal of clones first. The second is related to elitism, as the individuals with good fitness are preserved. Other aspects related to diversity can be observed in mutation and diversification operators.
@@ -171,9 +182,11 @@ This characteristic of eliminating clones and poor solutions reveals two aspects
 \end{algorithm}
 
 \subsection{Diversification management}
-The \textit{Diversification} mechanism aims to ensure the genetic diversity in a population. It is actually a complementary procedure to diversify the population of solutions, once the mutation carries the most important role regarding this matter. \textit{Diversification} is called after the survivors selection whenever $I_D$ iterations happen without improving the best solution. It is performed by creating $\beta$ new individuals as in the initialization phase, i.e., individuals are randomly generated and then submitted to local search. As this process introduces a significant amount of new genetic material, it allows the exploration of unvisited regions of the search space.
+\label{subsec:diversification}
+The \textit{Diversification} mechanism aims to ensure the genetic diversity in a population. It is actually a complementary procedure to diversify the population of solutions, once the mutation carries the most important role regarding this matter. \textit{Diversification} is called after the survivors selection whenever $I_D$ iterations happen without improving the best solution. It is performed by creating $\beta$ new individuals as in the initialization phase, i.e., individuals are randomly generated and then submitted to local improvement. As this process introduces a significant amount of new genetic material, it allows the exploration of unvisited regions of the search space.
 
 \section{Computational complexity}
+\label{sec:complexity-algo}
 As stated in previous sections, after the initialization of the population, the proposed meta-heuristic operates in an external loop that calls some internal operators. Among these operators, the main bottleneck is the local improvement phase, where the k-means is performed to improve the newly created solutions. As the computational complexity of k-means is $O(nmd + md^2)$ \cite{Hamerly2010}, the overall complexity of the proposed algorithm is $O(2 maxIt (nmd + md^2))$, as the local improvement is applied for the two new individuals -- created on crossover and mutation -- in each iteration (the maximum number of iterations in the external loop is $maxIt$). Thus, although the proposed meta-heuristic is of the same asymptotic complexity of k-means, it is in practice slower than k-means due to the constant $maxIt$ set in the external loop and to other internal operators, like crossover, mutation, survivors selection and diversification. In the following, the computational complexity of each internal operator:
 
 %- initial population: $O(100 * (nmd + md^2))$
@@ -188,7 +201,7 @@ As stated in previous sections, after the initialization of the population, the 
 
 	\item Mutation: $O(nmd)$
 
-	\item Local search (k-means): $O(nmd + md^2)$
+	\item Local improvement (k-means): $O(nmd + md^2)$
 
 	\item Survivors selection: $O(n\Pi)$
 
