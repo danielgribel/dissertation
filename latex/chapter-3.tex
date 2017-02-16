@@ -76,19 +76,22 @@ In order to increase the population and start the competitive process of evoluti
 
 \subsection{Selection}
 \label{subsec:selection}
-The selection is the stage where individuals from the population are chosen to mate and generate a new individual. Due to the evolutionary behaviour of GA, the most likely individuals to be chosen for selection are the ones with good fitness. That way, the good fragments of solutions can be propagated to generate good children solutions. In the proposed method, the parent selection is done through a \textit{w}-tournament, which randomly selects $w$ individuals (with uniform probability) from the population and keeps the one with the best fitness among the $w$ individuals to set the first parent. The fitness here considered is the value of the objective function (cost) of a solution. Then, the same selection scheme is performed to set the second parent.
+The selection is the stage where individuals from the population are chosen to mate and generate a new individual. Due to the evolutionary behaviour of GA, the most likely individuals to be chosen for selection are the ones with good fitness. That way, the good fragments of solutions can be propagated to generate good children solutions. In the proposed method, the parent selection is done through a \textit{w}-tournament, which randomly selects $w$ individuals (with uniform probability) from the population and keeps the one with the best fitness among the $w$ individuals to set the first parent. The fitness here considered is the value of the objective function (cost) of a solution. Then, the same selection scheme is performed to set the second parent. The value of $w$ was chosen according to a calibration process described in section \ref{sec:calibration}.
 
 \subsection{Crossover}
 \label{subsec:crossover}
 Once parent solutions $p_1$ and $p_2$ were selected, they should be submitted to a crossover procedure in order to produce a offspring (child) solution from them:
 
 \begin{enumerate}
-	\item Firstly, the minimum bipartite matching between centroids of $p_1$ and $p_2$ is calculated. One set of nodes in the matching problem is composed by the centroids of $p_1$ and the other set is composed by the centroids of $p_2$. The goal is to produce the one-to-one assignment of centroids from different sets, in such a way that the overall edges weight (distances) is minimized. This matching problem is solved by the Hungarian method \cite{Kuhn1955} and leads to $m$ pairs of centroids, where $m$ is the number of clusters (centroids).
+	\item Firstly, the minimum bipartite matching between centroids of $p_1$ and $p_2$ is found. Given a graph $G = (V_1, V_2, E)$, where $V_1$ is the set of centroids (nodes) of parent $p_1$, $V_2$ is the set of centroids of parent $p_2$, and $c_{ij} \in E$ is the euclidean distance for every $i \in V_1$ and $j \in V_2$; the goal is to find a one-to-one matching $M$ such that the sum of the values of the edges in $M$ is minimum. In other words, the goal is to produce the one-to-one assignment of centroids from different sets (parents), in such a way that the sum of all distances considered in the assignment is minimized. This matching problem is solved by the Hungarian method \cite{Kuhn1955} and leads to $m$ pairs of centroids, where $m$ is the number of clusters (centroids).
+%One set of nodes in the matching problem is composed by the centroids of $p_1$ and the other set is composed by the centroids of $p_2$. The goal is to produce the one-to-one assignment of centroids from different sets, in such a way that the overall edges weight (distances) is minimized.
 
 	\item For each pair of centroids resulted from the minimum bipartite matching solution, one of them is randomly selected and set as a centroid of the offspring solution.
 
 	\item Finally, data points are assigned to the closest offspring centroid.
 \end{enumerate}
+
+When constructing the crossover, it is possible that a cluster is left empty, i.e., no data point is allocated to it since the selected centroid is not the closest one to any data point. To work around this issue and deal only with solutions with exactly $m$ clusters, the following procedure is adopted: while there is an empty cluster, select the data point farthest from its current centroid and allocate it to an empty cluster. Important: The data point selected for relocation must belong to a cluster with more than one element, otherwise the empty cluster is populated but the cluster with one data point is left empty.
 
 \begin{figure}[H]
   \begin{center}
@@ -103,8 +106,6 @@ Once parent solutions $p_1$ and $p_2$ were selected, they should be submitted to
 
 %In other words, we aim to connect the most similar nodes that are in different sets.
 
-Given a graph $G = (V_1, V_2, E)$, where $V_1$ is the set of centroids (nodes) of parent $p_1$, $V_2$ is the set of centroids of parent $p_2$, and $c_{ij} \in E$ is the euclidean distance for every $i \in V_1$ and $j \in V_2$. The goal is to find a one-to-one matching $M$ such that the sum of the values of the edges in $M$ is minimum. In other words, the goal is to produce the one-to-one assignment of centroids from different sets (parents), in such a way that the sum of all distances considered in the assignment is minimized.
-
 \subsection{Mutation}
 \label{subsec:mutation}
 The mutation of a solution is done by a biased relocation of a centroid. This strategy proved effective as it introduces some drastic movement in one centroid position, allowing the overall solution to have considerable changes that are not achieved by the local improvement. The following items describe how the mutation works:
@@ -115,7 +116,7 @@ The mutation of a solution is done by a biased relocation of a centroid. This st
 	
 	\item Among the $m-1$ remaining centroids, re-assign each data point to the closest centroid.
 	
-	\item Randomly select the position of a data point $x_i$ and re-insert $c^{*}$ in the position of $x_i$. This position is selected as in a wheel roulette, such that data points far from their current centroids are more likely to be chosen.
+	\item Randomly select a data point $x_i$ and re-insert $c^{*}$ in the position of $x_i$. This position is selected as in a roulette wheel, such that data points far from their current centroids are more likely to be chosen. [EXPLAIN HOW THE ROULETTE WHEEL WORKS]
 	
 	\item Among the $m$ resulting centroids, re-assign each data point to the closest centroid.
 		
@@ -125,7 +126,7 @@ The mutation, in addition to generating a solution that is similar to the offspr
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[width=1.0\textwidth]{img/mutation2}
+    \includegraphics[width=1.0\textwidth]{img/mut}
     \caption{Mutation based on centroid relocation}\label{fig:mutation}
   \end{center}
 \end{figure}
@@ -162,7 +163,7 @@ We call \textit{Survivors selection} and \textit{Diversification} management as 
 
 \subsection{Survivors selection}
 \label{subsec:survivors}
-The \textit{Survivors selection} aims to select the best individuals to propagate when the maximum population size $\Pi$ is achieved. This procedure determines the $\mu$ individuals that will go on to the next generation, by discarding $\lambda$ individuals ($\lambda = \Pi - \mu$) that are either clones (identical to other solution) or bad regarding the fitness, according to algorithm \ref{survivors}.
+The \textit{Survivors selection} aims to select the best individuals to propagate when the maximum population size $\Pi$ is reached. This procedure determines the $\mu$ individuals that will go on to the next generation, by discarding $\lambda$ individuals ($\lambda = \Pi - \mu$) that are either clones (identical to other solution) or bad regarding the fitness, according to algorithm \ref{survivors}.
 
 This characteristic of eliminating clones and poor solutions reveals two aspects of the \textit{Survivors selection} mechanism. The first one is that population diversity is maintained, as we favour the removal of clones first. The second is related to elitism, as the individuals with good fitness are preserved. Other aspects related to diversity can be observed in mutation and diversification operators.
 
@@ -197,16 +198,21 @@ As stated in previous sections, after the initialization of the population, the 
 
 	\item Selection: $O(w)$ ($w$ constant)
 
-	\item Crossover: $O(nmd)^{*}$
+	\item Crossover: $O(nmd + m^{3})$
 
 	\item Mutation: $O(nmd)$
 
 	\item Local improvement (k-means): $O(nmd + md^2)$
+
+\end{itemize}
+%$^{*}$ $O(nmd)$ because $n$ is typically much greater than $m$, but for $n < m$ the crossover complexity becomes $O(m^{3})$ due to the Hungarian algorithm for finding the matching between centroids.
+
+In addition to the above internal operators, the mechanisms for population management are also performed in the general loop. However, unlike the other operators, \textit{Survivors selection} and \textit{Diversification} are not performed on each iteration, but only when some criteria are reached. \textit{Survivors selection} is performed whenever the population reaches $\Pi$ individuals; and \textit{Diversification} is called after the \textit{Survivors selection} if $I_D$ iterations happen without improving the best solution. Therefore, their contribution to the computational time of the algorithm is small in practice. Their complexities are:
+
+\begin{itemize}
 
 	\item Survivors selection: $O(n\Pi)$
 
 	\item Diversification: $O(\beta (nmd + md^2))$ ($\beta$ constant)
 
 \end{itemize}
-
-$^{*}$ $O(nmd)$ because $n$ is typically much greater than $m$, but for $n < m$ the crossover complexity becomes $O(m^{3})$ due to the Hungarian algorithm for finding the matching between centroids.
