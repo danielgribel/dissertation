@@ -1,12 +1,13 @@
 % -*- coding: utf-8; -*-
 \begin{table}[]
 \centering
-\begin{tabular}{@{}llcc@{}}
+\begin{tabular}{@{}lllc@{}}
 \toprule
-\multicolumn{2}{l}{Parameter}                                                                                                    & Tested values   & Final value \\ \midrule
-$\mu$         & Population size                                                                                                  & \{15, 30, 60\}    & 30               \\
-$\beta$       & Number of new individuals in \textit{Diversification}                                                                     & \{5, 10, 20\}     & 5                \\
-$\Pi$ & Maximum size of population                                                                                       & \{100, 200, 400\} & 400              \\  \bottomrule
+\multicolumn{2}{l}{Parameter}           & Range of values             & Final value \\ \midrule
+$w$     & Tournament size for selection & \{2, 3, 4\}                 & 3           \\
+$\mu$   & Population size               & \{60, 70, 80, 90, 100\}     & 80          \\
+$\Pi$   & Maximum size of population    & \{200, 250, 300, 350, 400\} & 200         \\
+$I_{max}$ & Maximum number of iterations  & \{3000, 3500, 4000\}        & 4000        \\ \bottomrule
 \end{tabular}
 \caption{Parameters calibration}
 \label{calibration}

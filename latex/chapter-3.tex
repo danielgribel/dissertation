@@ -15,21 +15,20 @@ The GA here proposed works through the following simple cycle of stages:
 	
 	\item Enhancement of the produced individual (local improvement);
 	
-	\item Selection of survivors individuals for propagation;
+	\item Selection of survivors individuals for propagation.
 	
-	\item Diversification of the population;	
 \end{enumerate}
 
 This general scheme of the meta-heuristic is described in more details by algorithm \ref{genetic-algo}. Initially, the method generates a random population of individuals (see \ref{sec:initial-population}). A population is a set of solutions, where each individual represents a point in a search space of the optimization problem. Then, it applies successively a number of operators to evolve this population. Firstly, it selects two parent individuals (see \ref{subsec:selection}) from the population and combines them by a crossover procedure (see \ref{subsec:crossover}), yielding to a new individual (offspring) that is added to the population. Secondly, the offspring is mutated (see \ref{subsec:mutation}) and enhanced by a local improvement (see \ref{subsec:local-improvement}), generating a new individual solution that is also added to the population. These two steps -- crossover and mutation with enhancement -- are performed many times until a termination criteria is reached.
 
-In addition to the genetic operators mentioned above, two mechanisms -- one to select survivor individuals and the other to diversify the population -- are applied when pre-defined criteria are reached (see \ref{sec:population-management}). These mechanisms allow the method to keep and propagate the best individuals and to introduce some diversification, respectively. The following sub-sections describes how these operators and mechanisms to evolve and manage the population of solutions work.
+In addition to the genetic operators mentioned above, a mechanism to select the survivor individuals is applied when a pre-defined criteria is reached (see \ref{sec:population-management}). This mechanism allows the method to propagate the best individuals and keep the diversification of the population. The following sub-sections describes how these operators and mechanisms to evolve and manage the population of solutions work.
 
 \begin{algorithm}[!h]
 \caption{Genetic algorithm framework}
 \label{genetic-algo}
 \begin{algorithmic}[1]
 \STATE Initialize population
-\WHILE{number of iterations without improvement $< itNoImprovement$}
+\WHILE{number of iterations without improvement $< I_{S}$ and $I_{max}$ not reached}
 \STATE Select parents $p_1$ and $p_2$
 \STATE Generate an offspring $\theta$ from $p_1$ and $p_2$ (crossover)
 \STATE Generate an individual $\theta'$ by mutating $\theta$ (mutation)
@@ -37,9 +36,9 @@ In addition to the genetic operators mentioned above, two mechanisms -- one to s
 \STATE Add $\theta$ and $\theta'$ to the population
 \IF{population size is equal to the maximum size $\Pi$ of population}
 \STATE Select survivors
-\IF{best solution not improved for $I_D$ iterations}
-\STATE Diversify population
-\ENDIF
+%\IF{best solution not improved for $I_D$ iterations}
+%\STATE Diversify population
+%\ENDIF
 \ENDIF
 \ENDWHILE
 \STATE Return best solution
@@ -48,7 +47,7 @@ In addition to the genetic operators mentioned above, two mechanisms -- one to s
 
 \section{Solution representation}
 \label{sec:solution-representation}
-A solution (clustering partition) is represented by two direct encodings: i) the object-cluster assignment and ii) the centroids description. The idea of the object-cluster assignment is to use a genetic encoding that allocates directly $n$ objects to $m$ clusters, such that each candidate solution consists of a $n$-vector ($n$ genes) with integer values in the interval [1, $m$]. Thus, for $n$ = 4 and $m$ = 3, the encoding (1,1,3,2) allocates the first and the second objects to cluster 1; the third object to cluster 3 and the fourth object to cluster 2, generating the partition (\{1,2\}, \{3\}, \{4\}).
+A solution (clustering partition) is represented by two direct encodings: i) the point-cluster assignment and ii) the centroids description. The idea of the point-cluster assignment is to use a genetic encoding that allocates directly $n$ data points to $m$ clusters, such that each candidate solution consists of a $n$-vector ($n$ genes) with integer values in the interval [1, $m$]. Thus, for $n$ = 4 and $m$ = 3, the encoding (1,1,3,2) allocates the first and the second data points to cluster 1; the third data point to cluster 3 and the fourth data point to cluster 2, generating the partition (\{1,2\}, \{3\}, \{4\}).
 
 \begin{figure}[h]
   \begin{center}
@@ -68,7 +67,7 @@ The encoding based on the centroids description defines a solution through the f
 
 \section{Initial population}
 \label{sec:initial-population}
-The first step in a GA is the generation of an initial population. It has been recognized that if the initial population of the GA is good, then the algorithm has a better possibility of finding a good solution \cite{Burke2004, Zitzler2000}. In this work, the initial population is randomly generated, by assigning each object to a cluster according to a discrete uniform distribution, i.e., where each outcome is equally likely to happen. To compose the initial population, 100 individuals are created. Then, each initial individual is submitted to the local improvement. Some factors can influence the initial population or should be taken into account when an initial population is generated randomly: the search space, the fitness function, the diversity, and the number of individuals \cite{DiazGomez2007}.
+The first step in a GA is the generation of an initial population. It has been recognized that if the initial population of the GA is good, then the algorithm has a better possibility of finding a good solution \cite{Burke2004, Zitzler2000}. In this work, the initial population is randomly generated, by assigning each data point to a cluster according to a discrete uniform distribution, i.e., where each outcome is equally likely to happen. To compose the initial population, 100 individuals are created. Then, each initial individual is submitted to the local improvement. Some factors can influence the initial population or should be taken into account when an initial population is generated randomly: the search space, the fitness function, the diversity, and the number of individuals \cite{DiazGomez2007}.
 
 \section{Individuals management}
 \label{individuals-management}
@@ -76,17 +75,20 @@ In order to increase the population and start the competitive process of evoluti
 
 \subsection{Selection}
 \label{subsec:selection}
-The selection is the stage where individuals from the population are chosen to mate and generate a new individual. Due to the evolutionary behaviour of GA, the most likely individuals to be chosen for selection are the ones with good fitness. That way, the good fragments of solutions can be propagated to generate good children solutions. In the proposed method, the parent selection is done through a \textit{w}-tournament, which randomly selects $w$ individuals (with uniform probability) from the population and keeps the one with the best fitness among the $w$ individuals to set the first parent. The fitness here considered is the value of the objective function (cost) of a solution. Then, the same selection scheme is performed to set the second parent. The value of $w$ was chosen according to a calibration process described in section \ref{sec:calibration}.
+The selection is the stage where individuals from the population are chosen to mate and generate a new individual. Due to the evolutionary behaviour of GA, the most likely individuals to be chosen for selection are the ones with good fitness. That way, the good fragments of solutions can be propagated to generate good children solutions. In the proposed method, the parent selection is done through a \textit{w}-tournament, which randomly selects $w$ individuals (in a discrete uniform distribution) from the population and keeps the one with the best fitness among the $w$ individuals to set the first parent. The fitness here considered is the value of the objective function (cost) of a solution. Then, the same selection scheme is performed to set the second parent. The value of $w$ was chosen according to a calibration process described in section \ref{sec:calibration}.
 
 \subsection{Crossover}
 \label{subsec:crossover}
-Once parent solutions $p_1$ and $p_2$ were selected, they should be submitted to a crossover procedure in order to produce a offspring (child) solution from them:
+Once parent solutions $p_1$ and $p_2$ were selected, they are submitted to a crossover procedure in order to produce a offspring (child) solution from them. The crossover operator works as follows:
 
 \begin{enumerate}
-	\item Firstly, the minimum bipartite matching between centroids of $p_1$ and $p_2$ is found. Given a graph $G = (V_1, V_2, E)$, where $V_1$ is the set of centroids (nodes) of parent $p_1$, $V_2$ is the set of centroids of parent $p_2$, and $c_{ij} \in E$ is the euclidean distance for every $i \in V_1$ and $j \in V_2$; the goal is to find a one-to-one matching $M$ such that the sum of the values of the edges in $M$ is minimum. In other words, the goal is to produce the one-to-one assignment of centroids from different sets (parents), in such a way that the sum of all distances considered in the assignment is minimized. This matching problem is solved by the Hungarian method \cite{Kuhn1955} and leads to $m$ pairs of centroids, where $m$ is the number of clusters (centroids).
+	%\item Firstly, the minimum bipartite matching between centroids of $p_1$ and $p_2$ is found. Given a graph $G = (V_1, V_2, E)$, where $V_1$ is the set of centroids (nodes) of parent $p_1$, $V_2$ is the set of centroids of parent $p_2$, and $c_{ij} \in E$ is the euclidean distance for every $i \in V_1$ and $j \in V_2$; the goal is to find a one-to-one matching $M$ such that the sum of the values of the edges in $M$ is minimum. In other words, the goal is to produce the one-to-one assignment of centroids from different sets (parents), in such a way that the sum of all distances considered in the assignment is minimized. This matching problem is solved by the Hungarian method \cite{Kuhn1955} and leads to $m$ pairs of centroids, where $m$ is the number of clusters (centroids).
+
+	\item Firstly, a solution for the minimum weighted bipartite matching between centroids of $p_1$ and $p_2$ is found. Finding such a matching is known as the assignment problem. Let $G = (V, E)$ be a complete bipartite graph whose node set can be partitioned as $V = X \cup Y$, with the property that every edge $e \in E$ has one end in $X$ and the other in $Y$, and every node of $X$ is connected to every node of $Y$. Consider also that $|X| = |Y| = m$. An assignment $M$ in $G$ is the subset of edges $M \subseteq E$ of minimum cost, such that each node appears in exactly one edge in $M$ \cite{tardos}. In our case, the nodes in $X$ and $Y$ correspond to the centroids of $p_1$ and $p_2$, respectively. The cost of an edge $e \in E$ is the euclidean distance between two centroids $c' \in X$ and $c'' \in Y$. Thus, the goal is to produce the one-to-one assignment of centroids from different sets (parents), in such a way that the sum of all distances considered in the assignment is minimized. In other words, we aim to join the similar centroids of different individuals. This matching problem is solved by the Hungarian method \cite{Kuhn1955} and leads to $m$ pairs of centroids, where $m$ is the number of clusters (centroids).
+
 %One set of nodes in the matching problem is composed by the centroids of $p_1$ and the other set is composed by the centroids of $p_2$. The goal is to produce the one-to-one assignment of centroids from different sets, in such a way that the overall edges weight (distances) is minimized.
 
-	\item For each pair of centroids resulted from the minimum bipartite matching solution, one of them is randomly selected and set as a centroid of the offspring solution.
+	\item For each pair of centroids resulted from the assignment solution, one of them is randomly selected and set as a centroid of the offspring, resulting in a solution with $m$ centroids, each coming from $p_1$ or $p_2$.
 
 	\item Finally, data points are assigned to the closest offspring centroid.
 \end{enumerate}
@@ -108,7 +110,9 @@ When constructing the crossover, it is possible that a cluster is left empty, i.
 
 \subsection{Mutation}
 \label{subsec:mutation}
-The mutation of a solution is done by a biased relocation of a centroid. This strategy proved effective as it introduces some drastic movement in one centroid position, allowing the overall solution to have considerable changes that are not achieved by the local improvement. The following items describe how the mutation works:
+The use of mutation is typically motivated by the possible permanent loss of genetic material during the execution of a GA. It is possible that after several generations performing the selection followed by crossover a specific genetic material (fragment) in all solutions of the population is led to the same value. If this happens, selection and crossover will not be able to restore the lost genetic material, leading the algorithm to a premature convergence \cite{Whitley1994}. In this context, mutation plays the role of recovering the lost genetic materials by modifying one or more portions of a solution. If crossover is supposed to combine existing solutions to find better ones, mutation is supposed to explore different regions of the search space \cite{Srinivas1994}, being useful on maintaining the genetic diversity from one generation of a GA population to the next.
+
+In the proposed method, the mutation of a solution is done by a biased relocation of a centroid, which means randomly select a centroid and relocate it to a position of a data point, where data points far from their centroids are more likely to be chosen. Then the respective re-assignments are performed. The following items describe in more details how the proposed mutation works:
 
 \begin{enumerate}
 
@@ -116,37 +120,51 @@ The mutation of a solution is done by a biased relocation of a centroid. This st
 	
 	\item Among the $m-1$ remaining centroids, re-assign each data point to the closest centroid.
 	
-	\item Randomly select a data point $x_i$ and re-insert $c^{*}$ in the position of $x_i$. This position is selected as in a roulette wheel, such that data points far from their current centroids are more likely to be chosen. [EXPLAIN HOW THE ROULETTE WHEEL WORKS]
+	\item Randomly select a data point $x_u$ and re-insert $c^{*}$ in the position of $x_u$. This position is selected as in a roulette wheel, such that data points far from their current centroids are more likely to be chosen. This operation works as follow:
+	
+	Consider that $C(x_j)$ is the centroid of the cluster where $x_j$ is assigned to and let $s_i$ be the sum of the distances of all $x_j$ to $C(x_j)$ such that $j < i$. Consider also that $s_1 = 0$. Thus:
+	
+	\begin{equation}
+	s_i = \sum_{j=1}^{i-1} d(x_j, C(x_j)), \quad i = 2, ..., n.
+	\end{equation}
+	
+	Now, we define the roulette wheel as $n$ intervals, where each data point $x_i$ occupies a portion $I_i$ of the roulette:
+	
+	\begin{equation}
+	I_i = [ s_i, s_i + d(x_i, C(x_i)) ], \quad i = 1, ..., n.
+	\end{equation}
+	
+	As we can easily perceive, data points far from their centroids are more likely to be chosen, as they occupy the largest portions of the roulette. Thus, to select the data point $x_u$ to be the new centroid, we randomly chose a real number $r$ in the $[ 0, s_n + d(x_n, C(x_n) ]$ interval and get the data point $x_u$ such that $r \in I_u$, coming back to a solution with $m$ centroids.
 	
 	\item Among the $m$ resulting centroids, re-assign each data point to the closest centroid.
 		
 \end{enumerate}
 
-The mutation, in addition to generating a solution that is similar to the offspring -- which is typically a good solution due to elitism in parental selection -- also contributes significantly to the population diversity through the biased relocation of one centroid.
+This relocation strategy proved effective as it introduces some drastic movement in one centroid position, allowing the overall solution to have considerable changes that are not achieved by the local improvement. Thus, the mutation, in addition to generating a solution that is similar to the offspring -- which is typically a good solution due to elitism in parental selection -- also contributes significantly to the population diversity through the biased relocation of a centroid.
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[width=1.0\textwidth]{img/mut}
+    \includegraphics[width=1.0\textwidth]{img/mutation}
     \caption{Mutation based on centroid relocation}\label{fig:mutation}
   \end{center}
 \end{figure}
 
 \subsection{Local improvement}
 \label{subsec:local-improvement}
-After the generation process done by crossover and mutation, $\theta$ is enhanced by means of a local improvement procedure. The local improvement aims to find a local optimum by applying local changes to the current solution. Here, the adopted local improvement is one run of the k-means algorithm. The k-means starts with the initial solution $\theta'$ with $m$ centroids $c_1$, $c_2$, ..., $c_m$, and proceeds by alternating between two steps:
+After the generation process done by crossover and mutation, $\theta'$ is enhanced by means of a local improvement procedure. The local improvement aims to find a local optimum by applying local changes to the current solution. Here, the adopted local improvement is one run of the k-means algorithm. The k-means starts with the initial solution $\theta'$ with $m$ centroids $c_1$, $c_2$, ..., $c_m$, and proceeds by alternating between two steps:
 
 \begin{enumerate}
 
-	\item Assignment step: Assign each data point $x_i$ to the closest cluster $S_{k^{*}}$.
+	\item Assignment step: Assign each data point $x_i$ to the closest cluster.
 	
 	\begin{equation}
-	S_{k^{*}}^{(t)} = \{ x_i: \left \| c_{k^{*}}^{(t)} - x_i \right \| \leq  \left \| c_{j}^{(t)} - x_i \right \|, \quad j = 1, ..., m \}
+	cluster(x_i) = min_j \quad d(x_i, c_j), \quad j = 1,...,m
 	\end{equation}
 	
 	\item Update step: Calculate the new centroids $c_j$ to be the mean (average) point of the data points in the new clusters.
 	
 	\begin{equation}
-	c_{j}^{(t+1)} = \frac{1}{\left | S_{j}^{(t)} \right |} \sum_{x_i \in S_{j}^{(t)}} x_i, \quad j = 1, ..., m
+	c_j = \frac{\sum_{x \in S_j}x}{\left | S_j \right |}, \quad j = 1,...,m
 	\end{equation}
 		
 \end{enumerate}
@@ -155,17 +173,17 @@ Then the algorithm keeps repeating these two steps until the assignments no long
 
 In our experiments, we use the k-means implementation of Hamerly \cite{Hamerly2010}, who proposed an acceleration that gives the same answer of the standard Lloyd's k-means \cite{Lloyd1982} but is much faster in practice. This implementation avoids distance computations by using the triangle inequality and lower bounds on distances. The time per k-means iteration of the algorithm is O($nmd$+$md^2$), where $n$ is the number of data points, $m$ is the number of clusters and $d$ is the number of data dimensions (features). However, the calculated lower bounds allow to eliminate the innermost k-means loop in around 80\% of the time, which in practise is much faster than the standard k-means.
 
-\section{Population management and termination}
+\section{Population management}
 \label{sec:population-management}
-One of the main challenges in population-based algorithms is avoiding premature convergence of the population. The selection of parents based on elitism tends to favour good individuals to mate, reducing the diversity of the genetic material in the coming generations of the population. In order to overcome this issue, we propose two mechanisms that preserve the good solutions while ensuring diversity. Thus, the search procedure can be lead to unexplored regions of the search space without losing promising individuals.
+One of the main challenges in population-based algorithms is avoiding premature convergence of the population. The selection of parents based on elitism tends to favour good individuals to mate, reducing the diversity of the genetic material in the coming generations of the population. In order to overcome this issue, we propose a mechanism that propagates good solutions while ensuring diversity. Thus, the search procedure can be lead to unexplored regions of the search space without losing promising individuals. We call \textit{Survivors selection} as this mechanism to complement the selection, crossover and local improvement operators.
 
-We call \textit{Survivors selection} and \textit{Diversification} management as these mechanisms to complement the selection, crossover and local improvement operators.
+%One of the main challenges in population-based algorithms is avoiding premature convergence of the population. The selection of parents based on elitism tends to favour good individuals to mate, reducing the diversity of the genetic material in the coming generations of the population. In order to overcome this issue, we propose two mechanisms that preserve the good solutions while ensuring diversity. Thus, the search procedure can be lead to unexplored regions of the search space without losing promising individuals. We call \textit{Survivors selection} and \textit{Diversification} management as these mechanisms to complement the selection, crossover and local improvement operators.
 
 \subsection{Survivors selection}
 \label{subsec:survivors}
 The \textit{Survivors selection} aims to select the best individuals to propagate when the maximum population size $\Pi$ is reached. This procedure determines the $\mu$ individuals that will go on to the next generation, by discarding $\lambda$ individuals ($\lambda = \Pi - \mu$) that are either clones (identical to other solution) or bad regarding the fitness, according to algorithm \ref{survivors}.
 
-This characteristic of eliminating clones and poor solutions reveals two aspects of the \textit{Survivors selection} mechanism. The first one is that population diversity is maintained, as we favour the removal of clones first. The second is related to elitism, as the individuals with good fitness are preserved. Other aspects related to diversity can be observed in mutation and diversification operators.
+This characteristic of eliminating clones and poor solutions reveals two aspects of the \textit{Survivors selection} mechanism. The first one is that population diversity is maintained, as we favour the removal of clones first. The second is related to elitism, as the individuals with good fitness are preserved. %Other aspects related to diversity can be observed in mutation and diversification operators.
 
 \begin{algorithm}[H]
 \caption{Survivors selection}
@@ -182,17 +200,17 @@ This characteristic of eliminating clones and poor solutions reveals two aspects
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Diversification management}
-\label{subsec:diversification}
-The \textit{Diversification} mechanism aims to ensure the genetic diversity in a population. It is actually a complementary procedure to diversify the population of solutions, once the mutation carries the most important role regarding this matter. \textit{Diversification} is called after the survivors selection whenever $I_D$ iterations happen without improving the best solution. It is performed by creating $\beta$ new individuals as in the initialization phase, i.e., individuals are randomly generated and then submitted to local improvement. As this process introduces a significant amount of new genetic material, it allows the exploration of unvisited regions of the search space.
+%\subsection{Diversification management}
+%\label{subsec:diversification}
+%The \textit{Diversification} mechanism aims to ensure the genetic diversity in a population. It is actually a complementary procedure to diversify the population of solutions, once the mutation carries the most important role regarding this matter. \textit{Diversification} is called after the survivors selection whenever $I_D$ iterations happen without improving the best solution. It is performed by creating $\beta$ new individuals as in the initialization phase, i.e., individuals are randomly generated and then submitted to local improvement. As this process introduces a significant amount of new genetic material, it allows the exploration of unvisited regions of the search space.
 
 \section{Computational complexity}
 \label{sec:complexity-algo}
-As stated in previous sections, after the initialization of the population, the proposed meta-heuristic operates in an external loop that calls some internal operators. Among these operators, the main bottleneck is the local improvement phase, where the k-means is performed to improve the newly created solutions. As the computational complexity of k-means is $O(nmd + md^2)$ \cite{Hamerly2010}, the overall complexity of the proposed algorithm is $O(2 maxIt (nmd + md^2))$, as the local improvement is applied for the two new individuals -- created on crossover and mutation -- in each iteration (the maximum number of iterations in the external loop is $maxIt$). Thus, although the proposed meta-heuristic is of the same asymptotic complexity of k-means, it is in practice slower than k-means due to the constant $maxIt$ set in the external loop and to other internal operators, like crossover, mutation, survivors selection and diversification. In the following, the computational complexity of each internal operator:
+As stated in previous sections, after the initialization of the population, the proposed meta-heuristic operates in an external loop that calls some internal operators. Among these operators, the main bottleneck is the local improvement phase, where the k-means is performed to improve the newly created solutions. As the computational complexity of k-means is $O(nmd + md^2)$ \cite{Hamerly2010}, the overall complexity of the proposed algorithm is $O(2 I_{max} (nmd + md^2))$, as the local improvement is applied for the two new individuals -- created on crossover and mutation -- in each iteration (the maximum number of iterations in the external loop is $I_{max}$). Thus, although the proposed meta-heuristic is of the same asymptotic complexity of k-means, it is in practice slower than k-means due to the constant $I_{max}$ set in the external loop and to other internal operators, like crossover, mutation, survivors selection and diversification. In the following, the computational complexity of each internal operator:
 
 %- initial population: $O(100 * (nmd + md^2))$
 
-%- main GA loop: $O(maxIt)$ (constant)
+%- main GA loop: $O(I_{max})$ (constant)
 
 \begin{itemize}
 
@@ -207,12 +225,14 @@ As stated in previous sections, after the initialization of the population, the 
 \end{itemize}
 %$^{*}$ $O(nmd)$ because $n$ is typically much greater than $m$, but for $n < m$ the crossover complexity becomes $O(m^{3})$ due to the Hungarian algorithm for finding the matching between centroids.
 
-In addition to the above internal operators, the mechanisms for population management are also performed in the general loop. However, unlike the other operators, \textit{Survivors selection} and \textit{Diversification} are not performed on each iteration, but only when some criteria are reached. \textit{Survivors selection} is performed whenever the population reaches $\Pi$ individuals; and \textit{Diversification} is called after the \textit{Survivors selection} if $I_D$ iterations happen without improving the best solution. Therefore, their contribution to the computational time of the algorithm is small in practice. Their complexities are:
+%In addition to the above internal operators, the mechanisms for population management are also performed in the general loop. However, unlike the other operators, \textit{Survivors selection} and \textit{Diversification} are not performed on each iteration, but only when some criteria are reached. \textit{Survivors selection} is performed whenever the population reaches $\Pi$ individuals; and \textit{Diversification} is called after the \textit{Survivors selection} if $I_D$ iterations happen without improving the best solution. Therefore, their contribution to the computational time of the algorithm is small in practice. Their complexities are:
+
+In addition to the above internal operators, a mechanism to select the best individuals for propagation is also performed in the general loop. However, unlike the other operators, the \textit{Survivors selection} is not performed on each iteration, but only when the population reaches $\Pi$ individuals. Therefore, its contribution to the computational time of the algorithm is small in practice. Its complexity is:
 
 \begin{itemize}
 
 	\item Survivors selection: $O(n\Pi)$
 
-	\item Diversification: $O(\beta (nmd + md^2))$ ($\beta$ constant)
+	%\item Diversification: $O(\beta (nmd + md^2))$ ($\beta$ constant)
 
 \end{itemize}

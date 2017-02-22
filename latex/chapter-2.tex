@@ -11,12 +11,12 @@ However, in the recent years there has been a considerable growth of clustering 
 The ad-hoc methods proposed for data clustering usually belong to two large classes if we analyse them in terms of their structure: hierarchical and partitional algorithms.
 
 %\subsubsection{Hierarchical clustering}
-The hierarchical clustering works by successively agglomerating or separating clusters at each stage according to some distance measure. Basically, it is subdivided into agglomerative and divisive methods. In an agglomerative approach, each data point starts at its own cluster and at each stage of the algorithm it joins the two most similar clusters, until a single cluster containing all objects is reached. The divisive method is the opposite. The method proceeds by separating $n$ objects successively into finer groups. 
+The hierarchical clustering works by successively agglomerating or separating clusters at each stage according to some distance measure. Basically, it is subdivided into agglomerative and divisive methods. In an agglomerative approach, each data point starts at its own cluster and at each stage of the algorithm it joins the two most similar clusters, until a single cluster containing all data points is reached. The divisive method is the opposite. The method proceeds by separating $n$ data points successively into finer groups. 
 
 Several algorithms for data clustering are based on hierarchical constructions, once they do not require the number of clusters a priori and are independent from initial conditions, as strategic starting points. However, hierarchical methods are computationally expensive -- usually O($n^2$ log $n$) for computational complexity -- and all decisions about joining/separating sets of points are definitive, i.e., it is impossible to revert any merge or split operation. BIRCH (Balanced Iterative Reducing and Clustering Using Hierarchies) \cite{Zhang96} and CURE (Clustering Using Representatives) \cite{Guha1998} are examples of popular hierarchical clustering algorithms.
  
 %\subsubsection{Partitional clustering}
-The methods belonging to partitional clustering directly divides data objects into some pre-specified number of clusters without any hierarchical structure \cite{Xu2005}. It is composed by methods based on iterative relocation of data points between clusters that, at each iteration, reduce the value of some criteria function until convergence \cite{Karkkainen2006}. The minimum sum-of-squares function is one of the most widely used criteria, which aims to minimize the sum of each data point to the center of its cluster. K-means and PAM (Partitioning Around Medoids) are quite widespread partitioning clustering methods. Although partitional clustering algorithms are suitable for large data sets due to efficiency in computational time, they require the number of clusters in advance and are heavily dependent on the initial conditions, which can lead algorithms like k-means to a premature convergence \cite{Das2009}.
+The methods belonging to partitional clustering directly divides data points into some pre-specified number of clusters without any hierarchical structure \cite{Xu2005}. It is composed by methods based on iterative relocation of data points between clusters that, at each iteration, reduce the value of some criteria function until convergence \cite{Karkkainen2006}. The minimum sum-of-squares function is one of the most widely used criteria, which aims to minimize the sum of each data point to the center of its cluster. K-means and PAM (Partitioning Around Medoids) are quite widespread partitioning clustering methods. Although partitional clustering algorithms are suitable for large data sets due to efficiency in computational time, they require the number of clusters in advance and are heavily dependent on the initial conditions, which can lead algorithms like k-means to a premature convergence \cite{Das2009}.
 
 \section{Model-driven clustering}
 The above classes of ad-hoc methods are not guided by a model, but by iterative constructions or re-assignments according to some underlying criteria. For instance, on k-means algorithm, the criteria is to assign data points to the closest center after the calculation of centers position. On hierarchical methods, the criteria to merge/split a solution is based on a distance metric between pairs of clusters. Due to these characteristics, it is difficult to assess if erratic results come from inappropriate methods, or from a data that does not intuitively leads to the result that we desire.
@@ -54,19 +54,20 @@ In the MSSC problem we aim to minimize the total sum of the distances of each da
 $X = \{x_1, x_2, ..., x_n\}$, where $x_i \in \mathbb{R}^d, \quad i = 1, ..., n.$
 \end{center}
 
-Then, if we consider $S$ as the set of all possible subsets obtained from elements in $X$, the clustering procedure must generate a partition $\bar{S}$ of $S$ with $m$ subsets $S_k \in S (S_k \neq \emptyset)$, where $m$ is the number of desired clusters and $k = \{1,...,\left | S \right |\}$. In other words, a clustering algorithm aims to generate a partition that groups data consistently, with most similar objects belonging to the same group and dissimilar objects belonging to different groups.
+Then, if we consider $S$ as the set of all possible subsets obtained from elements in $X$, the clustering procedure must generate a partition $\bar{S}$ of $S$ with $m$ subsets $S_k \in S (S_k \neq \emptyset)$, where $m$ is the number of desired clusters and $k = \{1,...,\left | S \right |\}$. In other words, a clustering algorithm aims to generate a partition that groups data consistently, with most similar data points belonging to the same group and dissimilar data points belonging to different groups.
 
-In order to define the similarity between two objects, a function $d$ assigns to each pair $(x_i, x_j)$ a distance or similarity metric $d_{ij} \in \mathbb{R}$, where $d_{ij} \geq 0, d_{ii} = 0, d_{ij} = d_{ji}$, for $i, j = 1, ... ,n$. The set of objects $x_i \in X$ can be described as a matrix $X'_{n \times d}$, with $q = \{1,...,d\}$, where an entry $x_{iq}$ is the value of the $q$-th feature for the $i$-th data object and $d$ is the number of features. The assignment is done in such a way that the greater is the similarity (proximity) within a cluster and the greater is the difference between clusters, the better is the clustering. There is a variety of distance measures to characterize how similar are two objects or patterns. A popular one in the domain of data mining is the Euclidean distance, that can often be used to reflect the similarity between two patterns when considering multiple dimensions (features) \cite{Jain1999}:
+In order to define the similarity between two data points in the space, a function $d$ assigns to any pair $x, y \in \mathbb{R}^d$ a distance or similarity metric $d(x,y) \in \mathbb{R}$, where $d(x,y) \geq 0, d(x,x) = 0, d(x,y) = d(y,x)$. There is a variety of distance measures to characterize how similar two data points or patterns are. A popular one in the domain of data mining is the Euclidean distance, that can often be used to reflect the similarity between two patterns when considering multiple dimensions (features) \cite{Jain1999}:
+%The assignment is done in such a way that the greater is the similarity (proximity) within a cluster and the greater is the difference between clusters, the better is the clustering.
 
 \begin{equation}
 \label{euclidean}
-d_{ij} = \sqrt{\sum_{q=1}^{d}(x_{iq} - x_{jq})^2} = \left \| x_i - x_j \right \|
+d(x,y) = \sqrt{\sum_{q=1}^{d}(x_{q} - y_{q})^2} = \left \| x - y \right \|, \quad x, y \in \mathbb{R}^d
 \end{equation}
 
-In this work we consider that the data points are in the Euclidean space, so the measure above (\ref{euclidean}) is used to express the distance between two points. Thus, given a distance matrix $d_{ij}$, the MSSC problem can be formulated as the following set partitioning problem:
+Here, $x_{q}$ is the value of the $q$-th feature of a data point $x$, $d$ is the number of features and $q = \{1,...,d\}$. Analogously, the set of data points $x_i \in X$ can be described as a matrix $X'_{n \times d}$, where an entry $x_{iq}$ is the value of the $q$-th feature for the $i$-th data point. In this work we consider that the data points (including the centroids) are in the Euclidean space, so the measure above (\ref{euclidean}) is used to express the distance between any two points. Therefore, the MSSC problem can be formulated as the following set partitioning problem:
 
 \begin{equation} \label{eq:of}
-\textrm{Minimize} \sum_{k=1}^{\left | S \right |}c_ky_k
+\textrm{Minimize} \sum_{k=1}^{\left | S \right |}z_k y_k
 \end{equation}
 
 \begin{equation}
@@ -85,12 +86,12 @@ a_{ik} \in \{0,1\}, \quad \forall i,k
 y_k \in \{0,1\}, \quad \forall k
 \end{equation}
 
-\noindent where $\left | S \right |$ is the size of the set $S$; $a_{ik} = 1$ if $x_i \in S_k$ and $a_{ik} = 0$ otherwise; $y_k$ are the decision variables, with $y_k = 1$ if the subset $S_k$ is chosen ($S_k \in \bar{S}$) and $y_k = 0$ otherwise; and $c_k$ is the cost function on subset $S_k$, i.e., the cost within the $k$-th subset. In the MSSC problem, the centroid is the mean point $\mu_k$ of cluster $S_k$. Thus, the contribution $c_k$ of each subset to the objective function is:
+\noindent where $\left | S \right |$ is the size of the set $S$; $a_{ik} = 1$ if $x_i \in S_k$ and $a_{ik} = 0$ otherwise; $y_k$ are the decision variables, with $y_k = 1$ if the subset $S_k$ is chosen ($S_k \in \bar{S}$) and $y_k = 0$ otherwise; and $z_k$ is the cost function on subset $S_k$, i.e., the cost within the $k$-th subset. In the MSSC problem, the centroid is the mean point $c_k$ of cluster $S_k$. Thus, the contribution $z_k$ of each subset to the objective function is:
 	\begin{equation}
-	c_k = \sum_{x_i \in S_k}\left \| \mu_k - x_i \right \|
+	z_k = \sum_{x_i \in S_k} d(x_i, c_k)
 	\end{equation}
 	\begin{center}
-	where $\mu_k = $ \Large $\frac{\sum_{i = 1}^{n}a_{ik}x_i}{\sum_{i = 1}^{n}a_{ik}}$	
+	where $c_k = $ \Large $\frac{\sum_{i = 1}^{n}a_{ik}x_i}{\sum_{i = 1}^{n}a_{ik}}$	
 	\end{center}
 	
 \subsection{Computational complexity}

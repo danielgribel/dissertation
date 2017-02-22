@@ -1,6 +1,6 @@
 \chapter{Computational Experiments and Analysis}
 \label{chap:experiments}
-In this chapter, we discuss the computational experiments and the analysis that emerge from them. The results of the proposed algorithm are presented in terms of objective function value and time, and are also compared to current state-of-the-art results in the MSSC literature.
+In this chapter, we discuss the computational experiments and the analysis that emerge from them. From now on, all results regarding the proposed algorithm will be identified as HGKM (for Hybrid Genetic K-Means). The results are presented in terms of objective function value and time, and are compared to current state-of-the-art results in the MSSC literature.
 
 The experiments were conducted on an Intel Core i5 2.6 GHz processor machine with 8 GB of RAM memory. The source codes were written in C++, using the UNIX g++ compiler on a Linux Ubuntu 14.04 LTS 64-bit operating system.
 
@@ -14,17 +14,19 @@ The selection of instances was done in order to cover different types of real da
 
 \section{Parameters calibration}
 \label{sec:calibration}
-As in most meta-heuristics, the values chosen for parameters directly affect the results. In this work, we consider six main parameters: $w$ (the tournament size for selection), $\mu$ (the population size), $\Pi$ (the maximum size of population), $\beta$ (the number of new individuals created in the diversification), $I_D$ (the number of iterations without improvement that triggers diversification) and $I_S$ (the number of iterations without improvement that causes the algorithm stop). For the parameters related to the management of individuals in the population ($w$, $\mu$, $\Pi$ and $\beta$) we performed a calibration to choose the best configuration for the experiments. For the remaining parameters $I_D$ and $I_S$, we directly set their values to 400 and 3000, respectively.
+As in most meta-heuristics, the values chosen for parameters directly affect the results. In this work, we consider six main parameters: $w$ (the tournament size for selection), $\mu$ (the population size), $\Pi$ (the maximum size of population), $I_{max}$ (the maximum number of iterations) and $I_S$ (the number of iterations without improvement that causes the algorithm stop). For the parameters related to the management of individuals in the population ($w$, $\mu$ and $\Pi$) we performed a calibration to choose the best configuration for the experiments. For the remaining parameters $I_{max}$ and $I_S$, we directly set their values to 4000 and 2500, respectively.
 
-In preliminary experiments, we started with the following configuration for the free variables, as they produced good and stable results in an initial and manually exploration: $w$ = 3, $\mu$ = 30, $\Pi$ = 200 and $\beta$ = 10. From this baseline, we expanded the range of these values. Table \ref{calibration} presents the tested values for each parameter and the final values achieved after running each combination in a subset of 5 instances.
+In preliminary experiments, we started with the following configuration for the free variables, as they produced good and stable results after an initial and manually exploration: $w$ = 3, $\mu$ = 80 and $\Pi$ = 300. From this baseline, we expanded the range of these values. Table \ref{calibration} presents the ranges of tested values for each parameter and the final values achieved after increasing/decreasing each parameter value at a time.
 
-The 5 instances for calibration were chosen based on their sizes and number of features. Small instances were not considered because in almost all of them the different configurations for calibration achieved the best known result, so they are not so informative. As we consider 3 parameters and a range of 3 possible values for each, the combination of parameters resulted in 27 possible configurations ($3^3$). For this reason, large instances were not considered also. It would take too much time to calibrate, as we run 10 times each experiment. So we chose medium-sized instances and tested 4 different number of clusters (20, 30, 40, 50) for each instance. After measuring the offset between the average error and the execution time for each configuration, we took the best one among the 27 options.
+We considered a subset of five instances for calibration, that were chosen based on their sizes and number of features (Liver disorders, Ionosphere, Breast cancer, Pima Indians diabetes and TSPLIB1060). Small instances were not considered because in almost all of them the different configurations for calibration achieved the best known result (possibly the global optimal), so they are not so informative. As we consider 3 parameters and a range of 3 possible values for each, the combination of parameters resulted in XX possible configurations. For this reason, large instances were not considered also. It would take too much time to calibrate, as we run 10 times each experiment. So we chose medium-sized instances and tested 4 different number of clusters (20, 30, 40, 50) for each instance. After measuring the offset between the average error and the execution time for each configuration, we took the best one among the XX options.
 
 \input{tables/calibration}
 
+\input{tables/calibration-results}
+
 \section{Results}
 \label{sec:results}
-Results of numerical experiments for small, medium and large instances are given in tables \ref{results-all-A}, \ref{results-all-B} and \ref{results-all-C} respectively. Due to the stochastic nature of the proposed meta-heuristic, the results of GA-KM correspond to the average of 10 runs, where a run is the execution of an instance with a specific number of clusters $m$. The following notation is used in these tables:
+Results of numerical experiments for small, medium and large instances are given in tables \ref{results-all-A}, \ref{results-all-B} and \ref{results-all-C} respectively. Due to the stochastic nature of the proposed meta-heuristic, the results of HGKM correspond to the average of 10 runs, where a run is the execution of an instance with a specific number of clusters $m$. The following notation is used in these tables:
 
 \begin{itemize}
 
@@ -55,13 +57,13 @@ For comparison purposes, we analyse the results considering the best known solut
 
 \input{tables/results-all-C}
 
-Table \ref{results-all-A} presents the results for instances with less than 1,000 data points. As we can see, GA-KM found the new best solution or achieved the current best one in all instances for most of $m$ values. In some cases, as in \textit{Ionosphere} instance, GA-KM results reach more than 4\% of the error, being a significant improvement. On the other hand, the proposed algorithm requires significantly more computational time than MS-MGKM, MGKM and GKM algorithms for these small instances. It is also important to note that in some instances like \textit{Bavaria postal 2}, \textit{Liver disorders}, \textit{Ionosphere} and \textit{Pima Indians diabetes} GA-KM results increase the gap from the best known solutions for large $m$, which means that for harder clustering tasks GA-KM produces significantly better solutions than the other algorithms.
+Table \ref{results-all-A} presents the results for instances with less than 1,000 data points. As we can see, HGKM found the new best solution or achieved the current best one in all instances for most of $m$ values. In some cases, as in Ionosphere instance, HGKM results reach more than 4\% of the error, being a significant improvement. On the other hand, the proposed algorithm requires significantly more computational efforts than MS-MGKM, MGKM and GKM algorithms for these small instances. It is also important to note that in some instances like Bavaria postal 2, Liver disorders, Ionosphere and Pima Indians diabetes, HGKM results increase the gap from the best known solutions for large $m$, which means that for harder clustering tasks HGKM produces significantly better solutions than the other algorithms.
 
-Table \ref{results-all-B} presents the results for instances where the number of data points ranges from  1,060 to 20,000. As in results for small instances, GA-KM found the new best solution or achieved the current best one in all instances for most of $m$ values.
+Table \ref{results-all-B} presents the results for instances where the number of data points ranges from  1,060 to 20,000. As in results for small instances, HGKM found the new best solution or achieved the current best one in all instances for most of $m$ values.
 
-Table \ref{results-all-C} presents the results for instances where the number of data points ranges from  13,910 to 434,874. As in the previous results, GA-KM found the new best solution or achieved the current best one in all instances for most of $m$ values.
+Table \ref{results-all-C} presents the results for instances where the number of data points ranges from  13,910 to 434,874. As in the previous results, HGKM found the new best solution or achieved the current best one in all instances for most of $m$ values.
 
-%The GA-KM algorithm is slower than all compared algorithms when $m$ is large. However, when $m$ is small, GA-KM is faster than MS-MGKM and GKM -- for example, in instance TSPLIB3038 where $m = 2$.
+%%
 
 \begin{figure}[h!]
 \centering
@@ -72,13 +74,15 @@ Table \ref{results-all-C} presents the results for instances where the number of
 \caption{The CPU time of algorithms vs the number of clusters when considering instances with different number of features ($d$)}
 \end{figure}
 
+%%
+
 \noindent [TO-DO] results table for group C of instances (all components) -- need to get the exact times for the DCClust and MS-DCA algorithms
 
 \noindent [TO-DO] analysis of the results -- our algorithm beats the benchmarks in many cases
 
 \noindent [TO-DO] analysis on number of features -- our algorithm seems to be fast when $d$ is small in small/medium instances (tsplib for example) but also when $d$ is large in large instances (gas sensor for example)
 
-\noindent [TO-DO] analysis on number of clusters -- how the algorithm is affected if we increase the number of clusters
+\noindent [TO-DO] analysis on number of clusters -- how the algorithm is affected if we increase the number of clusters.
 
 \noindent [TO-DO] results table for group A of instances (- mutation)
 
@@ -86,8 +90,8 @@ Table \ref{results-all-C} presents the results for instances where the number of
 
 \noindent [TO-DO] results table for group C of instances (- mutation)
 
-\noindent [TO-DO] results table for group A of instances (- diversification)
+\noindent [TO-DO] results table for group A of instances (- crossover)
 
-\noindent [TO-DO] results table for group B of instances (- diversification)
+\noindent [TO-DO] results table for group B of instances (- crossover)
 
-\noindent [TO-DO] results table for group C of instances (- diversification)
+\noindent [TO-DO] results table for group C of instances (- crossover)
