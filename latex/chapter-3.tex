@@ -84,16 +84,14 @@ Once parent solutions $p_1$ and $p_2$ were selected, they are submitted to a cro
 \begin{enumerate}
 	%\item Firstly, the minimum bipartite matching between centroids of $p_1$ and $p_2$ is found. Given a graph $G = (V_1, V_2, E)$, where $V_1$ is the set of centroids (nodes) of parent $p_1$, $V_2$ is the set of centroids of parent $p_2$, and $c_{ij} \in E$ is the euclidean distance for every $i \in V_1$ and $j \in V_2$; the goal is to find a one-to-one matching $M$ such that the sum of the values of the edges in $M$ is minimum. In other words, the goal is to produce the one-to-one assignment of centroids from different sets (parents), in such a way that the sum of all distances considered in the assignment is minimized. This matching problem is solved by the Hungarian method \cite{Kuhn1955} and leads to $m$ pairs of centroids, where $m$ is the number of clusters (centroids).
 
-	\item Firstly, a solution for the minimum weighted bipartite matching between centroids of $p_1$ and $p_2$ is found. Finding such a matching is known as the assignment problem. Let $G = (V, E)$ be a complete bipartite graph whose node set can be partitioned as $V = X \cup Y$, with the property that every edge $e \in E$ has one end in $X$ and the other in $Y$, and every node of $X$ is connected to every node of $Y$. Consider also that $|X| = |Y| = m$. An assignment $M$ in $G$ is the subset of edges $M \subseteq E$ of minimum cost, such that each node appears in exactly one edge in $M$ \cite{tardos}. In our case, the nodes in $X$ and $Y$ correspond to the centroids of $p_1$ and $p_2$, respectively. The cost of an edge $e \in E$ is the euclidean distance between two centroids $c' \in X$ and $c'' \in Y$. Thus, the goal is to produce the one-to-one assignment of centroids from different sets (parents), in such a way that the sum of all distances considered in the assignment is minimized. In other words, we aim to join the similar centroids of different individuals. This matching problem is solved by the Hungarian method \cite{Kuhn1955} and leads to $m$ pairs of centroids, where $m$ is the number of clusters (centroids).
+	\item Firstly, a solution for the minimum weighted bipartite matching between centroids of $p_1$ and $p_2$ is found (figure \ref{fig:crossover} (b)). Finding such a matching is known as the assignment problem. Let $G = (V, E)$ be a complete bipartite graph whose node set can be partitioned as $V = X \cup Y$, with the property that every edge $e \in E$ has one end in $X$ and the other in $Y$, and every node of $X$ is connected to every node of $Y$. Consider also that $|X| = |Y| = m$. An assignment $M$ in $G$ is the subset of edges $M \subseteq E$ of minimum cost, such that each node appears in exactly one edge in $M$ \cite{tardos}. In our case, the nodes in $X$ and $Y$ correspond to the centroids of $p_1$ and $p_2$, respectively. The cost of an edge $e \in E$ is the euclidean distance between two centroids $c' \in X$ and $c'' \in Y$. Thus, the goal is to produce the one-to-one assignment of centroids from different sets (parents), in such a way that the sum of all distances considered in the assignment is minimized. In other words, we aim to join the similar centroids of different individuals. This matching problem is solved by the Hungarian method \cite{Kuhn1955} and leads to $m$ pairs of centroids, where $m$ is the number of clusters (centroids).
 
 %One set of nodes in the matching problem is composed by the centroids of $p_1$ and the other set is composed by the centroids of $p_2$. The goal is to produce the one-to-one assignment of centroids from different sets, in such a way that the overall edges weight (distances) is minimized.
 
-	\item For each pair of centroids resulted from the assignment solution, one of them is randomly selected and set as a centroid of the offspring, resulting in a solution with $m$ centroids, each coming from $p_1$ or $p_2$.
+	\item For each pair of centroids resulted from the assignment solution, one of them is randomly selected (figure \ref{fig:crossover} (c)) and set as a centroid of the offspring, resulting in a solution with $m$ centroids, each coming from $p_1$ or $p_2$ (figure \ref{fig:crossover} (d)).
 
 	\item Finally, data points are assigned to the closest offspring centroid.
 \end{enumerate}
-
-When constructing the crossover, it is possible that a cluster is left empty, i.e., no data point is allocated to it since the selected centroid is not the closest one to any data point. To work around this issue and deal only with solutions with exactly $m$ clusters, the following procedure is adopted: while there is an empty cluster, select the data point farthest from its current centroid and allocate it to an empty cluster. Important: The data point selected for relocation must belong to a cluster with more than one element, otherwise the empty cluster is populated but the cluster with one data point is left empty.
 
 \begin{figure}[H]
   \begin{center}
@@ -116,11 +114,11 @@ In the proposed method, the mutation of a solution is done by a biased relocatio
 
 \begin{enumerate}
 
-	\item Randomly select a centroid $c^{*}$ and remove it from the solution.
+	\item Randomly select a centroid $c^{*}$ and remove it from the solution (figure \ref{fig:mutation} (a)).
 	
-	\item Among the $m-1$ remaining centroids, re-assign each data point to the closest centroid.
+	\item Among the $m-1$ remaining centroids, re-assign each data point to the closest centroid (figure \ref{fig:mutation} (b)).
 	
-	\item Randomly select a data point $x_u$ and re-insert $c^{*}$ in the position of $x_u$. This position is selected as in a roulette wheel, such that data points far from their current centroids are more likely to be chosen. This operation works as follow:
+	\item Randomly select a data point $x_u$ and re-insert $c^{*}$ in the position of $x_u$ (figure \ref{fig:mutation} (c)). This position is selected as in a roulette wheel, such that data points far from their current centroids are more likely to be chosen. This operation works as follow:
 	
 	Consider that $C(x_j)$ is the centroid of the cluster where $x_j$ is assigned to and let $s_i$ be the sum of the distances of all $x_j$ to $C(x_j)$ such that $j < i$. Consider also that $s_1 = 0$. Thus:
 	
@@ -136,7 +134,7 @@ In the proposed method, the mutation of a solution is done by a biased relocatio
 	
 	As we can easily perceive, data points far from their centroids are more likely to be chosen, as they occupy the largest portions of the roulette. Thus, to select the data point $x_u$ to be the new centroid, we randomly chose a real number $r$ in the $[ 0, s_n + d(x_n, C(x_n) ]$ interval and get the data point $x_u$ such that $r \in I_u$, coming back to a solution with $m$ centroids.
 	
-	\item Among the $m$ resulting centroids, re-assign each data point to the closest centroid.
+	\item Among the $m$ resulting centroids, re-assign each data point to the closest centroid and update the position of centroids (figure \ref{fig:mutation} (d)).
 		
 \end{enumerate}
 
@@ -172,6 +170,19 @@ After the generation process done by crossover and mutation, $\theta'$ is enhanc
 Then the algorithm keeps repeating these two steps until the assignments no longer change, converging to a local optimum.
 
 In our experiments, we use the k-means implementation of Hamerly \cite{Hamerly2010}, who proposed an acceleration that gives the same answer of the standard Lloyd's k-means \cite{Lloyd1982} but is much faster in practice. This implementation avoids distance computations by using the triangle inequality and lower bounds on distances. The time per k-means iteration of the algorithm is O($nmd$+$md^2$), where $n$ is the number of data points, $m$ is the number of clusters and $d$ is the number of data dimensions (features). However, the calculated lower bounds allow to eliminate the innermost k-means loop in around 80\% of the time, which in practise is much faster than the standard k-means.
+
+\subsection{Solution fixing}
+When generating new individuals, it is possible that a cluster is left empty, i.e., no data point is allocated to it. This can happen in two situations: 
+
+\begin{itemize}
+	
+	\item when generating a solution in crossover or mutation, one or more centroids could not be the closest centroid to any data point;
+
+	\item ii) when generating a solution in the population initialization, it could happen that some numbers in the interval [ 1, ..., $m$ ] are not chosen for the assignment, as it is a random selection.
+	
+\end{itemize}
+
+To work around this issue and deal only with solutions with exactly $m$ clusters, the following procedure is adopted just after the execution of crossover, mutation and population initialization if a solution with less than $m$ clusters is generated: while there is an empty cluster, select the data point farthest from its current centroid and allocate it to an empty cluster. Important: The data point selected for relocation must belong to a cluster with more than one element, otherwise the empty cluster is populated but the cluster with one data point is left empty.
 
 \section{Population management}
 \label{sec:population-management}
