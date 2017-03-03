@@ -171,14 +171,14 @@ Then the algorithm keeps repeating these two steps until the assignments no long
 
 In our experiments, we use the k-means implementation of Hamerly \cite{Hamerly2010}, who proposed an acceleration that gives the same answer of the standard Lloyd's k-means \cite{Lloyd1982} but is much faster in practice. This implementation avoids distance computations by using the triangle inequality and lower bounds on distances. The time per k-means iteration of the algorithm is O($nmd$+$md^2$), where $n$ is the number of data points, $m$ is the number of clusters and $d$ is the number of data dimensions (features). However, the calculated lower bounds allow to eliminate the innermost k-means loop in around 80\% of the time, which in practise is much faster than the standard k-means.
 
-\subsection{Solution fixing}
+\subsection{Treatment of incomplete solutions}
 When generating new individuals, it is possible that a cluster is left empty, i.e., no data point is allocated to it. This can happen in two situations: 
 
 \begin{itemize}
 	
 	\item when generating a solution in crossover or mutation, one or more centroids could not be the closest centroid to any data point;
 
-	\item ii) when generating a solution in the population initialization, it could happen that some numbers in the interval [ 1, ..., $m$ ] are not chosen for the assignment, as it is a random selection.
+	\item when generating a solution in the population initialization, it could happen that some numbers in the interval [ 1, ..., $m$ ] are not chosen for the assignment, as it is a random selection.
 	
 \end{itemize}
 

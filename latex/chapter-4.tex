@@ -18,7 +18,7 @@ Groups A1 and A2 correspond to small instances reported in the work of \cite{Ord
 
 \section{Parameters calibration}
 \label{sec:calibration}
-As in most meta-heuristics, the values chosen for parameters directly affect the results. In this work, we consider six main parameters: $w$ (the tournament size for selection), $\mu$ (the population size) and $\Pi$ (the maximum size of population). For the parameters related to the management of individuals in the population ($w$, $\mu$ and $\Pi$) we performed a calibration to choose the best configuration for the experiments. For the parameters related to the number of iterations the algorithm takes, $I_{max}$ (the maximum number of iterations) and $I_S$ (the number of iterations without improvement that causes the algorithm stop), we directly set their values to 4000 and 2500, respectively.
+As in most meta-heuristics, the values chosen for parameters directly affect the results. In this work, we consider five main parameters: $w$ (the tournament size for selection), $\mu$ (the population size), $\Pi$ (the maximum size of population), $I_{max}$ (the maximum number of iterations) and $I_S$ (the number of iterations without improvement that causes the algorithm stop). For the parameters related to the management of individuals in the population ($w$, $\mu$ and $\Pi$) we performed a calibration to choose the best configuration for the experiments. For the parameters related to the number of iterations the algorithm takes ($I_{max}$ and $I_S$), we directly set their values to 4000 and 2500, respectively.
 
 In preliminary experiments, we started with the following configuration for the free variables, as they produced good and stable results after an initial and manually exploration: $w$ = 3, $\mu$ = 80 and $\Pi$ = 300. From this baseline, we expanded the range of these values. Table \ref{calibration} presents the ranges of tested values for each parameter and the final values achieved after increasing/decreasing each parameter value at a time.
 
@@ -34,6 +34,7 @@ In table \ref{calibration-results}, the first three columns report the values of
 \label{sec:results}
 
 \subsection{Performance and time}
+\label{sec:performance}
 Results of numerical experiments regarding solution performance and computational time for groups A1, A2, B and C of instances are presented in tables \ref{results-all-A1}, \ref{results-all-A2}, \ref{results-all-B} and \ref{results-all-C}, respectively. Due to the stochastic nature of the proposed meta-heuristic, the results of HGKM correspond to the average of 10 runs, where a run is the execution of an instance with a specific number of clusters $m$. The following notation is used in these tables:
 
 \begin{itemize}
@@ -64,7 +65,7 @@ Tables \ref{results-all-A1} and \ref{results-all-A2} presents the results for in
 
 Table \ref{results-all-B} presents the results for instances of group B. As in results for small instances, HGKM finds the new best solution or achieves the current best one in all instances for most of $m$ values, being better than algorithms MS-MGKM, MGKM and GKM in terms of solution quality. Regarding computational time, HGKM is faster than MS-MGKM and GKM in TSPLIB3038, faster than MS-MGKM in TSPLIB1060 and has nearly the same time of MS-MGKM and MGKM in Pendigit. For Image segmentation and Page Block -- the later, only for large $m$ -- HGKM is the algorithm that requires more computational effort.
 
-Table \ref{results-all-C} presents the results for instances of group C -- the group with the largest instances. As in the previous results, HGKM finds the new best solution or achieves the current best one in all instances for most of $m$ values. Regarding computational time, HGKM is faster than MS-MGKM, DCCClust, MS-DCA and GKM for almost all instances, except for XXX and XXX.
+Table \ref{results-all-C} presents the results for instances of group C -- the group with the largest instances. As in the previous results, HGKM finds the new best solution or achieves the current best one in all instances for most of $m$ values. Regarding computational time, HGKM is faster than MS-MGKM, DCCClust, MS-DCA and GKM for almost all instances, except for EEG eye state and D15112.
 
 \input{tables/results-all-A1}
 
@@ -83,25 +84,25 @@ For each group of instances, it reports the average error ($E_{avg}$) to the bes
 \input{tables/m-analysis}
 
 \subsection{Data dimensionality}
+From results of section \ref{sec:performance}, we can observe that HGKM outperforms the other algorithms in both low and high dimensions instances. In order to demonstrate how HGKM behaves in terms of computational time if we consider instances with high dimensionality, figure \ref{fig:dimen} shows a comparison to MS-MGKM, MGKM and GKM in some instances with different number of features.
 
--- How HGKM behaves if we consider instances with high dimensionality.
+\noindent [TO-DO] complete the analysis: up to now is not conclusive -- maybe complete with large instances not executed yet
 
--- How is the shape of HGKM time curve (exponential, linear) if we increase $m$ in different instances. 
-
-\begin{figure}[h!]
+\begin{figure}[H]
 \centering
-\subfigure[\textit{TSPLIB3038} instance ($d = 2$).]{\label{fig:a}\includegraphics[width=0.45\textwidth]{img/time-tsplib3038}}
-\subfigure[\textit{Liver} instance ($d = 6$).]{\label{fig:a}\includegraphics[width=0.45\textwidth]{img/time-liver}}
-\subfigure[\textit{Image segmentation} instance ($d = 19$).]{\label{fig:b}\includegraphics[width=0.45\textwidth]{img/time-image}}
-\subfigure[\textit{Ionosphere} instance ($d = 34$).]{\label{fig:b}\includegraphics[width=0.45\textwidth]{img/time-ionosphere}}
+\subfigure[\textit{TSPLIB3038} ($d = 2$)]{\label{fig:dimen-a}\includegraphics[width=0.45\textwidth]{img/time-tsplib3038}}
+\subfigure[\textit{Liver} ($d = 6$)]{\label{fig:dimen-b}\includegraphics[width=0.45\textwidth]{img/time-liver}}
+\subfigure[\textit{Heart} ($d = 13$)]{\label{fig:dimen-c}\includegraphics[width=0.45\textwidth]{img/time-heart}}
+\subfigure[\textit{Pendigit} ($d = 16$)]{\label{fig:dimen-d}\includegraphics[width=0.45\textwidth]{img/time-pendigit}}
+\subfigure[\textit{Image segmentation} ($d = 19$)]{\label{fig:dimen-e}\includegraphics[width=0.45\textwidth]{img/time-image}}
+\subfigure[\textit{Ionosphere} ($d = 34$)]{\label{fig:dimen-f}\includegraphics[width=0.45\textwidth]{img/time-ionosphere}}
 \caption{The CPU time of algorithms vs the number of clusters when considering instances with different number of features ($d$)}
+\label{fig:dimen}
 \end{figure}
 
-\noindent [TO-DO] results table for group C of instances (all components) -- need to get the exact times for the DCClust and MS-DCA algorithms
+\noindent [TO-DO] the exact times for the DCClust and MS-DCA algorithms in group C of instances
 
-\noindent [TO-DO] analysis on number of features -- our algorithm seems to be fast when $d$ is small in small/medium instances (tsplib for example) but also when $d$ is large in large instances (gas sensor for example)
-
-\noindent [TO-DO] analysis on number of clusters -- how the algorithm is affected if we increase the number of clusters.
+%\noindent [TO-DO] analysis on number of features -- our algorithm seems to be fast when $d$ is small in small/medium instances (tsplib for example) but also when $d$ is large in large instances (gas sensor for example)
 
 \noindent [TO-DO] results without mutation
 
