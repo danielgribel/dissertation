@@ -110,7 +110,7 @@ Once parent solutions $p_1$ and $p_2$ were selected, they are submitted to a cro
 \label{subsec:mutation}
 The use of mutation is typically motivated by the possible permanent loss of genetic material during the execution of a GA. It is possible that after several generations performing the selection followed by crossover a specific genetic material (fragment) in all solutions of the population is led to the same value. If this happens, selection and crossover will not be able to restore the lost genetic material, leading the algorithm to a premature convergence \cite{Whitley1994}. In this context, mutation plays the role of recovering the lost genetic materials by modifying one or more portions of a solution. If crossover is supposed to combine existing solutions to find better ones, mutation is supposed to explore different regions of the search space \cite{Abdoun2012}, being useful on maintaining the genetic diversity from one generation of a GA population to the next.
 
-In the proposed method, the mutation of a solution is done by a biased relocation of a centroid, which means randomly select a centroid and relocate it to a position of a data point, where data points far from their centroids are more likely to be chosen. Then the respective re-assignments are performed. The following items describe in more details how the proposed mutation works:
+In the proposed method, the mutation of a solution is done by a biased relocation of a centroid, which means randomly select a centroid and relocate it to a position of a data point, where data points far from their centroids are more likely to be chosen. Then the respective re-assignments are performed. The proposed mutation can be described as follows:
 
 \begin{enumerate}
 
@@ -118,7 +118,7 @@ In the proposed method, the mutation of a solution is done by a biased relocatio
 	
 	\item Among the $m-1$ remaining centroids, re-assign each data point to the closest centroid (figure \ref{fig:mutation} (b)).
 	
-	\item Randomly select a data point $x_u$ and re-insert $c^{*}$ in the position of $x_u$ (figure \ref{fig:mutation} (c)). This position is selected as in a roulette wheel, such that data points far from their current centroids are more likely to be chosen. This operation works as follow:
+	\item Randomly select a data point $x_u$ and re-insert $c^{*}$ in the position of $x_u$ (figure \ref{fig:mutation} (c)). This position is selected as in a roulette wheel, such that data points far from their current centroids are more likely to be chosen.
 	
 	Consider that $C(x_j)$ is the centroid of the cluster where $x_j$ is assigned to and let $s_i$ be the sum of the distances of all $x_j$ to $C(x_j)$ such that $j < i$. Consider also that $s_1 = 0$. Thus:
 	
@@ -149,7 +149,7 @@ This relocation strategy proved effective as it introduces some drastic movement
 
 \subsection{Local improvement}
 \label{subsec:local-improvement}
-After the generation process done by crossover and mutation, $\theta'$ is enhanced by means of a local improvement procedure. The local improvement aims to find a local optimum by applying local changes to the current solution. Here, the adopted local improvement is one run of the k-means algorithm. The k-means starts with the initial solution $\theta'$ with $m$ centroids $c_1$, $c_2$, ..., $c_m$, and proceeds by alternating between two steps:
+After the generation process in crossover and mutation, $\theta'$ is enhanced by means of a local improvement procedure. The local improvement aims to find a local optimum by applying local changes to the current solution. Here, the adopted local improvement is one run of the k-means algorithm. The k-means starts with the initial solution $\theta'$ with $m$ centroids $c_1$, $c_2$, ..., $c_m$, and proceeds by alternating between two steps:
 
 \begin{enumerate}
 
@@ -186,7 +186,7 @@ To work around this issue and deal only with solutions with exactly $m$ clusters
 
 \section{Population management}
 \label{sec:population-management}
-One of the main challenges in population-based algorithms is avoiding premature convergence of the population. The selection of parents based on elitism tends to favour good individuals to mate, reducing the diversity of the genetic material in the coming generations of the population. In order to overcome this issue, we propose a mechanism that propagates good solutions while ensuring diversity. Thus, the search procedure can be lead to unexplored regions of the search space without losing promising individuals. We call \textit{Survivors selection} as this mechanism to complement the selection, crossover and local improvement operators.
+One of the main challenges in population-based algorithms is avoiding premature convergence of the population. The selection of parents based on elitism favours good individuals, reducing the diversity of the genetic material in the coming generations of the population. To overcome this issue, we propose a mechanism that propagates good solutions while ensuring diversity. Thus, the search procedure can be led to unexplored regions of the search space without losing promising individuals. We call \textit{Survivors selection} as this mechanism to complement the selection, crossover and local improvement operators.
 
 %One of the main challenges in population-based algorithms is avoiding premature convergence of the population. The selection of parents based on elitism tends to favour good individuals to mate, reducing the diversity of the genetic material in the coming generations of the population. In order to overcome this issue, we propose two mechanisms that preserve the good solutions while ensuring diversity. Thus, the search procedure can be lead to unexplored regions of the search space without losing promising individuals. We call \textit{Survivors selection} and \textit{Diversification} management as these mechanisms to complement the selection, crossover and local improvement operators.
 
@@ -217,7 +217,7 @@ This characteristic of eliminating clones and poor solutions reveals two aspects
 
 \section{Computational complexity}
 \label{sec:complexity-algo}
-As stated in previous sections, after the initialization of the population, the proposed meta-heuristic operates in an external loop that calls some internal operators. Among these operators, the main bottleneck is the local improvement phase, where the k-means is performed to improve the newly created solutions. As the computational complexity of k-means is $O(nmd + md^2)$ \cite{Hamerly2010}, the overall complexity of the proposed algorithm is $O(2 I_{max} (nmd + md^2))$, as the local improvement is applied for the two new individuals -- created on crossover and mutation -- in each iteration (the maximum number of iterations in the external loop is $I_{max}$). Thus, although the proposed meta-heuristic is of the same asymptotic complexity of k-means, it is in practice slower than k-means due to the constant $I_{max}$ set in the external loop and to other internal operators, like crossover, mutation, survivors selection and diversification. In the following, the computational complexity of each internal operator:
+As stated in previous sections, after the initialization of the population, the proposed meta-heuristic operates in an external loop that calls some internal operators. Among these operators, the main bottleneck is the local improvement phase, where the K-means is performed to improve the newly mutated solution. As the computational complexity of K-means is $O(nmd + md^2)$ \cite{Hamerly2010}, the overall complexity of the proposed algorithm is $O(I_{max} (nmd + md^2))$, as the local improvement is applied after the mutation in each iteration (the maximum number of iterations in the external loop is $I_{max}$). Thus, although the proposed meta-heuristic is of the same asymptotic complexity of k-means, it is in practice slower than K-means due to the constant $I_{max}$ set in the external loop and to other internal operators, like crossover, mutation, survivors selection and diversification. In the following, the computational complexity of each internal operator:
 
 %- initial population: $O(100 * (nmd + md^2))$
 
