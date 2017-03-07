@@ -1,6 +1,6 @@
 \chapter{Proposed Methodology}
 \label{chap:methodology}
-This chapter describes the proposed meta-heuristic to solve the MSSC problem. The designed method is based on a genetic algorithm (GA) with local improvements combined with mechanisms that allow the diversification of the population (local minima escape) and the propagation of good solutions. In this method, the local improvement procedure is performed via the running of the k-means algorithm, which takes one candidate solution in the GA population as a starting point. In other words, the method may be defined as a multi-start k-means inside a GA framework, which in turn is guided by the MSSC objective. 
+This chapter describes the proposed meta-heuristic to solve the MSSC problem. The designed method is based on a genetic algorithm (GA) with local improvements combined with mechanisms that allow the diversification of the population (local minima escape) and the propagation of good solutions. In this method, the local improvement procedure is performed via the running of the K-means algorithm, which takes one candidate solution in the GA population as a starting point. In other words, the method may be defined as a multi-start K-means inside a GA framework, which in turn is guided by the MSSC objective. 
 
 \section{General structure}
 \label{sec:general-structure}
@@ -79,12 +79,12 @@ The selection is the stage where individuals from the population are chosen to m
 
 \subsection{Crossover}
 \label{subsec:crossover}
-Once parent solutions $p_1$ and $p_2$ were selected, they are submitted to a crossover procedure in order to produce a offspring (child) solution from them. The crossover operator works as follows:
+Once parent solutions $p_1$ and $p_2$ were selected, they are submitted to a crossover procedure in order to produce a offspring (child) solution. The crossover operator works as follows:
 
 \begin{enumerate}
 	%\item Firstly, the minimum bipartite matching between centroids of $p_1$ and $p_2$ is found. Given a graph $G = (V_1, V_2, E)$, where $V_1$ is the set of centroids (nodes) of parent $p_1$, $V_2$ is the set of centroids of parent $p_2$, and $c_{ij} \in E$ is the euclidean distance for every $i \in V_1$ and $j \in V_2$; the goal is to find a one-to-one matching $M$ such that the sum of the values of the edges in $M$ is minimum. In other words, the goal is to produce the one-to-one assignment of centroids from different sets (parents), in such a way that the sum of all distances considered in the assignment is minimized. This matching problem is solved by the Hungarian method \cite{Kuhn1955} and leads to $m$ pairs of centroids, where $m$ is the number of clusters (centroids).
 
-	\item Firstly, a solution for the minimum weighted bipartite matching between centroids of $p_1$ and $p_2$ is found (figure \ref{fig:crossover} (b)). Finding such a matching is known as the assignment problem. Let $G = (V, E)$ be a complete bipartite graph whose node set can be partitioned as $V = X \cup Y$, with the property that every edge $e \in E$ has one end in $X$ and the other in $Y$, and every node of $X$ is connected to every node of $Y$. Consider also that $|X| = |Y| = m$. An assignment $M$ in $G$ is the subset of edges $M \subseteq E$ of minimum cost, such that each node appears in exactly one edge in $M$ \cite{tardos}. In our case, the nodes in $X$ and $Y$ correspond to the centroids of $p_1$ and $p_2$, respectively. The cost of an edge $e \in E$ is the euclidean distance between two centroids $c' \in X$ and $c'' \in Y$. Thus, the goal is to produce the one-to-one assignment of centroids from different sets (parents), in such a way that the sum of all distances considered in the assignment is minimized. In other words, we aim to join the similar centroids of different individuals. This matching problem is solved by the Hungarian method \cite{Kuhn1955} and leads to $m$ pairs of centroids, where $m$ is the number of clusters (centroids).
+	\item Firstly, a solution for the minimum weighted bipartite matching between centroids of $p_1$ and $p_2$ is found (figure \ref{fig:crossover} (b)). Finding such a matching is known as the assignment problem. Let $G = (V, E)$ be a complete bipartite graph whose node set can be partitioned as $V = X \cup Y$, with the property that every edge $e \in E$ has one end in $X$ and the other in $Y$, and every node of $X$ is connected to every node of $Y$. Consider also that $|X| = |Y| = m$. An assignment $M$ in $G$ is the subset of edges $M \subseteq E$ of minimum cost, such that each node appears in exactly one edge in $M$ \cite{tardos}. In our case, the nodes in $X$ and $Y$ correspond to the centroids of $p_1$ and $p_2$, respectively. The cost of an edge $e \in E$ is the euclidean distance between two centroids $c' \in X$ and $c'' \in Y$. Thus, the goal is to produce the one-to-one assignment of centroids from different sets (parents), in such a way that the sum of all distances considered in the assignment is minimized. In other words, we aim to join the similar centroids of different individuals. We solve this matching problem with the Hungarian algorithm \cite{Kuhn1955}, using the specific implementation of dlib C++ library (King, 2011), which works with a complexity of $O(m^3)$ and leads to $m$ pairs of centroids, where $m$ is the number of clusters (centroids).
 
 %One set of nodes in the matching problem is composed by the centroids of $p_1$ and the other set is composed by the centroids of $p_2$. The goal is to produce the one-to-one assignment of centroids from different sets, in such a way that the overall edges weight (distances) is minimized.
 
@@ -93,11 +93,21 @@ Once parent solutions $p_1$ and $p_2$ were selected, they are submitted to a cro
 	\item Finally, data points are assigned to the closest offspring centroid.
 \end{enumerate}
 
+%\begin{figure}[H]
+%  \begin{center}
+%    \includegraphics[width=1.0\textwidth]{img/crossover}
+%    \caption{Crossover based on centroids matching: (a) two parent solutions; (b) the assignment between centroids of $p_1$ and $p_2$; (c) random selection of matched centroids and (d) the produced offspring.}\label{fig:crossover}
+%  \end{center}
+%\end{figure}
+
 \begin{figure}[H]
-  \begin{center}
-    \includegraphics[width=1.0\textwidth]{img/crossover}
-    \caption{Crossover based on centroids matching: (a) two parent solutions; (b) the assignment between centroids of $p_1$ and $p_2$; (c) random selection of matched centroids and (d) the produced offspring.}\label{fig:crossover}
-  \end{center}
+\centering
+\subfigure[Parents $p_1$ and $p_2$]{\label{fig:crossoverA}\includegraphics[width=0.24\textwidth]{img/crossoverA}}
+\subfigure[Assignment]{\label{fig:crossoverB}\includegraphics[width=0.24\textwidth]{img/crossoverB}}
+\subfigure[Random selection]{\label{fig:crossoverC}\includegraphics[width=0.24\textwidth]{img/crossoverC}}
+\subfigure[New solution]{\label{fig:crossoverD}\includegraphics[width=0.24\textwidth]{img/crossoverD}}
+\caption{Crossover based on centroids matching: (a) two parent solutions; (b) the assignment between centroids of $p_1$ and $p_2$; (c) random selection of matched centroids and (d) the produced offspring.}
+\label{fig:crossover}
 \end{figure}
 
 %Given a graph $G = (V_1 \union V_2, E)$, where $V_1$ is the set of centroids (nodes) of parent $p_1$, $V_2$ is the set of centroids of parent $p_2$, and an edge $e_{ij} \in E$ is the euclidean distance between a centroid $c_i \in V_1$ and a centroid $c_j \in V_2$; the minimum matching in this case is the one-to-one assignment of centroids $c_i \in V_1$ to centroids $c_j \in V_2$, in such a way that the sum of the weights of $e'_{ij}$ in the assignment is minimum. 
@@ -120,19 +130,27 @@ In the proposed method, the mutation of a solution is done by a biased relocatio
 	
 	\item Randomly select a data point $x_u$ and re-insert $c^{*}$ in the position of $x_u$ (figure \ref{fig:mutation} (c)). This position is selected as in a roulette wheel, such that data points far from their current centroids are more likely to be chosen.
 	
-	Consider that $C(x_j)$ is the centroid of the cluster where $x_j$ is assigned to and let $s_i$ be the sum of the distances of all $x_j$ to $C(x_j)$ such that $j < i$. Consider also that $s_1 = 0$. Thus:
+	%Consider that $C(x_j)$ is the centroid of the cluster where $x_j$ is assigned to and let $s_i$ be the sum of the distances of all $x_j$ to $C(x_j)$ such that $j < i$. Consider also that $s_1 = 0$. Thus:
 	
+	Consider that $C(x_j)$ is the centroid of the cluster where $x_j$ is assigned to. Let $s_j$ be the probability that $x_j$ is selected as the new centroid.
+
 	\begin{equation}
-	s_i = \sum_{j=1}^{i-1} d(x_j, C(x_j)), \quad i = 2, ..., n.
+	s_j = \frac{d(x_j, C(x_j))}{\sum_{i=1}^{n}d(x_i, C(x_i))}
 	\end{equation}
 	
-	Now, we define the roulette wheel as $n$ intervals, where each data point $x_i$ occupies a portion $I_i$ of the roulette:
+	%\begin{equation}
+	%s_i = \sum_{j=1}^{i-1} d(x_j, C(x_j)), \quad i = 2, ..., n.
+	%\end{equation}
 	
-	\begin{equation}
-	I_i = [ s_i, s_i + d(x_i, C(x_i)) ], \quad i = 1, ..., n.
-	\end{equation}
+	%Now, we define the roulette wheel as $n$ intervals, where each data point $x_i$ occupies a portion $I_i$ of the roulette:
 	
-	As we can easily perceive, data points far from their centroids are more likely to be chosen, as they occupy the largest portions of the roulette. Thus, to select the data point $x_u$ to be the new centroid, we randomly chose a real number $r$ in the $[ 0, s_n + d(x_n, C(x_n) ]$ interval and get the data point $x_u$ such that $r \in I_u$, coming back to a solution with $m$ centroids.
+	%\begin{equation}
+	%I_i = [ s_i, s_i + d(x_i, C(x_i)) ], \quad i = 1, ..., n.
+	%\end{equation}
+	
+	%As we can easily perceive, data points far from their centroids are more likely to be chosen, as they occupy the largest portions of the roulette. Thus, to select the data point $x_u$ to be the new centroid, we randomly chose a real number $r$ in the $[ 0, s_n + d(x_n, C(x_n) ]$ interval and get the data point $x_u$ such that $r \in I_u$, coming back to a solution with $m$ centroids.
+
+	As we can easily observe, data points far from their centroids are more likely to be chosen, as their probabilities are higher. Thus, we select the data point $x_u$ to be the new centroid by randomly choosing a value according to the probabilities distribution, coming back to a solution with $m$ centroids.
 	
 	\item Among the $m$ resulting centroids, re-assign each data point to the closest centroid and update the position of centroids (figure \ref{fig:mutation} (d)).
 		
@@ -140,16 +158,26 @@ In the proposed method, the mutation of a solution is done by a biased relocatio
 
 This relocation strategy proved effective as it introduces some drastic movement in one centroid position, allowing the overall solution to have considerable changes that are not achieved by the local improvement. Thus, the mutation, in addition to generating a solution that is similar to the offspring -- which is typically a good solution due to elitism in parental selection -- also contributes significantly to the population diversity through the biased relocation of a centroid.
 
+%\begin{figure}[H]
+%  \begin{center}
+%    \includegraphics[width=1.0\textwidth]{img/mutation}
+%    \caption{Mutation based on centroid relocation: (a) selection of the centroid to be relocated; (b) re-assignments among the remaining centroids; (c) selection of the data point where the removed centroid will be placed and (d) final re-assignments and the new solution.}\label{fig:mutation}
+%  \end{center}
+%\end{figure}
+
 \begin{figure}[H]
-  \begin{center}
-    \includegraphics[width=1.0\textwidth]{img/mutation}
-    \caption{Mutation based on centroid relocation: (a) selection of the centroid to be relocated; (b) re-assignments among the remaining centroids; (c) selection of the data point where the removed centroid will be placed and (d) final re-assignments and the new solution.}\label{fig:mutation}
-  \end{center}
+\centering
+\subfigure[Selection of the centroid to be relocated]{\label{fig:mutationA}\includegraphics[width=0.4\textwidth]{img/mutationA}}
+\subfigure[Re-assignments among the remaining centroids]{\label{fig:mutationB}\includegraphics[width=0.4\textwidth]{img/mutationB}}
+\subfigure[Selection of the data point where the removed centroid will be placed]{\label{fig:mutationC}\includegraphics[width=0.4\textwidth]{img/mutationC}}
+\subfigure[Final re-assignments and the new solution]{\label{fig:mutationD}\includegraphics[width=0.4\textwidth]{img/mutationD}}
+\caption{Mutation based on centroid relocation.}
+\label{fig:mutation}
 \end{figure}
 
 \subsection{Local improvement}
 \label{subsec:local-improvement}
-After the generation process in crossover and mutation, $\theta'$ is enhanced by means of a local improvement procedure. The local improvement aims to find a local optimum by applying local changes to the current solution. Here, the adopted local improvement is one run of the k-means algorithm. The k-means starts with the initial solution $\theta'$ with $m$ centroids $c_1$, $c_2$, ..., $c_m$, and proceeds by alternating between two steps:
+After the generation process in crossover and mutation, $\theta'$ is enhanced by means of a local improvement procedure. The local improvement aims to find a local optimum by applying local changes to the current solution. Here, the adopted local improvement is one run of the K-means algorithm. The K-means starts with the initial solution $\theta'$ with $m$ centroids $c_1$, $c_2$, ..., $c_m$, and proceeds by alternating between two steps:
 
 \begin{enumerate}
 
@@ -169,7 +197,7 @@ After the generation process in crossover and mutation, $\theta'$ is enhanced by
 
 Then the algorithm keeps repeating these two steps until the assignments no longer change, converging to a local optimum.
 
-In our experiments, we use the k-means implementation of Hamerly \cite{Hamerly2010}, who proposed an acceleration that gives the same answer of the standard Lloyd's k-means \cite{Lloyd1982} but is much faster in practice. This implementation avoids distance computations by using the triangle inequality and lower bounds on distances. The time per k-means iteration of the algorithm is O($nmd$+$md^2$), where $n$ is the number of data points, $m$ is the number of clusters and $d$ is the number of data dimensions (features). However, the calculated lower bounds allow to eliminate the innermost k-means loop in around 80\% of the time, which in practise is much faster than the standard k-means.
+In our experiments, we use the K-means implementation of Hamerly \cite{Hamerly2010}, who proposed an acceleration that gives the same answer of the standard Lloyd's K-means \cite{Lloyd1982} but is much faster in practice. This implementation avoids distance computations by using the triangle inequality and lower bounds on distances. The time per K-means iteration of the algorithm is O($nmd$+$md^2$), where $n$ is the number of data points, $m$ is the number of clusters and $d$ is the number of data dimensions (features). However, the calculated lower bounds allow to eliminate the innermost K-means loop in around 80\% of the time, which in practise is much faster than the standard K-means.
 
 \subsection{Treatment of incomplete solutions}
 When generating new individuals, it is possible that a cluster is left empty, i.e., no data point is allocated to it. This can happen in two situations: 
@@ -217,7 +245,7 @@ This characteristic of eliminating clones and poor solutions reveals two aspects
 
 \section{Computational complexity}
 \label{sec:complexity-algo}
-As stated in previous sections, after the initialization of the population, the proposed meta-heuristic operates in an external loop that calls some internal operators. Among these operators, the main bottleneck is the local improvement phase, where the K-means is performed to improve the newly mutated solution. As the computational complexity of K-means is $O(nmd + md^2)$ \cite{Hamerly2010}, the overall complexity of the proposed algorithm is $O(I_{max} (nmd + md^2))$, as the local improvement is applied after the mutation in each iteration (the maximum number of iterations in the external loop is $I_{max}$). Thus, although the proposed meta-heuristic is of the same asymptotic complexity of k-means, it is in practice slower than K-means due to the constant $I_{max}$ set in the external loop and to other internal operators, like crossover, mutation, survivors selection and diversification. In the following, the computational complexity of each internal operator:
+As stated in previous sections, after the initialization of the population, the proposed meta-heuristic operates in an external loop that calls some internal operators. Among these operators, the main bottleneck is the local improvement phase, where the K-means is performed to improve the newly mutated solution. As the computational complexity of K-means is $O(nmd + md^2)$ \cite{Hamerly2010}, the overall complexity of the proposed algorithm is $O(I_{max} (nmd + md^2))$, as the local improvement is applied after the mutation in each iteration (the maximum number of iterations in the external loop is $I_{max}$). Thus, although the proposed meta-heuristic is of the same asymptotic complexity of K-means, it is in practice slower than K-means due to the constant $I_{max}$ set in the external loop and to other internal operators, like crossover, mutation, survivors selection and diversification. In the following, the computational complexity of each internal operator:
 
 %- initial population: $O(100 * (nmd + md^2))$
 
@@ -231,19 +259,11 @@ As stated in previous sections, after the initialization of the population, the 
 
 	\item Mutation: $O(nmd)$
 
-	\item Local improvement (k-means): $O(nmd + md^2)$
+	\item Local improvement (K-means): $O(nmd + md^2)$
 
 \end{itemize}
 %$^{*}$ $O(nmd)$ because $n$ is typically much greater than $m$, but for $n < m$ the crossover complexity becomes $O(m^{3})$ due to the Hungarian algorithm for finding the matching between centroids.
 
 %In addition to the above internal operators, the mechanisms for population management are also performed in the general loop. However, unlike the other operators, \textit{Survivors selection} and \textit{Diversification} are not performed on each iteration, but only when some criteria are reached. \textit{Survivors selection} is performed whenever the population reaches $\Pi$ individuals; and \textit{Diversification} is called after the \textit{Survivors selection} if $I_D$ iterations happen without improving the best solution. Therefore, their contribution to the computational time of the algorithm is small in practice. Their complexities are:
 
-In addition to the above internal operators, a mechanism to select the best individuals for propagation is also performed in the general loop. However, unlike the other operators, the \textit{Survivors selection} is not performed on each iteration, but only when the population reaches $\Pi$ individuals. Therefore, its contribution to the computational time of the algorithm is small in practice. Its complexity is:
-
-\begin{itemize}
-
-	\item Survivors selection: $O(n\Pi)$
-
-	%\item Diversification: $O(\beta (nmd + md^2))$ ($\beta$ constant)
-
-\end{itemize}
+In addition to the above internal operators, a mechanism to select the best individuals for propagation is also performed in the general loop. However, unlike the other operators, the \textit{Survivors selection} is not performed on each iteration, but only when the population reaches $\Pi$ individuals. Therefore, its contribution to the computational time of the algorithm is small in practice, being $O(n\frac{I_{max}}{\Pi})$.
