@@ -67,7 +67,7 @@ The encoding based on the centroids description defines a solution through the f
 
 \section{Initial population}
 \label{sec:initial-population}
-The first step in a GA is the generation of an initial population. It has been recognized that if the initial population of the GA is good, then the algorithm has a better possibility of finding a good solution \cite{Burke2004, Zitzler2000}. In this work, the initial population is randomly generated, by assigning each data point to a cluster according to a discrete uniform distribution, i.e., where each outcome is equally likely to happen. To compose the initial population, 100 individuals are created. Then, each initial individual is submitted to the local improvement. Some factors can influence the initial population or should be taken into account when an initial population is generated randomly: the search space, the fitness function, the diversity, and the number of individuals \cite{DiazGomez2007}.
+The first step in a GA is the generation of an initial population. It has been recognized that if the initial population of the GA is good, then the algorithm has a greater possibility of finding a good solution \cite{Burke2004, Zitzler2000}. In this work, the initial population is randomly generated, by assigning each data point to a cluster according to a discrete uniform distribution, i.e., where each outcome is equally likely to happen. To compose the initial population, 100 individuals are created. Then, each initial individual is submitted to the local improvement. Some factors can influence the initial population or should be taken into account when an initial population is generated randomly: the search space, the fitness function, the diversity, and the number of individuals \cite{DiazGomez2007}.
 
 \section{Individuals management}
 \label{individuals-management}
@@ -118,7 +118,7 @@ Once parent solutions $p_1$ and $p_2$ were selected, they are submitted to a cro
 
 \subsection{Mutation}
 \label{subsec:mutation}
-The use of mutation is typically motivated by the possible permanent loss of genetic material during the execution of a GA. It is possible that after several generations performing the selection followed by crossover a specific genetic material (fragment) in all solutions of the population is led to the same value. If this happens, selection and crossover will not be able to restore the lost genetic material, leading the algorithm to a premature convergence \cite{Whitley1994}. In this context, mutation plays the role of recovering the lost genetic materials by modifying one or more portions of a solution. If crossover is supposed to combine existing solutions to find better ones, mutation is supposed to explore different regions of the search space \cite{Abdoun2012}, being useful on maintaining the genetic diversity from one generation of a GA population to the next.
+The use of mutation is typically motivated by the possible permanent loss of genetic material during the execution of a GA. It is possible that after several generations performing the selection followed by crossover, the same value is applied to a specific genetic material (fragment) in all solutions of the population. If this happens, selection and crossover will not be able to restore the lost genetic material, leading the algorithm to a premature convergence \cite{Whitley1994}. In this context, mutation plays the role of recovering the lost genetic materials by modifying one or more portions of a solution. If crossover is supposed to combine existing solutions to find better ones, mutation is supposed to explore different regions of the search space \cite{Abdoun2012}, being useful on maintaining the genetic diversity from one generation of a GA population to the next.
 
 In the proposed method, the mutation of a solution is done by a biased relocation of a centroid, which means randomly select a centroid and relocate it to a position of a data point, where data points far from their centroids are more likely to be chosen. Then the respective re-assignments are performed. The proposed mutation can be described as follows:
 
@@ -126,7 +126,7 @@ In the proposed method, the mutation of a solution is done by a biased relocatio
 
 	\item Randomly select a centroid $c^{*}$ and remove it from the solution (figure \ref{fig:mutation} (a)).
 	
-	\item Among the $m-1$ remaining centroids, re-assign each data point to the closest centroid (figure \ref{fig:mutation} (b)).
+	\item Among the $m-1$ remaining centroids, re-assign each data point to the closest centroid (figure \ref{fig:mutation} (b)). In this step, the centroids remain in their current positions.
 	
 	\item Randomly select a data point $x_u$ and re-insert $c^{*}$ in the position of $x_u$ (figure \ref{fig:mutation} (c)). This position is selected as in a roulette wheel, such that data points far from their current centroids are more likely to be chosen.
 	
@@ -156,7 +156,7 @@ In the proposed method, the mutation of a solution is done by a biased relocatio
 		
 \end{enumerate}
 
-This relocation strategy proved effective as it introduces some drastic movement in one centroid position, allowing the overall solution to have considerable changes that are not achieved by the local improvement. Thus, the mutation, in addition to generating a solution that is similar to the offspring -- which is typically a good solution due to elitism in parental selection -- also contributes significantly to the population diversity through the biased relocation of a centroid.
+This relocation proved to be effective as it introduces a drastic move in the position of a centroid, allowing the overall solution to have considerable changes that are not achieved by the local improvement. Thus, the mutation, in addition to generating a solution that is similar to the offspring -- which is typically a good solution due to elitism in parental selection -- also contributes significantly to the population diversity through the biased relocation of a centroid.
 
 %\begin{figure}[H]
 %  \begin{center}
