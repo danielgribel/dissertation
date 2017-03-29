@@ -1,0 +1,213 @@
+%% -*- coding: utf-8; -*-
+
+\documentclass[
+  msc
+]{ThesisPUC}
+
+%%%
+%%% Additional Packages
+%%%
+
+%% \usepackage[brazilian]{babel}      %% in ThesisPUC.cls
+%% \usepackage[utf8]{inputenc}        %% .
+%% \usepackage[T1]{fontenc}           %% .
+%% \usepackage{lmodern}               %\cup % .
+%% \usepackage[pdftex]{graphicx}	%% .
+
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{colortbl}
+\usepackage[%
+  dvipsnames,
+  svgnames,
+  x11names,
+  fixpdftex
+]{xcolor}
+\usepackage{numprint}
+\usepackage{textcomp}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{textcomp}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{longtable}
+
+\DeclareGraphicsExtensions{.pdf, .png}
+
+%\setcitestyle{square}
+
+%% numprint 
+\npthousandsep{.}
+\npdecimalsign{,}
+
+%% ThesisPUC option
+%% \tablesmode{figtab} %% [nada, fig, tab ou figtab]
+
+
+%%%
+%%% Counters
+%%%
+
+%% uncomment and change for other depth values
+%% \setcounter{tocdepth}{3}
+%% \setcounter{lofdepth}{3}
+%% \setcounter{lotdepth}{3}
+%% \setcounter{secnumdepth}{3}
+
+
+%%%
+%%% New commands and other global definitions
+%%%
+
+\input{defs}
+
+%%%
+%%% Abreviation Title
+%%%
+
+%% \abreviationstitle{Lista de Abreviaturas}
+%% \abreviationstitleuk{List of Abreviations}
+
+
+%%%
+%%% Misc.
+%%%
+
+\usecolour{true}
+
+
+%%%
+%%% Titulos
+%%%
+
+\author{Daniel Lemes Gribel}
+\authorR{Lemes Gribel, Daniel}
+
+\adviser{Thibaut Victor Gaston Vidal}{Dr.}
+\adviserR{Vidal, Thibaut Victor Gaston}
+
+%\coadviser{}{Dr.}
+%\coadviserR{}
+%\coadviserInst{}{CETEM/MCTI}
+
+\title{Hybrid Genetic Algorithm for the Minimum Sum-of-Squares Clustering Problem}
+
+%\titleuk{Adaptive Meta-heuristics for the Minimum Sum-of-Squares Clustering Problem}
+
+%% \subtitulo{Aqui vai o subtitulo caso precise}
+
+\day{$20^{th}$}
+\month{March}
+\year{2017}
+
+\city{Rio de Janeiro}
+\CDD{620.11}
+\department{Informática}
+\program{Informática}
+\school{Centro Técnico Científico}
+\university{Pontifícia Universidade Católica do Rio de Janeiro}
+\uni{PUC-Rio}
+
+
+%%%
+%%% Jury
+%%%
+
+\jury{%
+  \jurymember{Marcus Vinicius Soledade Poggi de Aragão}{Dr.}
+    {Departamento de Informática}{PUC-Rio}
+  \jurymember{Marco Serpa Molinaro}{Dr.}
+    {Departamento de Informática}{PUC-Rio}
+  %\schoolhead{José Eugenio Leal}{Prof.}
+}
+
+
+%%%
+%%% Resume
+%%%
+
+\resume{%
+Obtained a bachelor’s degree in Information Systems
+from the Federal University of Rio de Janeiro State
+(Unirio, Rio de Janeiro, Brazil). He earned a
+scholarship from CNPq in his Masters at PUC-Rio.}
+
+
+%%%
+%%% Acknowledgment
+%%%
+
+\acknowledgment{%
+
+\noindent Firstly, I would like to express my sincere gratitude to my advisor, Thibaut Vidal, for his great support during the Master's program. His patience, motivation and immense knowledge helped me a lot in conducting this research.
+
+\bigskip
+
+\noindent I would also like to thank CNPq for the funding received through a scholarship during the entire duration of this degree.
+
+\bigskip
+
+\noindent Last but not least, I would like to thank my parents, my brothers and my friends for providing me with unfailing support and continuous encouragement.
+}
+
+
+%%%
+%%% Catalog prekeywords
+%%%
+
+\catalogprekeywords{%
+  \catalogprekey{Informática}%
+}
+
+
+%%%
+%%% Keywords
+%%%
+
+\keywordsuk{%
+  \key{Clustering;}
+  \key{Meta-heuristic;}
+  \key{Unsupervised learning;}
+  \key{Minimum sum-of-squares;}
+  \key{Data mining;}
+  \key{Combinatorial optimization.}
+}
+
+\keywords{%
+  \key{Clusterização;}
+  \key{Meta-heurística;}
+  \key{Aprendizado não-supervisionado;}
+  \key{Mínima soma dos quadrados;}
+  \key{Mineração de dados;}
+  \key{Otimização combinatória.}
+}
+
+
+%%%
+%%% Abstract
+%%%
+
+\abstractuk{%
+Clustering plays an important role in data mining, being useful in many fields that deal with exploratory data analysis, such as information retrieval, document extraction, and image segmentation. Although they are essential in data mining applications, most clustering algorithms are ad-hoc methods. They have a lack of guarantee on the solution quality, which in many cases is related to a premature convergence to a local minimum of the search space. In this research, we address the problem of data clustering from an optimization perspective, where we propose a hybrid genetic algorithm to solve the Minimum Sum-of-Squares Clustering (MSSC) problem. This meta-heuristic is capable of escaping from local minima and generating near-optimal solutions to the MSSC problem. Results show that the proposed method outperformed the best current literature results -- in terms of solution quality -- for almost all considered sets of benchmark instances for the MSSC objective.
+}
+  
+\abstract{%
+Clusterização desempenha um papel importante em aplicações de data mining, sendo útil em muitos campos que lidam com a análise exploratória de dados, tais como recuperação de informações, extração de documentos e segmentação de imagens. Embora sejam essenciais em aplicações de mineração de dados, a maioria dos algoritmos de clusterização são métodos ad-hoc. Eles apresentam falta de garantia na qualidade da solução, que em muitos casos está relacionada a uma convergência prematura para um mínimo local no espaço de busca. Neste trabalho, abordamos o problema de clusterização a partir da perspectiva de otimização, onde propomos um algoritmo genético híbrido para resolver o problema Minimum Sum-of-Squares Clustering (MSSC, em inglês). A meta-heurística proposta é capaz de escapar de mínimos locais e gerar soluções quase ótimas para o problema MSSC. Os resultados mostram que o método proposto superou os resultados atuais da literatura -- em termos de qualidade da solução -- para quase todos os conjuntos de instâncias considerados para o problema MSSC.
+}
+
+\begin{document}
+
+  \input{chapter-1}
+  \input{chapter-2}
+  \input{chapter-3}
+  \input{chapter-4}
+  \input{chapter-5}
+  \arial
+  \bibliography{reference}
+  \normalfont
+  
+\end{document}

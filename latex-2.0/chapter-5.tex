@@ -1,0 +1,14 @@
+% -*- coding: utf-8; -*-
+\chapter{Conclusions and Future work}
+
+% About the problem and the model-oriented approach to solve clustering.
+In this work, we have addressed the clustering task as an optimization problem, where we investigate the Minimum sum-of-squares (MSSC) formulation. Among the many existing formulations of clustering problems, the MSSC in the Euclidean space is the most treated one.
+
+% About the method (meta-heuristic).
+In order to solve the Euclidean MSSC problem, we proposed the HGKM, a hybrid genetic algorithm that combines the K-means local improvement with diversification strategies. The proposed method allows to efficiently escape from local minimums and reach high quality solutions, outperforming the best current literature results for all considered sets of benchmark instances in terms of solution quality. In terms of time, the proposed method outperformed some of state-of-the-art algorithms in large instances, which confirms the robustness of HGKM.
+
+% Crossover + Mutation: The importance of the proposed crossover + mutation as a novelty in clustering. The role of mutation in diversification
+The effectiveness of the proposed method resides in the crossover, mutation and local improvement components, that contribute with elitism and diversification, favouring the propagation of good solutions and making possible the exploration of new regions of the search space. As the proposed meta-heuristic is based on a general genetic framework -- with classical components as crossover and mutation -- the algorithm is very easy to understand and implement.
+
+% Future work
+For future work, we will investigate some efficient data structures and speed up techniques to improve the computational time of HGKM. Also for future achievements, we aim to solve different objectives in data clustering with the proposed method. As we tackle the clustering problem from an optimization perspective through a meta-heuristic, we can elaborate a neighbourhood structure that is general enough to deal with different models, where the evaluation cost of a solution varies according to the objective. Thus, with this algorithmic framework we can easily extend the scope of this research to verify the suitability of different clustering models when considering different types of data.

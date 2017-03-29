@@ -1,0 +1,125 @@
+% -*- coding: utf-8; -*-
+\chapter{Problem Statement and Literature Review}
+
+Most algorithms proposed for data clustering are based on heuristics with intuitive procedures \cite{Fraley2002}. These algorithms are also referred as ad-hoc methods, since they are solutions designed for specific clustering criteria, being non-generalizable and not adaptive. As these ad-hoc methods are based on greedy constructions or local improvements, they have some limitation regarding solution quality and local optimum convergence.
+
+There is little systematic guidance in such algorithms for solving important questions in cluster analysis \cite{Fraley2002}. K-means is an example of a very popular ad-hoc algorithm for clustering, based on iterative updates of cluster centers until convergence. Although K-means is easy to implement and usually demand low computational time, it has not any optimality guarantee and is highly dependent on initial conditions to deliver good outcomes.
+
+However, in the recent years there has been a considerable growth of clustering methods designed in a model-oriented way. This approach is based on formal models that usually produce more accurate solutions than ad-hoc methods as they clearly state an objective to be achieved.
+
+\section{Ad-hoc methods}
+The ad-hoc methods proposed for data clustering usually belong to two large classes: hierarchical and partitional algorithms.
+
+% Hierarchical clustering
+Hierarchical clustering works by successively agglomerating or separating clusters at each stage according to some distance measure. The methods of this class can be roughly separated into two groups: agglomerative and divisive methods. In an agglomerative approach, each data point starts at its own cluster and at each stage of the algorithm it joins the two most similar clusters, until a single cluster containing all data points is reached. The divisive method is the opposite. The method proceeds by separating $n$ data points successively into finer groups. 
+
+Several algorithms for data clustering are based on hierarchical constructions, once they do not require the number of clusters a priori and are independent from initial conditions, as strategic starting points. However, hierarchical methods are computationally expensive -- usually O($n^2$ log $n$) for computational complexity -- and all decisions about joining/separating sets of points are definitive, i.e., it is impossible to revert any merge or split operation. BIRCH (Balanced Iterative Reducing and Clustering Using Hierarchies) \cite{Zhang96} and CURE (Clustering Using Representatives) \cite{Guha1998} are examples of popular hierarchical clustering algorithms.
+ 
+%\subsubsection{Partitional clustering}
+The methods belonging to partitional clustering directly divide data points into some pre-specified number of clusters without any hierarchical structure \cite{Xu2005}. It is composed of methods based on iterative relocation of data points between clusters that, at each iteration, reduce the value of some criteria function until convergence \cite{Karkkainen2006}. The minimum sum-of-squares function is one of the most widely used criteria, which aims to minimize the sum of each data point to the center of its cluster. K-means and PAM (Partitioning Around Medoids) are quite widespread partitioning clustering methods. Although partitional clustering algorithms are suitable for large data sets due to efficiency in computational time, they require the number of clusters in advance and are heavily dependent on the initial conditions, which can lead algorithms like K-means to a premature convergence \cite{Das2009}.
+
+Due to the popularity of K-means, several works have been dedicated to proposing more efficient implementations, speed up techniques and smart data structures for it. The work of \cite{Hamerly2010}, in particular, provides an efficient K-means algorithm which works with a complexity of $O(nmd + md^2)$ per iteration, but that is much faster in practice as it avoids most of the K-means innermost loops.
+
+\section{Model-driven clustering}
+The above classes of ad-hoc methods are not guided by a model, but by iterative constructions or re-assignments according to some underlying criteria. For instance, in K-means algorithm, the criteria is to assign data points to the closest center after the calculation of centers position. In hierarchical methods, the criteria to merge/split a solution is based on a distance metric between pairs of clusters. Due to these characteristics, it is difficult to assess if erratic results come from inappropriate methods, or from a data that does not intuitively leads to the result that we desire.
+
+In order to detect this kind of behaviour, some solutions have been designed to face data clustering from a model-oriented perspective, which means giving a formal definition of the clustering problem as an optimization problem, where clear objective functions and restrictions are set. Therefore, one can apply a method that minimizes/maximizes an objective function to solve the model.
+
+The work of Hansen and Jaumard \cite{Hansen1997} states that most of clustering tasks are composed by the following elements:
+
+\begin{itemize}
+
+	\item \textit{Data}. Observation of $d$ characteristics in $n$ entities (patterns). This yields a $n \times d$ data matrix.
+
+	\item \textit{Similarities}. Computation of the similarities between entities, i.e., the derived measures from features that indicates how similar (dissimilar) are each pair of entities.
+
+	\item \textit{Constraints}. Specification of existing constraints in the clustering task. For instance: number of clusters, maximum cardinality per cluster, number of clusters an entity can be assigned to, etc.
+
+	\item \textit{Criterion}. Selection of the criterion to express homogeneity or separability of the clusters.
+
+	\item \textit{Algorithm}. Design of the algorithm to solve the clustering problem.
+
+	\item \textit{Interpretation}. Analysis on how meaningful are the generated clusters. For instance: use of descriptive statistics and data mining indicators.
+
+\end{itemize}
+
+Except for \textit{Interpretation}, the above steps that characterize a general clustering task are profitably addressed by the mathematical programming perspective, as it is capable of explicitly define and delimit the problem.
+
+Many formulations can be done to express a clustering task. Besides that, some optimization problems are more suitable for specific clustering tasks, or specific data sets. In this work, we consider a particular formulation for data clustering: the Minimum sum-of-squares clustering (MSSC). The MSSC is among the most studied problems in cluster analysis and has been the focus of an extensive literature. Due to the large number of works considering this formulation and to its intuitive way of understanding a solution for data clustering, the MSSC was chosen to be tackled. Actually, the long-term purpose of this work is to extend the proposed method to a range of formulations. Thus, the MSSC is good starting point to validate the method, as much material is available in the literature for comparison.
+
+\section{The MSSC problem}
+The MSSC problem -- also referred as the \textit{discrete clustering} problem or the \textit{hard clustering} problem -- has been extensively studied in the literature for data clustering, possibly because this is the natural model which is addressed by the K-means algorithm. It was first formulated mathematically by Vinod \cite{Vinod1969}, where the MSSC is defined as a problem that assumes integer variables that can take values 0 or 1 only, recognizing it as an Integer programming problem.
+
+The objective in the MSSC problem is to minimize the total sum of the distances of each data point to the mean point in its cluster. We are given a set $X$ of $n$ data points in a $d$-dimensional space $\mathbb{R}^d$ \cite{Bagirov2006}:
+
+\begin{center}%
+$X = \{x_1, x_2, ..., x_n\}$, where $x_i \in \mathbb{R}^d, \quad i = 1, ..., n.$
+\end{center}
+
+%Then, if we consider $S$ as the set of all possible subsets obtained from elements in $X$, the clustering procedure must generate a partition $\bar{S}$ of $S$ with $m$ subsets $S_k \in S (S_k \neq \emptyset)$, where $m$ is the number of desired clusters and $k = \{1,...,\left | S \right |\}$. In other words, a clustering algorithm aims to generate a partition that groups data consistently, with most similar data points belonging to the same group and dissimilar data points belonging to different groups.
+
+The clustering procedure must partition the set $X$ into $m$ disjoint and non empty subsets $\{S_1,\dots,S_m\}$, such that $S_i \cap S_j = \emptyset$ for all ($i,j$) and $S_1 \cup \dots \cup S_m = X$, where $m$ is the number of desired clusters. In other words, a clustering algorithm aims to generate a partition that groups data consistently, with most similar data points belonging to the same group and dissimilar data points belonging to different groups.
+
+In order to define the similarity between any two points in the space, a function $d$ assigns to any pair $x, y \in \mathbb{R}^d$ a distance metric $d(x,y) \in \mathbb{R}$. Many distance measures could be used to characterize how similar two points or patterns are. A popular one in the domain of data mining is the Euclidean distance, that can often be used to reflect the similarity between two patterns when considering multiple dimensions (features) \cite{Jain1999}:
+%The assignment is done in such a way that the greater is the similarity (proximity) within a cluster and the greater is the difference between clusters, the better is the clustering.
+
+\begin{equation}
+\label{euclidean}
+d(x,y) = \sqrt{\sum_{q=1}^{d}(x_{q} - y_{q})^2} = \left \| x - y \right \|, \quad x, y \in \mathbb{R}^d
+\end{equation}
+
+Here, $x_{q}$ is the value of the $q$-th feature of a point $x$, $d$ is the number of features and $q = \{1,...,d\}$. Analogously, the set of data points $x_i \in X$ can be described as a matrix $X'_{n \times d}$, where an entry $x_{iq}$ is the value of the $q$-th feature for the $i$-th data point. In this work we consider that points (including the centroids) are in the Euclidean space, so the measure above (\ref{euclidean}) is used to express the distance between any two points. Therefore, the MSSC problem can be formulated as the following set partitioning problem:
+
+\begin{equation} \label{eq:of}
+\textrm{Minimize} \sum_{k=1}^{\left | S \right |}z_k y_k
+\end{equation}
+
+\begin{equation}
+\sum_{k=1}^{\left | S \right |}a_{ik}y_k = 1, \quad \forall i
+\end{equation}
+
+\begin{equation}
+\sum_{k=1}^{\left | S \right |}y_k = m
+\end{equation}
+
+\begin{equation}
+y_k \in \{0,1\}, \quad \forall k
+\end{equation}
+
+\noindent where $S$ is the set of all possible subsets obtained from elements in $X$, $\left | S \right |$ is the size of $S$; $a_{ik} = 1$ if $x_i \in S_k$ and $a_{ik} = 0$ otherwise; $y_k$ are the decision variables, with $y_k = 1$ if the subset $S_k$ is chosen and $y_k = 0$ otherwise; and $z_k$ is the cost function on subset $S_k$, i.e., the cost within the $k$-th subset. In the MSSC problem, the centroid is the mean point $c_k$ of cluster $S_k$. Thus, the contribution $z_k$ of each subset to the objective function is:
+
+\begin{equation}
+z_k = \sum_{x_i \in S_k} d(x_i, c_k)
+\end{equation}
+
+\begin{center}
+where $c_k = $ \Large $\frac{\sum_{i = 1}^{n}a_{ik}x_i}{\sum_{i = 1}^{n}a_{ik}}$	
+\end{center}
+	
+\subsection{Computational complexity}
+Regarding computational complexity, the MSSC can be solved in $O(n^3)$ time for $m \geq 2$ and one dimensional data \cite{Spath1980}. For general $m \geq 2$ and general dimension $d$, the MSSC is NP-hard \cite{Aloise2009}. If both $m$ and $d$ are fixed, the problem can be solved in $O(n^{md+1})$ time \cite{Inaba1994}, which may be very time-consuming. However, the hardness of MSSC is not measured only by the number of points (samples), dimensions and clusters, it also depends on the distribution of points \cite{Aloise2009Branch}.
+
+%\noindent [TO-DO] complete with the explanation why complexity depends on points distribution
+
+\subsection{Solution techniques}
+Many solution techniques have been developed in recent years to solve the MSSC problem. These techniques can be separated into different categories, based on their exact or heuristic nature, whether they are deterministic or probabilistic, whether they process complete solutions or construct solutions during the search, and finally whether they maintain a single candidate solution or have a population of solutions \cite{Das2009}. This range of methods includes construction methods and local searches, which aims to repeatedly seek for better solutions according to some fitness; meta-heuristic algorithms; and mathematical programming techniques. In this section, we review some techniques and previous works that have been designed for the resolution of the MSSC problem.
+
+Hansen \cite{Hansen2001} proposed a local search called J-MEANS for the MSSC problem. The neighbourhood of a current solution is defined by all possible centroid-to-object relocations followed by corresponding changes of assignments. Thus, a move in J-MEANS corresponds to replacing an existing centroid $x_i$ by a data point $x_j$. The move is done by selecting the pair of indices ($i$, $j$) that brings the highest gain in the objective function. After the replacement of $x_i$ by $x_j$, the corresponding assignment updates are done. Moves are made in these neighbourhoods whenever the value of a neighbour's objective function is better than the current solution, until a local optimum is reached. As the J-MEANS is a general local search, it is also applied to fit into meta-heuristics as the Variable Neighbourhood Search (VNS). The J-MEANS local search seems to work well in some problem instances where the number of clusters is large, so that data points could be the centroids of some clusters in the current solution.
+
+Recently, different incremental algorithms have been developed to address the choice of initial solutions in the K-means algorithm. Incremental clustering algorithms start from an initial solution with $k - 1$ centers for the ($k - 1$)-clustering problem and attempt to optimally add one new cluster by placing the $k-$th center in an appropriate position. The global K-means \cite{Likas2003} is an incremental algorithm that solves the MSSC problem by considering each data point as a candidate for the $k-$th cluster center.
+
+A modified version of the global K-means (MGKM) proposed by \cite{Bagirov2008} tackles the MSSC by producing initial solutions through the resolution of an auxiliary clustering problem, rather then testing all data points as candidate centers. Experimental results demonstrate that MGKM is able to find better solutions than the global K-means, although it requires more computational effort.
+ 
+The work of Ordin and Bagirov \cite{Ordin2014} considered the MSSC as a global optimization problem and introduced a multi-start modified global K-means (MS-MGKM) algorithm to improve the accuracy of MGKM. The MS-MGKM is an adaptation of MGKM that produces a set of initial solutions that undergo K-means, rather than considering only one initial solution at each K-means stage. The proposed method was applied on 16 real-world data sets and experiments show that it is more accurate than MGKM.
+
+More recently, \cite{Bagirov2016} presented an incremental algorithm based on the difference of convex representations for solving the MSSC problem, where a method is designed to solve non-smooth optimization problems at each iteration of the incremental algorithm. Large data sets ranging from tens to hundreds of thousands data points are used, and results show that this approach is efficient for solving large data sets when compared to previous incremental algorithms like MGKM and global K-means.
+
+Many authors proposed some hybrid methods, that combine both classical algorithms with meta-heuristics. \cite{Krishna1999} and \cite{Lu2004} uses K-means as a search operator inside a genetic algorithm (GA) on the MSSC problem, in such a way that each GA candidate solution is used as a starting point for K-means. Thus, K-means assumes the role of a local search inside a broader optimization process guided by the GA.
+
+The work of Festa \cite{Festa2013} has also treated the MSSC problem with emphasis on combinatorial optimization perspective. The proposed approach considers a biased random-key genetic algorithm (BRKGA), which was applied to biological data clustering. In random-key genetic algorithms (RKGA), candidate solutions are represented as vectors of randomly generated real numbers in the interval (0, 1]. Each vector can thus be associated to a solution in the combinatorial optimization problem, for which an objective value or fitness can be computed. To evolve the population of solutions, additional individuals are produced in order to complete the new population. This is done by crossing parent solutions. The fundamental difference between BRKGA and RKGA resides in the way parents are selected for crossing. RKGA uses any two solutions to produce a child individual, once BRKGA crosses a elite solution (good regarding fitness) with a non-elite to produce a child.
+
+%\subsection{Construction and local search}
+
+%\subsection{Meta-heuristics}
+
+%\subsection{Mathematical programming methods}
