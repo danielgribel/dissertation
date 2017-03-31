@@ -35,8 +35,22 @@
 \usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{longtable}
-
 \usepackage{caption}
+
+% Included packages
+\usepackage{tocloft}
+\usepackage{chngcntr}
+
+% Remove section numbering from figure and table labels (PUC Format)
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+
+% Remove Bibliography Brackets (PUC Format)
+\makeatletter
+\renewcommand\@biblabel[1]{#1 }
+\makeatother
 
 \DeclareGraphicsExtensions{.pdf, .png}
 
@@ -89,7 +103,7 @@
 \author{Daniel Lemes Gribel}
 \authorR{Lemes Gribel, Daniel}
 
-\adviser{Thibaut Victor Gaston Vidal}{Dr.}
+\adviser{Thibaut Victor Gaston Vidal}{Prof.}
 \adviserR{Vidal, Thibaut Victor Gaston}
 
 %\coadviser{}{Dr.}
@@ -120,13 +134,12 @@
 %%%
 
 \jury{%
-  \jurymember{Marcus Vinicius Soledade Poggi de Aragão}{Dr.}
+  \jurymember{Marcus Vinicius Soledade Poggi de Aragão}{Prof.}
     {Departamento de Informática}{PUC-Rio}
-  \jurymember{Marco Serpa Molinaro}{Dr.}
+  \jurymember{Marco Serpa Molinaro}{Prof.}
     {Departamento de Informática}{PUC-Rio}
-  %\schoolhead{José Eugenio Leal}{Prof.}
+  \schoolhead{Márcio da Silveira Carvalho}{Prof.}
 }
-
 
 %%%
 %%% Resume
