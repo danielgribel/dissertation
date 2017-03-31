@@ -166,7 +166,7 @@
   bookmarksnumbered=false%
 ]{hyperref}
 
-%% \selectlanguage{brazil}
+%%\selectlanguage{american}
 %% \makeatletter
 
 
@@ -436,6 +436,7 @@
 
 %%\makeatletter%
 \newcommand{\puc@setpagestyle}{%
+ \selectlanguage{american}%
  \pagestyle{fancy}%
  \fancyhf{}% delete current setting for header and footer
  \fancyfoot{}%
