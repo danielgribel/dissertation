@@ -1,6 +1,7 @@
+% -*- coding: utf-8; -*-
 \chapter{Computational Experiments and Analysis}
 \label{chap:experiments}
-In this chapter, we discuss the computational experiments and the analysis that emerge from them. From now on, all results regarding the proposed algorithm will be identified as HGKM (for Hybrid Genetic K-Means). The results are presented in terms of objective function value and time, and are compared to current state-of-the-art results in the MSSC literature.
+In this chapter, we discuss the computational experiments and the analysis that emerge from them. From now on, all results regarding the proposed algorithm will be identified as HG-means (for Hybrid Genetic K-Means). The results are presented in terms of objective function value and time, and are compared to current state-of-the-art results in the MSSC literature.
 
 The experiments were conducted on an Intel Core i5 2.6 GHz processor machine with 8 GB of RAM memory. The source codes were written in C++, using the UNIX g++ compiler on a Linux Ubuntu 14.04 LTS 64-bit operating system.
 
@@ -24,11 +25,11 @@ In the coming result tables, the following notation is used:
 			$E = \frac{f - f_{best}}{f_{best}} \times 100$
 		\end{center}
 		
-	where $f$ is the value of the MSSC objective found by an algorithm. For HGKM, $E_{med}$ and $E_{avg}$ report the error from the median and average values, respectively;
+	where $f$ is the value of the MSSC objective found by an algorithm. For HG-means, $E_{med}$ and $E_{avg}$ report the error from the median and average values, respectively;
 	
 	\item $t$ is the CPU time in seconds;
 	
-	%\item Bold values are used when HGKM found the new best solution
+	%\item Bold values are used when HG-means found the new best solution
 
 \end{itemize}
 
@@ -63,16 +64,16 @@ In Table \ref{calibration-results}, the first three columns report the values of
 
 \subsection{General performance and computational time}
 \label{sec:performance}
-The results of numerical experiments regarding solution performance and computational time for groups A1, A2, B and C of instances are presented in Tables \ref{results-all-A1}, \ref{results-all-A2}, \ref{results-all-B} and \ref{results-all-C}, respectively. Due to the stochastic nature of the proposed meta-heuristic, the results of HGKM correspond to the average of 10 runs, where a run is the execution of an instance with a specific $m$. 
+The results of numerical experiments regarding solution performance and computational time for groups A1, A2, B and C of instances are presented in Tables \ref{results-all-A1}, \ref{results-all-A2}, \ref{results-all-B} and \ref{results-all-C}, respectively. Due to the stochastic nature of the proposed meta-heuristic, the results of HG-means correspond to the average of 10 runs, where a run is the execution of an instance with a specific $m$. 
 
-For comparison purposes, we analyse the results considering the best known solutions found so far and the results of global K-means (GKM) \cite{Likas2003}, the modified global K-means (MGKM) \cite{Bagirov2008}, the multi-start modified global K-means (MS-MGKM) \cite{Ordin2014} and the difference of convex clustering (DCClust) \cite{Bagirov2016} algorithms, which are recent works in MSSC literature, corresponding to the state-of-the-art for this problem.
+For comparison purposes, we analyse the results considering the best known solutions found so far and the results of global K-means (GKM) \cite{Likas2003}, the modified global K-means (MGKM) \cite{Bagirov2008}, the multi-start modified global K-means (MS-MGKM) \cite{Ordin2014} and the difference of convex clustering (DCClust and MS-DCA) \cite{Bagirov2016} algorithms, which are recent works in MSSC literature, corresponding to the state-of-the-art for this problem. For Tables \ref{results-all-A1}, \ref{results-all-A2}, \ref{results-all-B}, the computational time of MS-MGKM, MGKM and GKM algorithms correspond to the measurements performed by an Intel Core 2 Dual 2.50 GHz processor machine with 3 GB of RAM memory, as reported in \cite{Ordin2014}. For Table \ref{results-all-C}, an Intel Core i5 2.90 GHz processor machine with 8 GB of RAM was used to measure DCClust and MS-DCA algorithms, according to \cite{Bagirov2016}.
 
-% HGKM performance analysis
-Tables \ref{results-all-A1} and \ref{results-all-A2} presents the results for instances of group A1 and A2. As we can observe, HGKM finds the new best solution or achieves the current best one in all instances for most of $m$ values. In some cases, as in Ionosphere instance, HGKM results reach more than 4\% of the error, a significant improvement. On the other hand, the proposed algorithm requires more computational efforts than MS-MGKM, MGKM and GKM algorithms for most of these small instances -- in many cases the computational time of HGKM is similar to MS-MGKM. It is also important to note that in some instances like Bavaria postal 2, Liver disorders, Ionosphere and Pima Indians diabetes, the gap of HGKM results to the best known solutions increases for large $m$.
+% HG-means performance analysis
+Tables \ref{results-all-A1} and \ref{results-all-A2} presents the results for instances of group A1 and A2. As we can observe, HG-means finds the new best solution or achieves the current best one in all instances for most of $m$ values. In some cases, as in Ionosphere instance, HG-means results reach more than 4\% of the error, a significant improvement. On the other hand, the proposed algorithm requires more computational effort than MS-MGKM, MGKM and GKM algorithms for most of these small instances -- in many cases the computational time of HG-means is similar to MS-MGKM. It is also important to note that in some instances like Bavaria postal 2, Liver disorders, Ionosphere and Pima Indians diabetes, the gap of HG-means results to the best known solutions increases for large $m$.
 
-Table \ref{results-all-B} presents the results for instances of group B. As in results for small instances, HGKM finds the new best solution or achieves the current best one in all instances for most of $m$ values, outperforming MS-MGKM, MGKM and GKM algorithms in terms of solution quality. Regarding computational time, HGKM is faster than MS-MGKM and GKM in TSPLIB3038, faster than MS-MGKM in TSPLIB1060 and has nearly the same time of MS-MGKM and MGKM in Pendigit. For Image segmentation and Page Block -- the latter, only for large $m$ -- HGKM requires more computational effort.
+Table \ref{results-all-B} presents the results for instances of group B. As in results for small instances, HG-means finds the new best solution or achieves the current best one in all instances for most of $m$ values, outperforming MS-MGKM, MGKM and GKM algorithms in terms of solution quality. Regarding computational time, HG-means is faster than MS-MGKM and GKM in TSPLIB3038, faster than MS-MGKM in TSPLIB1060 and has nearly the same time of MS-MGKM and MGKM in Pendigit. For Image segmentation and Page Block -- the latter, only for large $m$ -- HG-means requires more computational effort.
 
-Table \ref{results-all-C} presents the results for instances of group C -- the group with the largest instances. As in the previous results, HGKM finds the new best solution or achieves the current best one in all instances for most of $m$ values. Regarding computational time, HGKM is faster than DCClust for almost all instances, except for EEG eye state and D15112.
+Table \ref{results-all-C} presents the results for instances of group C -- the group with the largest instances. As in the previous results, HG-means finds the new best solution or achieves the current best one in all instances for most of $m$ values. Regarding computational time, HG-means is faster than DCClust for almost all instances, except for EEG eye state and D15112.
 
 \input{tables/results-all-A1}
 
@@ -84,11 +85,10 @@ Table \ref{results-all-C} presents the results for instances of group C -- the g
 
 \subsection{Impact of the number of clusters}
 
-From the performance observed in the results of HGKM algorithm in both solution quality and computational time, we sought to verify if the algorithm works well by increasing the number of clusters. %This analysis is very important, since clustering tasks that require more groups are, in general, more difficult tasks, since we are dealing with a larger combinatorial problem.
+From the performance observed in the results of HG-means algorithm in both solution quality and computational time, we sought to verify if the algorithm works well by increasing the number of clusters. %This analysis is very important, since clustering tasks that require more groups are, in general, more difficult tasks, since we are dealing with a larger combinatorial problem.
 This analysis is very important to confirm the robustness of the method, since we are dealing with a larger combinatorial problem when $m$ is large.
 
-Table \ref{m-analysis} presents a summary on how HGKM perform for different numbers of clusters.
-For each group of instances, it reports the average error ($E_{avg}$) to the best known solution when varying the number of clusters ($m$). For groups of instances A1, A2 and B, HGKM has the most significant improvements -- compared to the best known solution -- in cases where $m$ is large. For instances of group C, HGKM increased the gap to the best known solution when $m$ = (2, 20, 25), confirming the robustness of the method.
+Table \ref{m-analysis} presents how HG-means performs for different numbers of clusters. For each group of instances, it reports the average error ($E_{avg}$) to the best known solution when varying the number of clusters ($m$). For instances A1, A2 and B, HG-means has the most significant improvements -- compared to the best known solution -- in cases where $m$ is large. For instances of group C, HG-means increased the gap to the best known solution when $m$ = (2, 20, 25), confirming the robustness of the method.
 
 \input{tables/m-analysis}
 
@@ -125,7 +125,7 @@ Figures \ref{fig:error-A1} to and \ref{fig:error-C} display the percentage gap o
 \subfigure[$m$ = 2]{\label{fig:error-A1-2}\includegraphics[width=1\textwidth]{img/error-A1-2}}
 \subfigure[$m$ = 5]{\label{fig:error-A1-5}\includegraphics[width=1\textwidth]{img/error-A1-5}}
 \subfigure[$m$ = 10]{\label{fig:error-A1-10}\includegraphics[width=1\textwidth]{img/error-A1-10}}
-\caption{The algorithms error from the best known solutions vs the number of clusters (Instances A1)}
+\caption{Algorithms performance for different number of clusters (Instances A1)}
 \label{fig:error-A1}
 \end{figure}
 
@@ -134,7 +134,7 @@ Figures \ref{fig:error-A1} to and \ref{fig:error-C} display the percentage gap o
 \subfigure[$m$ = 10]{\label{fig:error-A2-10}\includegraphics[width=1\textwidth]{img/error-A2-10}}
 \subfigure[$m$ = 30]{\label{fig:error-A2-30}\includegraphics[width=1\textwidth]{img/error-A2-30}}
 \subfigure[$m$ = 50]{\label{fig:error-A2-50}\includegraphics[width=1\textwidth]{img/error-A2-50}}
-\caption{The algorithms error from the best known solutions vs the number of clusters (Instances A2)}
+\caption{Algorithms performance for different number of clusters (Instances A2)}
 \label{fig:error-A2}
 \end{figure}
 
@@ -143,7 +143,7 @@ Figures \ref{fig:error-A1} to and \ref{fig:error-C} display the percentage gap o
 \subfigure[$m$ = 20]{\label{fig:error-B-20}\includegraphics[width=1\textwidth]{img/error-B-20}}
 \subfigure[$m$ = 40]{\label{fig:error-B-40}\includegraphics[width=1\textwidth]{img/error-B-40}}
 \subfigure[$m$ = 80]{\label{fig:error-B-80}\includegraphics[width=1\textwidth]{img/error-B-80}}
-\caption{The algorithms error from the best known solutions vs the number of clusters (Instances B)}
+\caption{Algorithms performance for different number of clusters (Instances B)}
 \label{fig:error-B}
 \end{figure}
 
@@ -152,17 +152,17 @@ Figures \ref{fig:error-A1} to and \ref{fig:error-C} display the percentage gap o
 \subfigure[$m$ = 15]{\label{fig:error-C-15}\includegraphics[width=1\textwidth]{img/error-C-15}}
 \subfigure[$m$ = 20]{\label{fig:error-C-20}\includegraphics[width=1\textwidth]{img/error-C-20}}
 \subfigure[$m$ = 25]{\label{fig:error-C-25}\includegraphics[width=1\textwidth]{img/error-C-25}}
-\caption{The algorithms error from the best known solutions vs the number of clusters (Instances C)}
+\caption{Algorithms performance for different number of clusters (Instances C)}
 \label{fig:error-C}
 \end{figure}
 
 \subsection{Impact of instances size}
-In section \ref{sec:performance} we shown that the objective value of solutions produced by HGKM outperformed the compared algorithms in most experiments. In this section, we present some graphs regarding HGKM scaling, i.e., how much computational time the algorithm requires in large data. Figures \ref{fig:timeB} and \ref{fig:timeC} compare HGKM with MS-MGKM, MGKM, GKM and DCClust in terms of CPU time as a function of the number of clusters $m$. The elapsed time was measured in seconds and the results are presented for groups B and C of instances. For small instances, there is a very small difference in the computational time of the considered algorithms. Therefore, the results for groups A1 and A2 are not presented in this analysis.
+Section \ref{sec:performance} shows that the objective value of solutions produced by HG-means outperformed the compared algorithms in most experiments. This section presents some analysis regarding the HG-means scaling, i.e., how much computational time does the algorithm require in large data. Figures \ref{fig:timeB} and \ref{fig:timeC} compare HG-means with MS-MGKM, MGKM, GKM and DCClust in terms of CPU time as a function of the number of clusters $m$. The elapsed time was measured in seconds and the results are presented for groups B and C of instances. For small instances, there is a very small difference in the computational time of the considered algorithms. Therefore, the results for groups A1 and A2 are not presented in this analysis.
 
-%For instances of group A2, HGKM demands more computational efforts than MS-MGKM, MGKM, GKM and DCClust for all values of $m$.
-For group B of instances, HGKM takes a similar amount of time when compared to other algorithms, and has its most competitive performance when $m$ is increased. For instances of group C, HGKM is faster than the other algorithms exactly in the largest instances (Pla85900, Skin segmentation and 3D road), having a similar computational time for the remaining instances in this group.
+%For instances of group A2, HG-means demands more computational efforts than MS-MGKM, MGKM, GKM and DCClust for all values of $m$.
+For group B of instances, HG-means takes a similar amount of time when compared to other algorithms, and has its most competitive performance when $m$ is increased. For instances of group C, HG-means is faster than the other algorithms exactly in the largest instances (Pla85900, Skin segmentation and 3D road), having a similar computational time for the remaining instances in this group.
 
-Therefore, HGKM is very promising regarding scaling, as it produces better solutions and requires less computational time than the compared algorithms in large instances. In addition, there is room to use more efficient data structures that can improve the execution time of the algorithm.
+Therefore, HG-means is very promising regarding scalability, as it produces better solutions and requires less computational time than the compared algorithms on large instances. In addition, there is room to adjust the number of iterations the algorithm takes and to use more efficient data structures that can improve runtime.
 
 %\begin{figure}[H]
 %\centering
@@ -192,7 +192,7 @@ Therefore, HGKM is very promising regarding scaling, as it produces better solut
 \subfigure[Page blocks ($n$ = 5473)]{\label{fig:time4}\includegraphics[width=0.48\textwidth]{img/cpu-page}}
 \subfigure[Pendigit ($n$ = 10992)]{\label{fig:time5}\includegraphics[width=0.48\textwidth]{img/cpu-pendigit}}
 \subfigure[Letter ($n$ = 20000)]{\label{fig:time6}\includegraphics[width=0.48\textwidth]{img/cpu-letter}}
-\caption{The CPU time of algorithms in instances of group B}
+\caption{The CPU time of algorithms (Instances B)}
 \label{fig:timeB}
 \end{figure}
 
@@ -206,16 +206,16 @@ Therefore, HGKM is very promising regarding scaling, as it produces better solut
 \subfigure[Pla85900 ($n$ = 85900)]{\label{fig:time12}\includegraphics[width=0.45\textwidth]{img/cpu-pla85900}}
 \subfigure[Skin segmentation ($n$ = 245057)]{\label{fig:time13}\includegraphics[width=0.45\textwidth]{img/cpu-skin}}
 \subfigure[3D road network ($n$ = 434874)]{\label{fig:time14}\includegraphics[width=0.45\textwidth]{img/cpu-3droad}}
-\caption{The CPU time of algorithms in instances of group C}
+\caption{The CPU time of algorithms (Instances C)}
 \label{fig:timeC}
 \end{figure}
 
 \subsection{Components}
 \label{sec:components-section}
-In order to understand the contribution of components in the performance of HGKM, we performed some experiments by removing two important operators at a time: crossover and mutation. For comparison purposes, Table \ref{comp} reports the average error with respect to the best known solution in three scenarios: (i) complete HGKM with all components ($E_{avg}$), (ii) HGKM without mutation ($E_{avg}$ -M) and (iii) HGKM without crossover ($E_{avg}$ -C).
+In order to understand the contribution of components in the performance of HG-means, we performed some experiments by removing two important operators at a time: crossover and mutation. For comparison purposes, Table \ref{comp} reports the average error with respect to the best known solution in three scenarios: (i) complete HG-means with all components ($E_{avg}$), (ii) HG-means without mutation ($E_{avg}$ -M) and (iii) HG-means without crossover ($E_{avg}$ -C).
 
 \small{\input{tables/comp}}
 
-Mutation and crossover are both essential to find high-quality solutions. For the case where we have HGKM without mutation, it does not find (in average) a solution better than the best known so far, while in the two other scenarios (complete HGKM and HGKM without crossover), it has a significantly better performance. Additionally, the complete HGKM algorithm performs better than the HGKM without crossover, especially when $m$ increases, indicating that the crossover is an essential operator when dealing with more complex clustering tasks.
+Mutation and crossover are both essential to find high-quality solutions. For the case where we have HG-means without mutation, it does not find (in average) a solution better than the best known so far, while in the two other scenarios (complete HG-means and HG-means without crossover), it has a significantly better performance. Additionally, the complete HG-means algorithm performs better than the HG-means without crossover, especially when $m$ increases, indicating that the crossover is an essential operator when dealing with more complex clustering tasks.
 
 %\noindent [TO-DO] analysis on number of features -- our algorithm seems to be fast when $d$ is small in small/medium instances (tsplib for example) but also when $d$ is large in large instances (gas sensor for example)

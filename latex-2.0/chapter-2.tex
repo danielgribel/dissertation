@@ -70,6 +70,8 @@ d(x,y) = \sqrt{\sum_{q=1}^{d}(x_{q} - y_{q})^2} = \left \| x - y \right \|, \qua
 
 Here, $x_{q}$ is the value of the $q$-th feature of a point $x$, $d$ is the number of features and $q = \{1,...,d\}$. Analogously, the set of data points $x_i \in X$ can be described as a matrix $X'_{n \times d}$, where an entry $x_{iq}$ is the value of the $q$-th feature for the $i$-th data point. In this work we consider that points (including the centroids) are in the Euclidean space, so the measure above (\ref{euclidean}) is used to express the distance between any two points. Therefore, the MSSC problem can be formulated as the following set partitioning problem:
 
+\pagebreak
+
 \begin{equation} \label{eq:of}
 \textrm{Minimize} \sum_{k=1}^{\left | S \right |}z_k y_k
 \end{equation}
